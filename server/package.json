@@ -1,0 +1,23 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "serve": "nodemon app.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "jsonwebtoken": "^8.5.1",
+        "koa-jwt": "^3.6.0",
+        "@types/koa-bodyparser": "^4.2.2",
+        "@types/koa-router": "^7.0.40",
+        "koa": "^2.7.0",
+        "koa-bodyparser": "^4.2.1",
+        "koa-router": "^7.4.0",
+        "mongodb": "^3.2.6",
+        "mongoose": "^5.5.11"
+    }
+}

@@ -3,7 +3,7 @@
         <div class="sidebar">
             <Sidebar></Sidebar>
         </div>
-        <div class="routers">
+        <div class="router-views">
             <router-view></router-view>
         </div>
     </div>
@@ -23,5 +23,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.sidebar {
+    width: 20%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-right: 1px solid rgb(158, 158, 158);
+    background-color: #ddd;
+}
+.router-views {
+    margin-left: 20%;
+}
 </style>

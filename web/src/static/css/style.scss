@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: #ddd;
+}
+
 /* 伪类清除浮动 */
 .clearfix::after {
     display: block;
@@ -34,4 +38,13 @@ li {
 
 a {
     color: black;
+    text-decoration: none;
+}
+
+.router-view-general {
+    margin: 10rem 10rem 0 10rem;
+    padding: 2rem 0 0 3rem;
+    position: relative;
+    box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
+    font-family: Georgia;    
 }
