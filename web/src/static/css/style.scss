@@ -48,3 +48,22 @@ a {
     box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
     font-family: Georgia;    
 }
+
+.router-title {
+    font-family: Georgia;
+    font-weight: 400;
+    font-size: 1.5rem;
+}
+
+.btn-small {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #03a9f4;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-small:hover {
+    background-color: #0070a3;
+}

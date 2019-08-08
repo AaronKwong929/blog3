@@ -19,6 +19,30 @@ import NotFound from './routes/404.vue';
 
 Vue.use(VueRouter);
 Vue.config.productionTip = false;
+
+Axios.interceptors.request.use(
+    config => {
+        // const token = localStorage.getItem('userToken');
+        
+        config.headers.common['Authorization'] = `Bearer ${token}`;
+        return config;
+    },
+    error => {
+        return Promise.resolve(error);
+    }
+);
+
+Axios.interceptors.response.use(
+    response => {
+        return response;
+        // 写成response.data 前端即可直接res而无需res.data
+    },
+    err => {
+        return Promise.resolve(err.response);
+        // throw下 注意是resolve， reject会控制台输出错误
+    }
+);
+
 Vue.prototype.$axios = Axios;
 
 const routes = [
@@ -28,13 +52,13 @@ const routes = [
     { path: '/classify', component: Classify },
     { path: '/about', component: About },
     { path: '/login', component: Login },
-    { path: '/logout', component: Logout },
     {
         path: '/admin',
         component: Admin,
         children: [
             { path: 'draft', component: Draft },
-            { path: 'commit', component: Commit }
+            { path: 'commit', component: Commit },
+            { path: '/logout', component: Logout }
         ]
     },
     { path: '*', redirect: '404' },
