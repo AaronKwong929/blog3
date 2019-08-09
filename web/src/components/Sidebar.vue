@@ -20,15 +20,27 @@
                 ><i class="iconfont icon-RectangleCopy3"></i
             ></router-link>
 
-            <router-link to="/login" tag="div" class="bar-item" title="登陆"
+            <router-link to="/login" tag="div" class="bar-item" title="登陆" v-if="!this.$store.state.token"
                 ><i class="iconfont icon-RectangleCopy2"></i
+            ></router-link>
+
+            <router-link to="/admin" tag="div" class="bar-item" title="管理" v-else
+                ><i class="iconfont icon-RectangleCopy5"></i
             ></router-link>
         </div>
     </div>
 </template>
 
 <script>
-export default {};
+import store from '../vuex/store';
+export default {
+    data() {
+        return {
+            
+        }
+    },
+    store,
+};
 </script>
 
 <style lang="scss" scoped>
