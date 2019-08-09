@@ -4,7 +4,7 @@
         <div class="router-title">
             管理员登陆
         </div>
-        <div v-if="this.code === 0">
+        <div v-if="!this.$store.state.token">
             <div class="input user">
                 <i class="iconfont icon-RectangleCopy2"></i>
                 <input
@@ -22,25 +22,20 @@
                     placeholder="Password"
                 />
             </div>
+            <div class="alert" v-if="this.fail">登陆失败</div>
             <button class="btn btn-small" @click="login()">登陆</button>
-        </div>
-        <div v-if="this.code === 1">
-            <div class="login-fail">
-                <i class="iconfont icon-RectangleCopy4"></i>
-                <div class="fail-msg">登陆失败</div>
-                <button @click="reload()" class="btn btn-small">返回</button>
-            </div>
         </div>
     </div>
 </template>
 
 <script>
+import store from "../vuex/store";
 export default {
     data() {
         return {
             name: "",
             password: "",
-            code: 0
+            fail: 0,
         };
     },
     directives: {
@@ -52,12 +47,23 @@ export default {
     },
     methods: {
         login() {
-            
-        },
-        reload() {
-            return (this.code = 0);
+            this.$axios
+                .post("/api/admin/login", {
+                    name: this.name,
+                    password: this.password
+                })
+                .then(res => {
+                    if (res.code === 0) {
+                        this.$store.state.token = res.adminToken;
+                        console.log(res.adminToken);
+                        this.$router.push('/admin');
+                    } else {
+                        this.fail = 1;
+                    }
+                });
         }
-    }
+    },
+    store
 };
 </script>
 
@@ -116,5 +122,15 @@ input:focus {
 
 .fail-msg {
     padding-left: 6rem;
+}
+
+.alert {
+    border-radius: 1rem;
+    border: 1px solid red;
+    padding: 1rem 0.5rem;
+    width: 10rem;
+    margin: 1rem 3rem;
+    background: rgb(255, 132, 132);
+    text-align: center;
 }
 </style>
