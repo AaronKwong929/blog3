@@ -34,27 +34,31 @@ adminRouter.post('/login', async ctx => {
         if (!admin || !isMatch) {
             throw new Error();
         }
-        const adminToken = addToken(admin.name)
+        const adminToken = addToken(admin.name);
         ctx.response.body = {
             adminToken,
-            code: 0,
-        }
+            code: 0
+        };
     } catch (e) {
         ctx.response.body = {
             code: 1,
             msg: '账号或密码错误'
-        }
+        };
+    }
+});
+
+adminRouter.get('/', verifyToken, async ctx => {
+    ctx.response.body = {
+        code: 1
     }
 });
 
 // 注销？清空state？session？
-adminRouter.post('/logout', async ctx => {
-    
-});
+// adminRouter.post('/logout', async ctx => {
+
+// });
 
 // 保存草稿之后发布？
-adminRouter.post('/commit', async ctx => {
-
-});
+adminRouter.post('/commit', verifyToken, async ctx => {});
 
 module.exports = adminRouter;
