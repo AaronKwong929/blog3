@@ -1,14 +1,26 @@
 import vuex from 'vuex';
 import Vue from 'vue';
 
-Vue.use(vuex);
+import state from './state.js';
+// import * as getters from "./getters.js";
+// import mutations from "./mutations";
+// import * as actions from "./actions.js";
 
-let state = {
-    token: '',
-};
+import Axios from '../axios';
+
+Vue.use(vuex);
 
 let mutations = {};
 
-const store = new vuex.Store({ state, mutations });
+let actions = {
+    GET_ARTICLES({ state }) {
+        Axios.get('/api/admin')
+            .then(res => {
+                state.articleList = res.data.code + res.data.msg;
+            })
+    }
+};
+
+const store = new vuex.Store({ state, mutations, actions });
 
 export default store;
