@@ -32,7 +32,6 @@
 </template>
 
 <script>
-// import store from "../vuex/store";
 export default {
     data() {
         return {
@@ -56,11 +55,11 @@ export default {
                     password: this.password
                 })
                 .then(res => {
-                    console.log(res);
                     if (res.data.code === 0) {
                         this.$store.state.token = res.data.adminToken;
                         // 开发时用来获取token在postman调试后台api
-                        console.log(res.data.adminToken);
+                        console.log(this.$store.state.token);
+                        // console.log(res.data.adminToken);
                         this.$router.push("/admin");
                     } else {
                         this.fail = 1;
@@ -70,8 +69,7 @@ export default {
         hasLogin() {
             this.$router.push("/admin");
         }
-    },
-    // store
+    }
 };
 </script>
 
