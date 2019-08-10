@@ -2,17 +2,27 @@
     <div id="admin">
         {{ List }}
         <hr />
+        <button @click="logout">注销</button>
     </div>
 </template>
 
 <script>
-// import store from "../vuex/store.js";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        ...mapMutations({
+            logout: 'LOG_OUT'
+        }),
+        // logout() {
+        //     return this.$store.commit('LOG_OUT');
+        // }
+        ...mapActions({
+            get_articles: 'GET_ARTICLES'
+        })
+    },
     computed: {
         ...mapState({
             List: state => {
@@ -21,9 +31,9 @@ export default {
         })
     },
     mounted() {
-        this.$store.dispatch("GET_ARTICLES");
-    },
-    // store
+        // this.$store.dispatch("GET_ARTICLES");
+        this.get_articles();
+    }
 };
 </script>
 
