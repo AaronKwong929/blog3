@@ -25,17 +25,20 @@
             <div class="alert" v-if="this.fail">登陆失败</div>
             <button class="btn btn-small" @click="login()">登陆</button>
         </div>
+        <div v-else>
+            您已登陆，请勿重复登陆，点击<button @click="hasLogin">此处</button>跳转到管理员页面
+        </div>
     </div>
 </template>
 
 <script>
-import store from "../vuex/store";
+// import store from "../vuex/store";
 export default {
     data() {
         return {
             name: "",
             password: "",
-            fail: 0,
+            fail: 0
         };
     },
     directives: {
@@ -53,17 +56,22 @@ export default {
                     password: this.password
                 })
                 .then(res => {
-                    if (res.code === 0) {
-                        this.$store.state.token = res.adminToken;
-                        console.log(res.adminToken);
-                        this.$router.push('/admin');
+                    console.log(res);
+                    if (res.data.code === 0) {
+                        this.$store.state.token = res.data.adminToken;
+                        // 开发时用来获取token在postman调试后台api
+                        console.log(res.data.adminToken);
+                        this.$router.push("/admin");
                     } else {
                         this.fail = 1;
                     }
                 });
+        },
+        hasLogin() {
+            this.$router.push("/admin");
         }
     },
-    store
+    // store
 };
 </script>
 
