@@ -7,16 +7,24 @@ import state from './state.js';
 // import * as actions from "./actions.js";
 
 import Axios from '../axios';
+import router from '../router';
 
 Vue.use(vuex);
 
-let mutations = {};
+let mutations = {
+    LOG_OUT(state) {
+        state.token = '';
+        router.push('login');
+    }
+};
 
 let actions = {
     GET_ARTICLES({ state }) {
         Axios.get('/api/admin')
             .then(res => {
-                state.articleList = res.data.code + res.data.msg;
+                if (res.data) {
+                    state.articleList = res.data.code + res.data.msg;
+                }
             })
     }
 };
