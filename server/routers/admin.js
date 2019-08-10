@@ -49,7 +49,8 @@ adminRouter.post('/login', async ctx => {
 
 adminRouter.get('/', verifyToken, async ctx => {
     ctx.response.body = {
-        code: 1
+        code: 1,
+        msg: '获取管理页内容成功！'
     }
 });
 
