@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from './vuex/store.js';
+
+import store from './vuex/store';
 
 import Home from './routes/Home.vue';
 import Archive from './routes/Archive.vue';
@@ -26,10 +27,11 @@ const routes = [
     {
         path: '/admin',
         component: Admin,
+        meta: { requireAuth: true },
         children: [
-            { path: 'draft', component: Draft },
-            { path: 'commit', component: Commit },
-            { path: '/logout', component: Logout }
+            { path: 'draft', component: Draft, meta: { requireAuth: true } },
+            { path: 'commit', component: Commit, meta: { requireAuth: true } },
+            { path: '/logout', component: Logout, meta: { requireAuth: true } }
         ]
     },
     { path: '*', redirect: '404' },
@@ -38,5 +40,18 @@ const routes = [
 ];
 
 const router = new VueRouter({ routes });
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requireAuth) {
+        const token = store.state.token;
+        if (token && token !== null) {
+            next();
+        } else {
+            next('/login');
+        }
+    } else {
+        next();
+    }
+});
 
 export default router;
