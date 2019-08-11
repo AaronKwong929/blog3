@@ -24,6 +24,8 @@ Axios.interceptors.response.use(
         if (error.response.status === 401) {
             router.push('401');
         }
+        ////////// ↓？
+        return Promise.reject(error.response.data);
     }
 );
 export default Axios;
