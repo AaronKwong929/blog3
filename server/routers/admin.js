@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const Admin = require('../models/Admin');
+const Article = require('../models/Articles');
+
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
 
@@ -51,15 +53,27 @@ adminRouter.get('/', verifyToken, async ctx => {
     ctx.response.body = {
         code: 1,
         msg: '获取管理页内容成功！'
-    }
+    };
 });
 
-// 注销？清空state？session？
-// adminRouter.post('/logout', async ctx => {
+adminRouter.post('/draft', verifyToken, async ctx => {
+    let article = new Article();
+    await article.save();
+    ctx.response.body = {
+        article
+    };
+});
 
-// });
-
-// 保存草稿之后发布？
-adminRouter.post('/commit', verifyToken, async ctx => {});
+adminRouter.put('/draft', verifyToken, async ctx => {
+    const update = ctx.request.body.article;
+    console.log(update);
+    const article = await Article.findById(update._id);
+    article.title = update.title;
+    article.type = update.type;
+    article.tag = update.tag;
+    article.content = update.content;
+    await article.save();
+    ctx.response.body = { article };
+});
 
 module.exports = adminRouter;

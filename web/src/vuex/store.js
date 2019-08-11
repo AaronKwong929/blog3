@@ -26,6 +26,11 @@ let actions = {
                     state.articleList = res.data.code + res.data.msg;
                 }
             })
+    },
+    SAVE_ARTICLE({ state }) {
+        Axios.put('/api/admin/draft', {
+            article: state.articleDetails
+        });
     }
 };
 
