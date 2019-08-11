@@ -2,7 +2,9 @@
     <div id="admin">
         {{ List }}
         <hr />
-        <button @click="logout">注销</button>
+        <button @click="logout" class="btn btn-small">注销</button>
+        <button @click="newArticle">新建</button>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -16,12 +18,18 @@ export default {
         ...mapMutations({
             logout: 'LOG_OUT'
         }),
-        // logout() {
-        //     return this.$store.commit('LOG_OUT');
-        // }
         ...mapActions({
-            get_articles: 'GET_ARTICLES'
-        })
+            getArticles: 'GET_ARTICLES'
+        }),
+        newArticle() {
+            this.$axios.post('/api/admin/draft').then(
+                res => {
+                    console.log(res.data.article);
+                    this.$store.state.articleDetails = res.data.article;
+                    this.$router.push(`/draft/${this.$store.state.articleDetails._id}`);
+                }
+            )
+        }
     },
     computed: {
         ...mapState({
@@ -31,8 +39,7 @@ export default {
         })
     },
     mounted() {
-        // this.$store.dispatch("GET_ARTICLES");
-        this.get_articles();
+        this.getArticles();
     }
 };
 </script>
