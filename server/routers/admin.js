@@ -66,7 +66,7 @@ adminRouter.post('/draft', verifyToken, async ctx => {
 
 adminRouter.put('/draft', verifyToken, async ctx => {
     const update = ctx.request.body.article;
-    console.log(update);
+    // console.log(update);
     const article = await Article.findById(update._id);
     article.title = update.title;
     article.type = update.type;
