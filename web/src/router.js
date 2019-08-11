@@ -8,10 +8,8 @@ import Archive from './routes/Archive.vue';
 import Classify from './routes/Classify.vue';
 import About from './routes/About.vue';
 import Login from './routes/Login.vue';
-import Logout from './routes/Logout.vue';
 import Admin from './routes/Admin.vue';
 import Draft from './routes/Draft.vue';
-import Commit from './routes/Commit.vue';
 import NotFound from './routes/404.vue';
 import Unauthorized from './routes/401.vue';
 
@@ -24,16 +22,8 @@ const routes = [
     { path: '/classify', component: Classify },
     { path: '/about', component: About },
     { path: '/login', component: Login },
-    {
-        path: '/admin',
-        component: Admin,
-        meta: { requireAuth: true },
-        children: [
-            { path: 'draft', component: Draft, meta: { requireAuth: true } },
-            { path: 'commit', component: Commit, meta: { requireAuth: true } },
-            { path: '/logout', component: Logout, meta: { requireAuth: true } }
-        ]
-    },
+    { path: '/admin', component: Admin, meta: { requireAuth: true } },
+    { path: '/draft/:id', component: Draft, meta: { requireAuth: true } },
     { path: '*', redirect: '404' },
     { path: '/404', component: NotFound },
     { path: '/401', component: Unauthorized }
