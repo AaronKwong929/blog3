@@ -57,7 +57,7 @@ export default {
             const details = this.$store.state.articleList.find(item => {
                 return item._id === this.$route.params.id;
             });
-            console.log(details);
+            // console.log(details);
             this.$store.state.articleDetails = details;
             this.title = details.title;
             this.type = details.type;
