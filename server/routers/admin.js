@@ -50,10 +50,10 @@ adminRouter.post('/login', async ctx => {
 });
 
 adminRouter.get('/', verifyToken, async ctx => {
+    const articleList = await Article.find({});
     ctx.response.body = {
-        code: 1,
-        msg: '获取管理页内容成功！'
-    };
+        articleList
+    }
 });
 
 adminRouter.post('/draft', verifyToken, async ctx => {
@@ -67,7 +67,8 @@ adminRouter.post('/draft', verifyToken, async ctx => {
 adminRouter.put('/draft', verifyToken, async ctx => {
     const update = ctx.request.body.article;
     // console.log(update);
-    const article = await Article.findById(update._id);
+    // console.log(update._id);
+    const article = await Article.findById(update._id)
     article.title = update.title;
     article.type = update.type;
     article.tag = update.tag;
