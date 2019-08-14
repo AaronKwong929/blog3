@@ -4,16 +4,26 @@ const actions = {
     GET_ARTICLES({ state }) {
         Axios.get('/api/admin')
             .then(res => {
-                if (res.data) {
-                    state.articleList = res.data.code + res.data.msg;
-                }
+                state.articleList = res.data.articleList;
             })
     },
     SAVE_ARTICLE({ state }) {
         Axios.put('/api/admin/draft', {
             article: state.articleDetails
         });
-    }
+        this.GET_ARTICLES();
+    },
+    COMMON_GET_ARTICLES({state}) {
+        Axios.get('/api/common/articles')
+            .then(res => {
+                state.articleList = res.data.articleList;
+            })
+    },
+    // FIND_ARTICLE: (state, id) => {
+    //     return state.articleList.find(item => {
+    //         return item._id === id
+    //     });
+    // }
 };
 
 export default actions;
