@@ -1,6 +1,6 @@
 let state = {
     token: '',
-    articleList: -1,
+    articleList: [],
     articleDetails: {}
 }
 
