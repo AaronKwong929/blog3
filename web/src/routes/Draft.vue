@@ -1,48 +1,121 @@
 <template>
     <div id="draft">
-        <input type="text" v-model="title" placeholder="标题" />
-        <input type="text" v-model="tag" placeholder="标签" />
-        <input type="text" v-model="type" placeholeer="类型" />
-        <textarea v-model="content" placeholder="正文"></textarea>
-        <!-- <button @click="show">显示vuex内容</button> -->
+        <div class="write clearfix">
+            <div class="left">
+                <input
+                    type="text"
+                    v-model="title"
+                    placeholder="标题"
+                    class="title left"
+                />
+            </div>
+            <div class="right">
+                <input
+                    type="text"
+                    v-model="tag"
+                    placeholder="标签"
+                    class="tag"
+                />
+                <input
+                    type="text"
+                    v-model="type"
+                    placeholer="分类"
+                    class="classify"
+                />
+            </div>
+            <textarea v-model="content" id="editor" @input="save"></textarea>
+        </div>
+        <div class="read">
+            <div class="article-title">{{ title }}</div>
+            <div class="article-type">{{ type }}</div>
+            <div class="article-tag">{{ tag }}</div>
+            <div class="article-time">{{ now }}</div>
+            <div v-html="compiledMarkdown" v-highlight></div>
+        </div>
     </div>
 </template>
 <script>
+import lodash from "lodash";
+import marked from "marked";
 export default {
     data() {
         return {
             title: "",
             tag: "",
             type: "",
-            content: ""
+            content: "",
+            now: new Date().toLocaleString()
         };
     },
+    computed: {
+        compiledMarkdown: function() {
+            return marked(this.content);
+        }
+    },
     methods: {
-        getItem() {
-            this.title = this.$store.state.articleDetails.title;
-            this.tag = this.$store.state.articleDetails.tag;
-            this.type = this.$store.state.articleDetails.type;
-            this.content = this.$store.state.articleDetails.content;
+        getDetails() {
+            const details = this.$store.state.articleList.find(item => {
+                return item._id === this.$route.params.id;
+            });
+            console.log(details);
+            this.$store.state.articleDetails = details;
+            this.title = details.title;
+            this.type = details.type;
+            this.tag = details.tag;
+            this.content = details.tag;
         },
-        save() {
+        save: lodash.debounce(function() {
             this.$store.state.articleDetails.title = this.title;
             this.$store.state.articleDetails.tag = this.tag;
             this.$store.state.articleDetails.type = this.type;
             this.$store.state.articleDetails.content = this.content;
-        },
-        // show() {
-        //     console.log(this.$store.state.articleDetails);
-        // }
-    },
-    mounted() {
-        this.getItem();
+            // console.log(this.$store.state.articleDetails);
+            this.$store.dispatch("SAVE_ARTICLE");
+        }, 2000)
     },
     updated() {
-        // 数据更新马上保存到vuex
-        this.save();
-        this.$store.dispatch('SAVE_ARTICLE');
+        this.now = new Date().toLocaleString();
+    },
+    mounted() {
+        this.$store.dispatch('GET_ARTICLES');
+        this.getDetails();
+
     }
 };
 </script>
 <style lang="scss" scoped>
+#draft {
+    vertical-align: top;
+}
+
+#draft > div {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    padding: 3rem 3rem 0 3rem;
+}
+
+.write input {
+    display: block;
+}
+
+.write .left {
+    float: left;
+}
+
+.write .right {
+    float: right;
+}
+
+.read {
+    width: 50%;
+}
+
+#editor {
+    height: 20rem;
+    width: 100%;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    margin-top: 3rem;
+    color: #333;
+}
 </style>
