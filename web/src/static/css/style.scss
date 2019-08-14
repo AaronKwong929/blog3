@@ -67,3 +67,8 @@ a {
 .btn-small:hover {
     background-color: #0070a3;
 }
+
+input,
+textarea {
+    outline: none;
+}
