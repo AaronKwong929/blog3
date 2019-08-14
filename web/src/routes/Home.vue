@@ -6,7 +6,17 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+export default {
+    methods: {
+        ...mapActions({
+            getArticles: 'COMMON_GET_ARTICLES'
+        }),
+    },
+    mounted() {
+        this.getArticles();
+    },
+};
 </script>
 
 <style lang="scss" scoped>
