@@ -77,4 +77,12 @@ adminRouter.put('/draft', verifyToken, async ctx => {
     ctx.response.body = { article };
 });
 
+adminRouter.post('/delete', verifyToken, async ctx => {
+    const id = ctx.request.body.id;
+    // console.log(id);
+    await Article.findByIdAndDelete(id);
+    ctx.response.body = {
+        msg: 'success'
+    }
+});
 module.exports = adminRouter;

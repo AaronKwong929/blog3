@@ -13,6 +13,7 @@
                 <span class="tag">{{ item.tag }}</span>
                 <span class="time">{{ item.updatedAt }}</span>
                 <router-link :to="'/draft/' + item._id">+</router-link>
+                <button @click="deleteArticle(item._id)">删除</button>
             </div>
             <div></div>
         </div>
@@ -37,15 +38,19 @@ export default {
                 // console.log(res.data.article);
                 // 刷新state.articleList
                 this.getArticles();
-                // this.$store.state.articleDetails = res.data.article;
                 setTimeout(() => {
                     this.$router.push(`/draft/${res.data.article._id}`);
-                }, 300);
-
-                // this.$router.push(
-                //     `/draft/${res.data.article._id}`
-                // );
+                }, 1000);
             });
+        },
+        deleteArticle(id) {
+            this.$axios
+                .post("/api/admin/delete", {
+                    id
+                })
+                .then(() => {
+                    this.getArticles();
+                });
         }
     },
     computed: {
