@@ -7,6 +7,7 @@ import Home from './routes/Home.vue';
 import Archive from './routes/Archive.vue';
 import Classify from './routes/Classify.vue';
 import About from './routes/About.vue';
+import Article from './routes/Article.vue'
 import Login from './routes/Login.vue';
 import Admin from './routes/Admin.vue';
 import Draft from './routes/Draft.vue';
@@ -21,6 +22,7 @@ const routes = [
     { path: '/archive', component: Archive },
     { path: '/classify', component: Classify },
     { path: '/about', component: About },
+    { path: '/article/:id', component: Article },
     { path: '/login', component: Login },
     { path: '/admin', component: Admin, meta: { requireAuth: true } },
     { path: '/draft/:id', component: Draft, meta: { requireAuth: true } },
