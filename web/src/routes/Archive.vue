@@ -4,11 +4,32 @@
         <div class="router-title">
             文章归档
         </div>
+        <div class="list">
+            <router-link
+                v-for="(item, index) in List"
+                :key="index"
+                :to="'/article/' + item._id"
+                tag="div"
+            >
+                <span class="time">{{ item.updatedAt }}</span
+                >&nbsp;
+                <span class="title">{{ item.title }}</span>
+            </router-link>
+        </div>
     </div>
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+export default {
+    computed: {
+        ...mapState({
+            List: state => {
+                return state.articleList;
+            }
+        })
+    }
+};
 </script>
 
 
