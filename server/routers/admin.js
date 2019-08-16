@@ -50,7 +50,16 @@ adminRouter.post('/login', async ctx => {
 });
 
 adminRouter.get('/', verifyToken, async ctx => {
-    const articleList = await Article.find({});
+    let articleList = await Article.find();
+    articleList = articleList.sort((a, b) => {
+        let aTimeString = a.updatedAt;
+        let bTimeString = b.updatedAt;
+        aTimeString = aTimeString.replace(/-/g, '/');
+        bTimeString = bTimeString.replace(/-/g, '/');
+        let aTime = new Date(aTimeString).getTime();
+        let bTime = new Date(bTimeString).getTime();
+        return bTime - aTime
+    });
     ctx.response.body = {
         articleList
     }
@@ -74,7 +83,11 @@ adminRouter.put('/draft', verifyToken, async ctx => {
     article.tag = update.tag;
     article.content = update.content;
     await article.save();
-    ctx.response.body = { article };
+    // ctx.response.body = { article };
+    const articleList = await Article.find({});
+    ctx.response.body = {
+        articleList
+    }
 });
 
 adminRouter.post('/delete', verifyToken, async ctx => {
@@ -85,4 +98,15 @@ adminRouter.post('/delete', verifyToken, async ctx => {
         msg: 'success'
     }
 });
+
+adminRouter.put('/publish', verifyToken, async ctx => {
+    const id = ctx.request.body.id;
+    let article = await Article.findById(id);
+    article.published = !article.published;
+    await article.save();
+    ctx.response.body = {
+        article
+    }
+});
+
 module.exports = adminRouter;
