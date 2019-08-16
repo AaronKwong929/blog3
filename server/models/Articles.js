@@ -4,19 +4,19 @@ const articleSchema = new mongoose.Schema({
     title: {
         type: String,
         trim: true,
-        default: '1'
+        default: 'title'
     },
     type: {
         type: String,
-        default: '2'
+        default: 'type'
     },
     tag: {
         type: String,
-        default: '3'
+        default: 'tag'
     },
     content: {
         type: String,
-        default:'4'
+        default: 'content'
     },
     published: {
         type: Boolean,
@@ -28,13 +28,7 @@ const articleSchema = new mongoose.Schema({
     }
 });
 
-articleSchema.pre('save', async function (next) {
-    const article = this;
-    article.updatedAt = new Date().toLocaleString();
-    next();
-});
-
-articleSchema.pre('save', async function (next) {
+articleSchema.pre('save', async function(next) {
     const article = this;
     article.updatedAt = new Date().toLocaleString();
     next();
