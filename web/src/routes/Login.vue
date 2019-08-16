@@ -1,12 +1,12 @@
 <template>
     <div id="Login" class="router-view-general">
-        <i class="iconfont icon-RectangleCopy2"></i>
+        <i class="iconfont icon-login"></i>
         <div class="router-title">
             管理员登陆
         </div>
         <div v-if="!this.$store.state.token">
             <div class="input user">
-                <i class="iconfont icon-RectangleCopy2"></i>
+                <i class="iconfont icon-guanyu"></i>
                 <input
                     v-model="name"
                     type="text"
@@ -15,7 +15,7 @@
                 />
             </div>
             <div class="input password">
-                <i class="iconfont icon-RectangleCopy6"> </i>
+                <i class="iconfont icon-suoding"> </i>
                 <input
                     v-model="password"
                     type="password"
@@ -57,6 +57,7 @@ export default {
                 .then(res => {
                     if (res.data.code === 0) {
                         this.$store.state.token = res.data.adminToken;
+                        // 此处要添加将adminToken加入到localStorage中
                         // 开发时用来获取token在postman调试后台api
                         console.log(this.$store.state.token);
                         // console.log(res.data.adminToken);
