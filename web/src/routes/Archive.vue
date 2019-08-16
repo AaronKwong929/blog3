@@ -1,6 +1,6 @@
 <template>
     <div id="archive" class="router-view-general">
-        <i class="iconfont icon-RectangleCopy13"></i>
+        <i class="iconfont icon-liebiao1"></i>
         <div class="router-title">
             文章归档
         </div>
@@ -20,14 +20,24 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
     computed: {
         ...mapState({
             List: state => {
-                return state.articleList;
+                return state.articleList
             }
         })
+    },
+    methods: {
+        ...mapActions({
+            getArticles: "COMMON_GET_ARTICLES"
+        })
+    },
+    mounted() {
+        if (this.$store.state.articleList.length === 0) {
+            this.getArticles();
+        }
     }
 };
 </script>
@@ -45,5 +55,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.list > div {
+    cursor: pointer;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
     <div id="about" class="router-view-general">
-        <i class="iconfont icon-RectangleCopy3"></i>
+        <i class="iconfont icon-guanyu"></i>
         <div class="router-title">基于Vue.JS, Koa.js, MongoDB 前后端分离的个人博客</div>
         <div class="more">
-            <a href="https://github.com/AaronKwong929" target="_blank" title="Aaron's GitHub"><i class="iconfont icon-icon-test1"></i></a>
+            <a href="https://github.com/AaronKwong929" target="_blank" title="Aaron's GitHub"><i class="iconfont icon-icon-test5"></i></a>
             <div class="additional">之后再补充</div>
         </div>
     </div>
