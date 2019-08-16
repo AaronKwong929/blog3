@@ -4,8 +4,8 @@ import App from './App.vue';
 import Axios from './axios';
 
 import './static/css/style.scss';
+import './static/css/v-html.scss';
 import './static/icon/iconfont.css';
-
 import './static/css/atom-one-dark.css';
 
 import router from './router';
