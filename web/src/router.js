@@ -5,7 +5,8 @@ import store from './vuex/store';
 
 import Home from './routes/Home.vue';
 import Archive from './routes/Archive.vue';
-import Classify from './routes/Classify.vue';
+import Type from './routes/Type.vue';
+import Tag from './routes/Tag.vue';
 import About from './routes/About.vue';
 import Article from './routes/Article.vue'
 import Login from './routes/Login.vue';
@@ -20,7 +21,8 @@ const routes = [
     { path: '/', redirect: 'home' },
     { path: '/home', component: Home },
     { path: '/archive', component: Archive },
-    { path: '/classify', component: Classify },
+    { path: '/type', component: Type },
+    { path: '/tag', component: Tag },
     { path: '/about', component: About },
     { path: '/article/:id', component: Article },
     { path: '/login', component: Login },
