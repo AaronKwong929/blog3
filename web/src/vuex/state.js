@@ -1,7 +1,8 @@
 let state = {
     token: '',
     articleList: [],
-    articleDetails: {}
+    articleDetails: {},
+    adminArticleList: []
 }
 
 export default state;
