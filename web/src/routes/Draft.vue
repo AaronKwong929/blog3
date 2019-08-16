@@ -1,6 +1,7 @@
 <template>
-    <div id="draft">
+    <div id="draft" class="clearfix">
         <div class="write clearfix">
+            <button @click="back">返回</button>
             <div class="left">
                 <input
                     type="text"
@@ -54,15 +55,14 @@ export default {
     },
     methods: {
         getDetails() {
-            const details = this.$store.state.articleList.find(item => {
+            const details = this.$store.state.adminArticleList.find(item => {
                 return item._id === this.$route.params.id;
             });
-            // console.log(details);
             this.$store.state.articleDetails = details;
             this.title = details.title;
             this.type = details.type;
             this.tag = details.tag;
-            this.content = details.tag;
+            this.content = details.content;
         },
         save: lodash.debounce(function() {
             this.$store.state.articleDetails.title = this.title;
@@ -71,15 +71,18 @@ export default {
             this.$store.state.articleDetails.content = this.content;
             // console.log(this.$store.state.articleDetails);
             this.$store.dispatch("SAVE_ARTICLE");
-        }, 2000)
+            this.$store.dispatch("COMMON_GET_ARTICLES");
+        }, 2000),
+        back() {
+            this.$router.push('/admin');
+        }
     },
     updated() {
         this.now = new Date().toLocaleString();
     },
     mounted() {
-        this.$store.dispatch('GET_ARTICLES');
+        this.$store.dispatch('ADMIN_GET_ARTICLES');
         this.getDetails();
-
     }
 };
 </script>
