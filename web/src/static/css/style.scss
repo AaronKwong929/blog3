@@ -46,11 +46,11 @@ a {
     padding: 2rem 0 0 3rem;
     position: relative;
     box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
-    font-family: Georgia;    
+    // font-family: Georgia;
 }
 
 .router-title {
-    font-family: Georgia;
+    // font-family: Georgia;
     font-weight: 400;
     font-size: 1.5rem;
 }
@@ -73,14 +73,31 @@ textarea {
     outline: none;
 }
 
-// .body-content p {
-//     max-height: 5rem;
-//     font-size: 1.2rem;
-//     line-height: 2rem;
-//     margin: 0;
-//     letter-spacing: 0.1rem;
-//     color: grey;
-//     display: -webkit-box;
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-// }
+.line {
+    width: 45%;
+    transform: translateY(-51%);
+    box-shadow: 0 0.5rem 0.5rem -0.5rem #aaa;
+    margin: 0 1.5rem;
+    width: .3s,margin .3s;
+}
+
+.list {
+    margin-top: 1rem;
+}
+
+.list > .list-item {
+    display: flex;
+    padding-bottom: .4rem;
+    cursor: pointer;
+    color: rgb(131, 131, 131);
+    font-size: 1.2rem;
+}
+
+.list > .list-item:hover {
+    color: black;
+    transition: all .3s;
+}
+
+.list > .list-item > div {
+    display: flex;
+}
