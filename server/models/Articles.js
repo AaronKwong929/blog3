@@ -4,19 +4,19 @@ const articleSchema = new mongoose.Schema({
     title: {
         type: String,
         trim: true,
-        default: 'title'
+        default: '新建文章'
     },
     type: {
         type: String,
-        default: 'type'
+        default: ''
     },
     tag: {
         type: String,
-        default: 'tag'
+        default: ''
     },
     content: {
         type: String,
-        default: 'content'
+        default: ''
     },
     published: {
         type: Boolean,
