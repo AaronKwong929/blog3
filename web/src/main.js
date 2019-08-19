@@ -24,6 +24,12 @@ Vue.directive('highlight', function(el) {
     });
 });
 
+Vue.directive('focus', {
+    inserted: function(el) {
+        el.focus();
+    }
+});
+
 new Vue({
     render: h => h(App),
     router,
