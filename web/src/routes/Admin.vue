@@ -1,42 +1,69 @@
 <template>
     <div id="admin">
-        <button @click="logout" class="btn btn-small">
-            <i class="iconfont icon-logout"></i>
-        </button>
-        <button @click="newArticle" class="btn btn-small">
-            <i class="iconfont icon-jiahao"></i>
-        </button>
+        <div class="btn-group">
+            <button @click="logout" class="btn btn-small" title="注销">
+                <i class="iconfont icon-logout"></i>
+            </button>
+            <button @click="newArticle" class="btn btn-small" title="新建文章">
+                <i class="iconfont icon-jiahao"></i>
+            </button>
+        </div>
         <div class="list">
-            <div v-for="item in this.unpublishedList" :key="item._id">
-                <span class="title">{{ item.title }}</span>
-                <span class="type">{{ item.type }}</span>
-                <span class="tag">{{ item.tag }}</span>
-                <span class="time">{{ item.updatedAt }}</span>
-                <router-link :to="'/draft/' + item._id"
-                    ><i class="iconfont icon-bianji"></i
-                ></router-link>
-                <button @click="publish(item._id)">
-                    <i class="iconfont icon-fabu5"></i>
-                </button>
-                <button @click="deleteArticle(item._id)">
-                    <i class="iconfont icon-shanchu2"></i>
-                </button>
+            <div class="published">
+                <div class="title">
+                    <i class="iconfont icon-detail"></i>未发布
+                </div>
+                <div class="list-head">
+                    <div class="item-head">标题</div>
+                    <div class="item-info">分类</div>
+                    <div class="item-info">标签</div>
+                    <div class="item-info-other">日期</div>
+                </div>
+                <div
+                    v-for="item in this.unpublishedList"
+                    :key="item._id"
+                    class="list-body"
+                >
+                    <div class="item-head">{{ item.title }}</div>
+                    <div class="item-info">{{ item.type }}</div>
+                    <div class="item-info">{{ item.tag }}</div>
+                    <div class="item-info-other">{{ item.updatedAt }}</div>
+                    <button @click="edit(item._id)" title="修改">
+                        <i class="iconfont icon-bianji"></i>
+                    </button>
+                    <button @click="publish(item._id)" title="发布">
+                        <i class="iconfont icon-fabu5"></i>
+                    </button>
+                    <button @click="deleteArticle(item._id)" title="删除">
+                        <i class="iconfont icon-shanchu2"></i>
+                    </button>
+                </div>
             </div>
-            <hr />
-            <div v-for="item in this.publishedList" :key="item._id">
-                <span class="title">{{ item.title }}</span>
-                <span class="type">{{ item.type }}</span>
-                <span class="tag">{{ item.tag }}</span>
-                <span class="time">{{ item.updatedAt }}</span>
-                <!-- <router-link :to="'/draft/' + item._id"
-                    ><i class="iconfont icon-bianji"></i
-                ></router-link> -->
-                <button @click="publish(item._id)">
-                    <i class="iconfont icon-chexiaofanhuichehuishangyibu"></i>
-                </button>
-                <!-- <button @click="deleteArticle(item._id)">
-                    <i class="iconfont icon-shanchu2"></i>
-                </button> -->
+            <div class="published">
+                <div class="title">
+                    <i class="iconfont icon-fabu5"></i>已发布
+                </div>
+                <div class="list-head">
+                    <div class="item-head">标题</div>
+                    <div class="item-info">分类</div>
+                    <div class="item-info">标签</div>
+                    <div class="item-info-other">日期</div>
+                </div>
+                <div
+                    v-for="item in this.publishedList"
+                    :key="item._id"
+                    class="list-body"
+                >
+                    <div class="item-head">{{ item.title }}</div>
+                    <div class="item-info">{{ item.type }}</div>
+                    <div class="item-info">{{ item.tag }}</div>
+                    <div class="item-info-other">{{ item.updatedAt }}</div>
+                    <button @click="publish(item._id)" title="撤回">
+                        <i
+                            class="iconfont icon-chexiaofanhuichehuishangyibu"
+                        ></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -55,13 +82,8 @@ export default {
         }),
         newArticle() {
             this.$axios.post("/api/admin/draft").then(() => {
-                // console.log(res.data.article);
                 this.getArticles();
                 this.updateCommonArticles();
-                // setTimeout(() => {
-                //     this.$router.push(`/draft/${res.data.article._id}`);
-                // }, 1000);
-                // // await this.$router.push(`/draft/${res.data.article._id}`);
             });
         },
         async deleteArticle(id) {
@@ -83,6 +105,9 @@ export default {
                     this.getArticles();
                 });
             await this.updateCommonArticles();
+        },
+        edit(id) {
+            this.$router.push(`/draft/${id}`);
         }
     },
     computed: {
@@ -109,4 +134,79 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.published {
+    box-shadow: 0 0 0.6rem 0 #aaa;
+    margin: 1rem 3rem;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
+.list button {
+    margin: 0.5rem;
+    font-size: 1rem;
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.list button:hover {
+    color: black;
+    border: none;
+    transition: all 0.4s;
+}
+
+.list-head {
+    margin-top: 1rem;
+}
+
+.list-body {
+    border-radius: 1rem;
+}
+
+.list-body:nth-of-type(2n-1) {
+    background-color: rgba(96, 126, 121, 0.28);
+}
+
+.list-body:nth-of-type(2n-1) button {
+    background-color: rgba(96, 126, 121, 0.28);
+}
+
+.list-body:nth-of-type(2n) {
+    background-color: rgba(96, 126, 121, 0.4);
+}
+
+.list-body:nth-of-type(2n) button {
+    background-color: rgba(96, 126, 121, 0.4);
+}
+
+.list-head > div,
+.list-body > div {
+    display: inline-block;
+}
+
+.item-head {
+    width: calc(30% - 1rem);
+    padding-left: 1rem;
+}
+
+.item-info {
+    width: calc(15% - 1rem);
+}
+
+.item-info-other {
+    width: calc(20% - 1rem);
+}
+
+.published > .title {
+    box-shadow: 0 0.6rem 0.6rem -0.6rem #aaa;
+    padding-bottom: 0.3rem;
+}
+
+.btn-group {
+    text-align: center;
+}
+
+.btn-group button {
+    margin: 1rem;
+}
 </style>
