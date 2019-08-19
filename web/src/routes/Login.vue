@@ -40,13 +40,6 @@ export default {
             fail: 0
         };
     },
-    directives: {
-        focus: {
-            inserted: function(el) {
-                el.focus();
-            }
-        }
-    },
     methods: {
         login() {
             this.$axios
@@ -57,10 +50,6 @@ export default {
                 .then(res => {
                     if (res.data.code === 0) {
                         this.$store.state.token = res.data.adminToken;
-                        // 此处要添加将adminToken加入到localStorage中
-                        // 开发时用来获取token在postman调试后台api
-                        console.log(this.$store.state.token);
-                        // console.log(res.data.adminToken);
                         this.$router.push("/admin");
                     } else {
                         this.fail = 1;
@@ -115,7 +104,6 @@ input:focus {
 }
 
 .btn-small {
-    // overwritten
     margin: 1rem 0 1rem 6rem;
     padding: 0.5rem 1.3rem;
 }
