@@ -1,28 +1,22 @@
 <template>
     <div id="about" class="router-view-general">
         <i class="iconfont icon-guanyu"></i>
-        <div class="router-title">基于Vue.JS, Koa.js, MongoDB 前后端分离的个人博客</div>
+        <div class="router-title">
+            基于 Vue.JS, Koa.js, MongoDB 的前后端分离的个人博客
+        </div>
         <div class="more">
-            <a href="https://github.com/AaronKwong929" target="_blank" title="Aaron's GitHub"><i class="iconfont icon-icon-test5"></i></a>
+            <a
+                href="https://github.com/AaronKwong929"
+                target="_blank"
+                title="Aaron's GitHub"
+                ><i class="iconfont icon-icon-test5"></i
+            ></a>
             <div class="additional">之后再补充</div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-#about > .iconfont {
-    font-size: 3rem;
-    position: absolute;
-    top: -2rem;
-    left: -1rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .more {
     margin-top: 3rem;
 }

@@ -1,31 +1,38 @@
 <template>
-    <div id="classify" class="router-view-general">
-        <i class="iconfont icon-yingyongAPP"></i>
+    <div id="type" class="router-view-general">
+        <i class="iconfont icon-yingyongAPP root-icon"></i>
         <div class="router-title">
-            文章分类
+            分类
         </div>
         <div class="list">
             <button
                 :class="{ active: currentType === 'code' }"
                 @click="changeType('code')"
             >
-                编程
+                编程({{ this.list.code.length }})
             </button>
             <button
                 :class="{ active: currentType === 'game' }"
                 @click="changeType('game')"
             >
-                游戏
+                游戏({{ this.list.game.length }})
+            </button>
+            <button
+                :class="{ active: currentType === 'life' }"
+                @click="changeType('life')"
+            >
+                生活({{ this.list.life.length }})
             </button>
             <router-link
                 v-for="(item, index) in articles"
                 :key="index"
                 :to="'/article/' + item._id"
                 tag="div"
+                class="list-item"
             >
-                <span class="time">{{ item.updatedAt }}</span
-                >&nbsp;
-                <span class="title">{{ item.title }}</span>
+                <div class="time">{{ item.updatedAt }}</div>
+                <div class="line"></div>
+                <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
     </div>
@@ -42,6 +49,9 @@ export default {
                 }),
                 game: this.$store.state.articleList.filter(item => {
                     return item.type === "game";
+                }),
+                life: this.$store.state.articleList.filter(item => {
+                    return item.type === "life";
                 })
             },
             currentType: "code"
@@ -50,9 +60,7 @@ export default {
     computed: {
         ...mapState({
             List: state => {
-                return state.articleList.filter(item => {
-                    return item.published === true;
-                });
+                return state.articleList;
             }
         }),
         articles() {
@@ -77,35 +85,4 @@ export default {
 
 
 <style lang="scss" scoped>
-#classify > .iconfont {
-    font-size: 3rem;
-    position: absolute;
-    top: -2rem;
-    left: -1rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-button {
-    text-decoration: none;
-    padding: 0 10px;
-    font-size: 0.7em;
-    color: #4eb5e5;
-    border-style: none;
-    background-color: lightcoral;
-    cursor: pointer;
-    outline: none;
-}
-
-button[class="active"] {
-    color: black;
-}
-
-.list > div {
-    cursor: pointer;
-}
 </style>

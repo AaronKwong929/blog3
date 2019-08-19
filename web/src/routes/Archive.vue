@@ -2,7 +2,7 @@
     <div id="archive" class="router-view-general">
         <i class="iconfont icon-liebiao1"></i>
         <div class="router-title">
-            文章归档
+            归档
         </div>
         <div class="list">
             <router-link
@@ -10,10 +10,11 @@
                 :key="index"
                 :to="'/article/' + item._id"
                 tag="div"
+                class="list-item"
             >
-                <span class="time">{{ item.updatedAt }}</span
-                >&nbsp;
-                <span class="title">{{ item.title }}</span>
+                <div class="time">{{ item.updatedAt }}</div>
+                <div class="line"></div>
+                <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
     </div>
@@ -25,7 +26,7 @@ export default {
     computed: {
         ...mapState({
             List: state => {
-                return state.articleList
+                return state.articleList;
             }
         })
     },
@@ -44,20 +45,4 @@ export default {
 
 
 <style lang="scss" scoped>
-#archive > .iconfont {
-    font-size: 3rem;
-    position: absolute;
-    top: -2rem;
-    left: -1rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.list > div {
-    cursor: pointer;
-}
 </style>

@@ -65,18 +65,17 @@ export default {};
 }
 
 .iconfont {
-    font-size: 2.5rem;
+    font-size: 1.6rem;
 }
 
 .bar-item {
     margin: 1rem auto;
-    width: 4rem;
-    height: 4rem;
+    width: 3rem;
+    height: 3rem;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    // background-color: white; //冲突router-link-active
 }
 
 .bar-item:hover,
