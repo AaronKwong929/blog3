@@ -9,10 +9,6 @@ Axios.interceptors.request.use(
             config.headers.common['Authorization'] = `Bearer ${token}`;
         }
         return config;
-    },
-    error => {
-        // 用不上
-        return Promise.reject(error);
     }
 );
 
@@ -24,8 +20,7 @@ Axios.interceptors.response.use(
         if (error.response.status === 401) {
             router.push('401');
         }
-        ////////// ↓？
-        return Promise.reject(error.response.data);
     }
 );
+
 export default Axios;

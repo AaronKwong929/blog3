@@ -5,7 +5,7 @@
         </div>
         <div class="routers">
             <router-link to="/home" tag="div" class="bar-item" title="首页"
-                ><i class="iconfont icon-home1"></i
+                ><i class="iconfont icon-cangku"></i
             ></router-link>
 
             <router-link to="/archive" tag="div" class="bar-item" title="归档"
@@ -39,7 +39,7 @@
                 class="bar-item"
                 title="管理"
                 v-else
-                ><i class="iconfont icon-my_light"></i
+                ><i class="iconfont icon-gerentouxiang"></i
             ></router-link>
         </div>
     </div>

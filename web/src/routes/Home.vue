@@ -1,6 +1,6 @@
 <template>
     <div id="home" class="router-view-general">
-        <i class="iconfont icon-home1"></i>
+        <i class="iconfont icon-cangku"></i>
         <div class="router-title">Aaron的个人博客</div>
         <!-- <div class="article-list">
             <router-link
