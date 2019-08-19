@@ -49,10 +49,23 @@ a {
     // font-family: Georgia;
 }
 
+.router-view-general > .iconfont {
+    font-size: 3rem;
+    position: absolute;
+    top: -2rem;
+    left: -1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .router-title {
-    // font-family: Georgia;
+    font-family: Georgia;
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 .btn-small {
@@ -87,6 +100,7 @@ textarea {
 
 .list > .list-item {
     display: flex;
+    margin-top: .5rem;
     padding-bottom: .4rem;
     cursor: pointer;
     color: rgb(131, 131, 131);
@@ -100,4 +114,26 @@ textarea {
 
 .list > .list-item > div {
     display: flex;
+}
+
+.list button {
+    text-decoration: none;
+    margin: 1rem;
+    font-size: 0.7em;
+    color: #838383;
+    border-style: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 1.1rem;
+}
+
+.list button:hover {
+    color: black;
+    border-bottom: 1px solid black;
+    transition: all .4s;
+}
+
+.list button[class="active"] {
+    color: black;
+    border-bottom: 1px solid black;
 }
