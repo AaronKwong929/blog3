@@ -6,18 +6,22 @@
         <div class="router-views">
             <router-view></router-view>
         </div>
+        <div class="subsidebar">
+            <SubSidebar></SubSidebar>
+        </div>
     </div>
 </template>
 
 <script>
 import Sidebar from "./components/Sidebar";
-
+import SubSidebar from './components/SubSidebar'
 export default {
     data() {
         return {};
     },
     components: {
-        Sidebar
+        Sidebar,
+        SubSidebar
     }
 };
 </script>
@@ -30,10 +34,21 @@ export default {
     left: 0;
     top: 0;
     bottom: 0;
-    border-right: 1px solid rgb(158, 158, 158);
+    box-shadow: .6rem 0 .6rem -.6rem #aaa;
     background-color: #ddd;
 }
 .router-views {
     margin-left: 20%;
+    width: 75%;
+    
+}
+.subsidebar {
+    width: 5%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #ddd;
+    box-shadow: -.6rem 0 .6rem -.6rem #aaa;
 }
 </style>
