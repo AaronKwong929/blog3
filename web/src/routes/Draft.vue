@@ -28,9 +28,9 @@
             <button @click="saveNow" class="btn btn-small">
                 <i class="iconfont icon-save"></i>
             </button>
-            <button @click="back" class="btn btn-small">
-                <i class="iconfont  icon-chexiaofanhuichehuishangyibu "></i>
-            </button>
+            <!-- <button @click="back" class="btn btn-small">
+                <i class="iconfont  icon-chexiaofanhuichehuishangyibu"></i>
+            </button> -->
             <textarea v-model="content" id="editor" @input="save"></textarea>
         </div>
         <div class="read">
@@ -91,9 +91,9 @@ export default {
             this.$store.dispatch("SAVE_ARTICLE");
             this.$store.dispatch("COMMON_GET_ARTICLES");
         },
-        back() {
-            this.$router.push("/admin");
-        }
+        // back() {
+        //     this.$router.push("/admin");
+        // }
     },
     updated() {
         this.now = new Date().toLocaleString();
