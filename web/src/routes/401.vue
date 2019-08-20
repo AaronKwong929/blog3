@@ -2,7 +2,7 @@
     <div id="not-found">
         <div class="title">401</div>
         <div class="details">授权已过期╮( •́ω•̀ )╭</div>
-        三秒后跳转到登陆页面
+        两秒后跳转到登陆页面
     </div>
 </template>
 <script>
@@ -12,7 +12,7 @@ export default {
             this.$store.state.token = "";
             setTimeout(() => {
                 this.$router.push("/login");
-            }, 3000);
+            }, 2000);
         }
     },
     mounted() {
