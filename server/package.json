@@ -1,24 +1,26 @@
 {
-    "name": "server",
-    "version": "1.0.0",
-    "description": "",
-    "main": "app.js",
-    "scripts": {
-        "serve": "nodemon app.js"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "jsonwebtoken": "^8.5.1",
-        "koa-jwt": "^3.6.0",
-        "@types/koa-bodyparser": "^4.2.2",
-        "@types/koa-router": "^7.0.40",
-        "koa": "^2.7.0",
-        "koa-bodyparser": "^4.2.1",
-        "koa-router": "^7.4.0",
-        "mongodb": "^3.2.6",
-        "mongoose": "^5.5.11",
-        "bcryptjs": "^2.4.3"
-    }
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "serve": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/koa-bodyparser": "^4.2.2",
+    "@types/koa-router": "^7.0.40",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-compress": "^3.0.0",
+    "koa-jwt": "^3.6.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "mongodb": "^3.2.6",
+    "mongoose": "^5.5.11"
+  }
 }

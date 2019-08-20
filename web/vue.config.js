@@ -1,3 +1,6 @@
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const productionGzipExtensions = ['js', 'css'];
+
 module.exports = {
     devServer: {
         port: 8080,
@@ -14,5 +17,19 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    productionSourceMap: false,
+    configureWebpack: config => {
+        if (process.env.NODE_ENV === 'production') {
+            return {
+                plugins: [
+                    new CompressionWebpackPlugin({
+                        test: /\.js$|\.html$|\.css/,
+                        threshold: 10240,
+                        deleteOriginalAssets: false
+                    })
+                ]
+            }
+        }
+    },
 };
