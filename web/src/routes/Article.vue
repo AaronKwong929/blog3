@@ -34,20 +34,12 @@ export default {
     },
     computed: {
         compiledMarkdown: function() {
-            return marked(this.details.content, {
-                gfm: true,
-                tables: true,
-                breaks: true,
-                pedantic: false,
-                sanitize: false,
-                smartLists: true,
-                smartypants: false
-            });
+            return marked(this.details.content);
         }
     },
-    mounted() {
+    beforeMount() {
         this.getDetails();
-    }
+    },
 };
 </script>
 <style lang="scss" scoped>
