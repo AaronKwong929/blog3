@@ -9,10 +9,26 @@ const routers = require('./routers/index');
 
 app.use(bodyParser());
 
+app.use(
+    compress({
+        filter: function(content_type) {
+            return /text/i.test(content_type);
+        },
+        threshold: 128,
+        flush: require('zlib').Z_SYNC_FLUSH
+    })
+);
+
+app.use(async(ctx, next) => {
+    ctx.compress = true; //是否压缩数据
+    await next();
+});
+
 app.use(routers.routes()).use(routers.allowedMethods());
 
-app.use(compress({ threshold: 10240 }));
-app.use(serve(path.resolve("dist")));
+app.use(serve(path.resolve('dist')));
+
+
 
 app.listen(3000, () => {
     console.log(`app started at port 3000`);
