@@ -2,8 +2,12 @@
     <div id="about" class="router-view-general">
         <i class="iconfont icon-guanyu"></i>
         <div class="router-title">
-            基于 Vue.JS, Koa.js, MongoDB 的前后端分离的个人博客
+            关于
         </div>
+        关于我 <br/>
+        个人介绍，时间线，<br/><br/>
+        关于本博客<br/>
+        开发原因，技术栈，开发版本号，上线版本号，期待未来版本实现的内容<br/>
         <div class="more">
             <a
                 href="https://github.com/AaronKwong929"
@@ -17,22 +21,5 @@
 </template>
 
 <style lang="scss" scoped>
-.more {
-    margin-top: 3rem;
-}
 
-.more .iconfont {
-    font-size: 3rem;
-}
-
-.more .iconfont:hover {
-    background-color: rgba(96, 126, 121, 0.4);
-    border-radius: 50%;
-    box-shadow: 0 0 1rem #aaa;
-    transition: all 0.5s;
-}
-
-.additional {
-    margin-top: 1rem;
-}
 </style>
