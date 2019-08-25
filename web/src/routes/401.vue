@@ -1,27 +1,27 @@
 <template>
-    <div id="not-found">
+    <div id="unauthorized">
         <div class="title">401</div>
         <div class="details">授权已过期╮( •́ω•̀ )╭</div>
         两秒后跳转到登陆页面
     </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
 export default {
     methods: {
-        jump() {
-            this.$store.state.token = "";
-            setTimeout(() => {
-                this.$router.push("/login");
-            }, 2000);
-        }
+        ...mapMutations({
+            logout: "LOG_OUT"
+        }),
     },
     mounted() {
-        this.jump();
+        setTimeout(() => {
+            this.logout();
+        }, 2000);
     }
 };
 </script>
 <style lang="scss" scoped>
-#not-found {
+#unauthorized {
     padding-top: 10rem;
     display: flex;
     flex-direction: column;
