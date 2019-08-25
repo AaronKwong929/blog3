@@ -45,10 +45,6 @@
     </div>
 </template>
 
-<script>
-export default {};
-</script>
-
 <style lang="scss" scoped>
 .router-link-active {
     background-color: rgba(96, 126, 121, 0.4);

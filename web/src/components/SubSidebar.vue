@@ -1,7 +1,9 @@
 <template>
     <div id="subsidebar">
-        <button class="btn" @click="back" title="返回"><i class="iconfont  icon-chexiaofanhuichehuishangyibu "></i></button>
-        <button class="btn" @click="top" title="回到顶部">top</button>
+        <button class="btn" @click="back" title="返回">
+            <i class="iconfont icon-chexiaofanhuichehuishangyibu"></i>
+        </button>
+        <button class="btn" @click="top" title="回到顶部"><i class="iconfont icon-zhiding"></i></button>
     </div>
 </template>
 
@@ -13,6 +15,7 @@ export default {
         },
         top() {
             document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
         }
     }
 };
@@ -21,6 +24,7 @@ export default {
 <style lang="scss" scoped>
 #subsidebar {
     text-align: center;
+    height:100%;
 }
 
 .btn {
@@ -30,8 +34,8 @@ export default {
     cursor: pointer;
     outline: none;
     background-color: #ddd;
-    margin: 1rem auto;
-    right: .8%;
+    margin: 0 auto;
+    right: 0.8%;
 }
 
 .btn:hover {
@@ -40,15 +44,11 @@ export default {
     transition: all 0.5s;
 }
 
-.btn:first-child {
-    position: fixed;
-    bottom: 8rem;
-    
+button:first-child {
+    margin-top: 600%;
 }
 
-.btn:last-child {
-    position: fixed;
-    bottom: 3rem;
+button:nth-child(n + 2) {
+    margin-top: 100%;
 }
-
 </style>
