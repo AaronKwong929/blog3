@@ -7,17 +7,17 @@
                     v-model="title"
                     placeholder="标题"
                     class="title left"
-                    v-focus
+                    @input="save"
                 />
             </div>
             <div class="right">
-                <select v-model="type">
+                <select v-model="type" @input="save">
                     <option disabled value="">分类</option>
                     <option value="code">编程</option>
                     <option value="game">游戏</option>
                     <option value="life">生活</option>
                 </select>
-                <select v-model="tag">
+                <select v-model="tag" @input="save">
                     <option disabled value="">标签</option>
                     <option value="js">JavaScript</option>
                     <option value="css">CSS</option>
@@ -25,13 +25,7 @@
                     <option value="backend">后端</option>
                 </select>
             </div>
-            <button @click="saveNow" class="btn btn-small">
-                <i class="iconfont icon-save"></i>
-            </button>
-            <!-- <button @click="back" class="btn btn-small">
-                <i class="iconfont  icon-chexiaofanhuichehuishangyibu"></i>
-            </button> -->
-            <textarea v-model="content" id="editor" @input="save"></textarea>
+            <textarea v-model="content" v-focus @input="save"></textarea>
         </div>
         <div class="read">
             <div class="article-title">{{ title }}</div>
@@ -81,25 +75,13 @@ export default {
             // console.log(this.$store.state.articleDetails);
             this.$store.dispatch("SAVE_ARTICLE");
             this.$store.dispatch("COMMON_GET_ARTICLES");
-        }, 2000),
-        saveNow: function() {
-            this.$store.state.articleDetails.title = this.title;
-            this.$store.state.articleDetails.tag = this.tag;
-            this.$store.state.articleDetails.type = this.type;
-            this.$store.state.articleDetails.content = this.content;
-            // console.log(this.$store.state.articleDetails);
-            this.$store.dispatch("SAVE_ARTICLE");
-            this.$store.dispatch("COMMON_GET_ARTICLES");
-        },
-        // back() {
-        //     this.$router.push("/admin");
-        // }
+        }, 1000)
     },
     updated() {
         this.now = new Date().toLocaleString();
     },
     mounted() {
-        this.$store.dispatch("ADMIN_GET_ARTICLES");
+        // this.$store.dispatch("ADMIN_GET_ARTICLES");
         this.getDetails();
     }
 };
@@ -131,14 +113,6 @@ export default {
     margin-left: 2.5rem;
 }
 
-#editor {
-    height: 30rem;
-    width: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    margin-top: 3rem;
-    color: #333;
-}
-
 .write button {
     margin: 1rem 0.5rem 0 0;
 }
@@ -147,7 +121,7 @@ export default {
     font-size: 1.3rem;
 }
 
-input[type="text"] {
+input {
     border: none;
     border-radius: 0.5rem;
     outline: none;
@@ -156,7 +130,7 @@ input[type="text"] {
     border: 1px solid #ddd; // 适应focus的蓝色边框
 }
 
-input[type="text"]:focus {
+input:focus {
     border: 1px solid #03a9f4;
     box-shadow: 0 0 15px #03a9f4;
     text-shadow: none;
@@ -175,12 +149,36 @@ input[type="text"]:focus {
 }
 
 select {
-    height:28px;  
-    width:180px;  
-    line-height:28px;  
-    border-radius:2px;
-    outline: none;
+    height: 2.5rem;
+    width: 10rem;
+    line-height: 1rem;
+    border-radius: 0.5rem;
     margin-top: 1rem;
-    margin-left: .5rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem;
+}
+
+select:focus {
+    border: 1px solid #03a9f4;
+    box-shadow: 0 0 15px #03a9f4;
+    text-shadow: none;
+}
+
+textarea {
+    margin-left: 0.5rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    height: 30rem;
+    width: 80%;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    margin-top: 3rem;
+    color: #333;
+    line-height: 1.5rem;
+}
+
+textarea:focus {
+    border: 1px solid #03a9f4;
+    box-shadow: 0 0 15px #03a9f4;
+    text-shadow: none;
 }
 </style>
