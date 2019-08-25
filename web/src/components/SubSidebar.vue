@@ -38,8 +38,10 @@ export default {
     right: 0.8%;
 }
 
-.btn:hover {
+.btn:hover,
+.bar-item:active {
     background-color: rgba(96, 126, 121, 0.4);
+    box-shadow: 0 0 1rem #aaa;
     border-radius: 50%;
     transition: all 0.5s;
 }
