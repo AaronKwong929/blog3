@@ -8,7 +8,7 @@ import Archive from './routes/Archive.vue';
 import Type from './routes/Type.vue';
 import Tag from './routes/Tag.vue';
 import About from './routes/About.vue';
-import Article from './routes/Article.vue'
+import Article from './routes/Article.vue';
 import Login from './routes/Login.vue';
 import Admin from './routes/Admin.vue';
 import Draft from './routes/Draft.vue';
@@ -33,7 +33,10 @@ const routes = [
     { path: '/401', component: Unauthorized }
 ];
 
-const router = new VueRouter({ routes });
+const router = new VueRouter({
+    // mode: 'history',
+    routes
+});
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
@@ -45,6 +48,15 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         next();
+    }
+
+    if (to.fullPath === '/login') {
+        const token = store.state.token;
+        if (token && token !== null) {
+            next('/admin');
+        } else {
+            next();
+        }
     }
 });
 
