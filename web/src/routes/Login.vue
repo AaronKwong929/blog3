@@ -4,7 +4,7 @@
         <div class="router-title">
             管理员登陆
         </div>
-        <div v-if="!this.$store.state.token">
+        <div>
             <div class="input user">
                 <i class="iconfont icon-guanyu"></i>
                 <input
@@ -20,13 +20,11 @@
                     v-model="password"
                     type="password"
                     placeholder="Password"
+                    @keyup.enter="login()"
                 />
             </div>
-            <div class="alert" v-if="this.fail">登陆失败</div>
+            <div class="alert" v-show="fail">登陆失败</div>
             <button class="btn btn-small" @click="login()">登陆</button>
-        </div>
-        <div v-else>
-            您已登陆，请勿重复登陆，点击<button @click="hasLogin">此处</button>跳转到管理员页面
         </div>
     </div>
 </template>
@@ -37,11 +35,14 @@ export default {
         return {
             name: "",
             password: "",
-            fail: 0
+            fail: false,
         };
     },
     methods: {
         login() {
+            // 上线地址: http://106.53.89.236:3000
+            // 打包地址: http://127.0.0.1:3000 vue.config.js 注释 devServer.proxy
+            // 开发地址: /api vue.config.js 取消 devServer.proxy 注释
             this.$axios
                 .post("/api/admin/login", {
                     name: this.name,
@@ -50,14 +51,12 @@ export default {
                 .then(res => {
                     if (res.data.code === 0) {
                         this.$store.state.token = res.data.adminToken;
+                        localStorage.setItem('token', res.data.adminToken);
                         this.$router.push("/admin");
                     } else {
-                        this.fail = 1;
+                        this.fail = true;
                     }
                 });
-        },
-        hasLogin() {
-            this.$router.push("/admin");
         }
     }
 };
