@@ -23,6 +23,7 @@
                     <option value="css">CSS</option>
                     <option value="html">HTML</option>
                     <option value="backend">后端</option>
+                    <option value="server">服务器</option>
                 </select>
             </div>
             <textarea v-model="content" v-focus @input="save"></textarea>

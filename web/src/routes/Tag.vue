@@ -29,6 +29,12 @@
             >
                 CSS({{ this.list.css.length }})
             </button>
+            <button
+                :class="{ active: currentTag === 'server' }"
+                @click="changeTag('server')"
+            >
+                服务器({{ this.list.server.length }})
+            </button>
             <router-link
                 v-for="(item, index) in articles"
                 :key="index"
@@ -36,8 +42,7 @@
                 tag="div"
                 class="list-item"
             >
-                <div class="time">{{ item.updatedAt }}</div
-                >
+                <div class="time">{{ item.updatedAt }}</div>
                 <div class="line"></div>
                 <div class="title">{{ item.title }}</div>
             </router-link>
@@ -62,7 +67,7 @@ export default {
                 }),
                 js: this.$store.state.articleList.filter(item => {
                     return item.tag === "js";
-                }),
+                })
             },
             currentTag: "backend"
         };
