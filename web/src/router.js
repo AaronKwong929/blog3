@@ -14,6 +14,7 @@ import Admin from './routes/Admin.vue';
 import Draft from './routes/Draft.vue';
 import NotFound from './routes/404.vue';
 import Unauthorized from './routes/401.vue';
+import UpdateLog from './routes/UpdateLog.vue';
 
 Vue.use(VueRouter);
 
@@ -30,7 +31,8 @@ const routes = [
     { path: '/draft/:id', component: Draft, meta: { requireAuth: true } },
     { path: '*', redirect: '404' },
     { path: '/404', component: NotFound },
-    { path: '/401', component: Unauthorized }
+    { path: '/401', component: Unauthorized },
+    { path: '/update', component: UpdateLog }
 ];
 
 const router = new VueRouter({

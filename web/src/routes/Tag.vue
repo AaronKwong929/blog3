@@ -67,6 +67,9 @@ export default {
                 }),
                 js: this.$store.state.articleList.filter(item => {
                     return item.tag === "js";
+                }),
+                server: this.$store.state.articleList.filter(item => {
+                    return item.tag === "server";
                 })
             },
             currentTag: "backend"
