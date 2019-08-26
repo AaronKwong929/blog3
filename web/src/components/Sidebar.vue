@@ -56,7 +56,7 @@
             <button class="bar-item" @click="top" title="回到顶部">
                 <i class="iconfont icon-zhiding"></i>
             </button>
-            
+
             <router-link
                 to="/update"
                 tag="div"
@@ -86,29 +86,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* 左边的bar */
-.left-bar {
-    width: 15%;
-    min-width: 10%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    box-shadow: 0.6rem 0 0.6rem -0.6rem #aaa;
-    background-color: #ddd;
-}
-
+/* 整个组件的 */
 .router-link-active {
     background-color: rgba(96, 126, 121, 0.4);
     box-shadow: 0 0 1rem #aaa;
-    border-radius: 50%;
-}
-
-.avatar img {
-    display: block;
-    margin: 2rem auto;
-    height: 10rem;
-    width: 10rem;
     border-radius: 50%;
 }
 
@@ -116,7 +97,9 @@ export default {
     font-size: 1.6rem;
 }
 
-.bar-item {
+.bar-item,
+.bar-item:link,
+.bar-item:visited {
     margin: 1rem auto;
     width: 3rem;
     height: 3rem;
@@ -134,6 +117,26 @@ export default {
     box-shadow: 0 0 1rem #aaa;
     border-radius: 50%;
     transition: all 0.5s;
+}
+
+/* 左边的bar */
+.left-bar {
+    width: 15%;
+    min-width: 10%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: 0.6rem 0 0.6rem -0.6rem #aaa;
+    background-color: #ddd;
+}
+
+.avatar img {
+    display: block;
+    margin: 2rem auto;
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
 }
 
 .left-bar .bar-item:last-child {
@@ -160,4 +163,34 @@ export default {
     margin-top: 80%;
 }
 
+@media only screen and (max-width: 1119px) {
+    #sidebar > .left-bar > .avatar > img {
+        height: 8rem;
+        width: 8rem;
+    }
+}
+
+@media only screen and (max-width: 1023px) {
+    #sidebar > .left-bar > .avatar > img {
+        height: 5rem;
+        width: 5rem;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #sidebar > .left-bar > .avatar > img {
+        display: none;
+    }
+
+    .left-bar .bar-item:first-child {
+        margin-top: 6rem;
+    }
+
+    .left-bar .bar-item:last-child {
+        margin-top: 6rem;
+    }
+    .right-bar {
+        display: none;
+    }
+}
 </style>

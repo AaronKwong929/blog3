@@ -1,3 +1,19 @@
-@media only screen and (max-width:767px) {
+@media only screen and (max-width: 1119px) {
     
+}
+
+@media only screen and (max-width: 1023px) {
+    
+}
+
+@media only screen and (max-width: 767px) {
+    .router-view-general {
+        margin: 1rem 1rem 0 1rem;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .router-view-general .iconfont {
+        display: none;
+    }
 }
