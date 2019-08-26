@@ -71,6 +71,7 @@ export default {
     font-size: 2rem;
     text-align: center;
     box-shadow: 0 0.3rem 0.3rem -0.2rem #aaa;
+    padding-bottom: 1rem;
 }
 
 .article-info {

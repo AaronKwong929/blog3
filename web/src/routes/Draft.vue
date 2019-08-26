@@ -82,7 +82,6 @@ export default {
         this.now = new Date().toLocaleString();
     },
     mounted() {
-        // this.$store.dispatch("ADMIN_GET_ARTICLES");
         this.getDetails();
     }
 };

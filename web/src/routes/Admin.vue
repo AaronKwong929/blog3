@@ -197,7 +197,7 @@ export default {
 }
 
 .item-info-other {
-    width: calc(20% - 1rem);
+    width: calc(30% - 1rem);
 }
 
 .published > .title {
