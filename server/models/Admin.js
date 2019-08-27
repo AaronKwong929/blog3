@@ -15,14 +15,6 @@ const adminSchema = new mongoose.Schema({
     isAdmin: {
         type: String,
         default: true
-    },
-    createdAt: {
-        type: String,
-        default: new Date().toLocaleString()
-    },
-    updatedAt: {
-        type: String,
-        default: new Date().toLocaleString()
     }
 });
 

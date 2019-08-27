@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const dateFormat = require('../utils/dateFormat');
 const articleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -24,13 +24,13 @@ const articleSchema = new mongoose.Schema({
     },
     updatedAt: {
         type: String,
-        default: new Date().toLocaleString()
+        default: dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
     }
 });
 
 articleSchema.pre('save', async function(next) {
     const article = this;
-    article.updatedAt = new Date().toLocaleString();
+    article.updatedAt = dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
     next();
 });
 

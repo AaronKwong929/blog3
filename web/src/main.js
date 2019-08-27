@@ -2,12 +2,13 @@ import Vue from 'vue';
 import App from './App.vue';
 
 import Axios from './axios';
+import dateFormat from './dateFormat';
 
 import './static/css/style.scss';
 import './static/css/v-html.scss';
 import './static/icon/iconfont.css';
 import './static/css/atom-one-dark.css';
-import './static/css/media.queries.scss'
+import './static/css/media.queries.scss';
 
 import router from './router';
 import store from './vuex/store';
@@ -17,6 +18,7 @@ import hljs from 'highlight.js';
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = Axios;
+Vue.prototype.$dateFormat = dateFormat;
 
 Vue.directive('highlight', function(el) {
     let blocks = el.querySelectorAll('pre code');
