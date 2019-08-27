@@ -30,6 +30,14 @@
                 ></router-link>
 
                 <router-link
+                    to="/update"
+                    tag="div"
+                    class="bar-item small-screen"
+                    title="开发日志"
+                    ><i class="iconfont icon-custom-update"></i
+                ></router-link>
+
+                <router-link
                     to="/login"
                     tag="div"
                     class="bar-item"
@@ -143,6 +151,10 @@ export default {
     margin-top: 4rem;
 }
 
+.small-screen {
+    display: none;
+}
+
 /* 右边的bar */
 .right-bar {
     width: 5%;
@@ -191,6 +203,10 @@ export default {
     }
     .right-bar {
         display: none;
+    }
+    
+    .small-screen {
+        display: block;
     }
 }
 </style>
