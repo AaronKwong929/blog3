@@ -49,7 +49,8 @@ export default {
             tag: "",
             type: "",
             content: "",
-            now: new Date().toLocaleString()
+            // now: new Date().toLocaleString()
+            now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
         };
     },
     computed: {
@@ -79,7 +80,8 @@ export default {
         }, 1000)
     },
     updated() {
-        this.now = new Date().toLocaleString();
+        // this.now = new Date().toLocaleString();
+        this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
     },
     mounted() {
         this.getDetails();
@@ -141,6 +143,7 @@ input:focus {
     font-size: 2rem;
     text-align: center;
     box-shadow: 0 0.3rem 0.3rem -0.2rem #aaa;
+    padding-bottom: 1rem;
 }
 
 .article-info {
@@ -156,6 +159,8 @@ select {
     margin-top: 1rem;
     margin-left: 0.5rem;
     padding: 0.5rem;
+    outline: none;
+    border: 1px solid #ddd;
 }
 
 select:focus {
@@ -169,7 +174,7 @@ textarea {
     border-radius: 0.5rem;
     padding: 0.5rem;
     height: 30rem;
-    width: 80%;
+    width: 100%;
     font-family: "Helvetica Neue", Arial, sans-serif;
     margin-top: 3rem;
     color: #333;
