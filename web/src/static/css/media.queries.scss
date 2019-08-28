@@ -13,7 +13,26 @@
         box-shadow: none;
     }
 
+    /* 隐藏图标 */
     .router-view-general .iconfont {
         display: none;
+    }
+
+    /* 取消横线 */
+    .list .list-item .line {
+        display: none;
+    }
+
+    /* 登录页输入框 */
+    .input > input[type="text"] {
+        margin-top: 6rem;
+    }
+
+    .input > input {
+        width: 90%;
+    }
+
+    .list > .list-item > div {
+        width: 100%;
     }
 }
