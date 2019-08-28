@@ -178,7 +178,7 @@ textarea {
     font-family: "Helvetica Neue", Arial, sans-serif;
     margin-top: 3rem;
     color: #333;
-    line-height: 1.5rem;
+    line-height: 1.2rem;
 }
 
 textarea:focus {

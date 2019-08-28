@@ -182,8 +182,13 @@ export default {
     background-color: rgba(96, 126, 121, 0.4);
 }
 
-.list-head > div,
-.list-body > div {
+.list-head > div{
+    display: inline-block;
+}
+
+.item-info,
+.item-head,
+.item-info-other {
     display: inline-block;
 }
 

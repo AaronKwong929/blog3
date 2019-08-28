@@ -69,19 +69,6 @@ export default {
 
 
 <style lang="scss" scoped>
-#Login > .iconfont {
-    font-size: 3rem;
-    position: absolute;
-    top: -2rem;
-    left: -1rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .input {
     margin-top: 1rem;
     display: flex;
