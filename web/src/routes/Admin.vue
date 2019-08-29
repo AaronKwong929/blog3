@@ -9,9 +9,9 @@
             </button>
         </div>
         <div class="list">
-            <div class="published">
+            <div class="published" v-show="this.unpublishedList.length">
                 <div class="title">
-                    <i class="iconfont icon-detail"></i>未发布
+                    <i class="iconfont icon-detail"></i>未发布({{ this.unpublishedList.length }})
                 </div>
                 <div class="list-head">
                     <div class="item-head">标题</div>
@@ -39,9 +39,9 @@
                     </button>
                 </div>
             </div>
-            <div class="published">
+            <div class="published" v-show="this.publishedList.length">
                 <div class="title">
-                    <i class="iconfont icon-fabu5"></i>已发布
+                    <i class="iconfont icon-fabu5"></i>已发布({{ this.publishedList.length }})
                 </div>
                 <div class="list-head">
                     <div class="item-head">标题</div>

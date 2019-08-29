@@ -47,4 +47,10 @@
 .new-item {
     font-size: .9rem;
 }
+
+.log-items > li {
+    box-shadow: 0 0 .6rem .2rem #aaa;
+    border-radius: 1rem;
+    padding: .5rem;
+}
 </style>

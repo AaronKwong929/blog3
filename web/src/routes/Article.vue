@@ -78,4 +78,9 @@ export default {
     text-align: center;
     margin-top: 0.3rem;
 }
+
+.article-content {
+    overflow: hidden;
+    padding-bottom: 1rem;
+}
 </style>

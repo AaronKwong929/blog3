@@ -174,39 +174,4 @@ export default {
 .right-bar .bar-item:nth-child(n + 2) {
     margin-top: 80%;
 }
-
-@media only screen and (max-width: 1119px) {
-    #sidebar > .left-bar > .avatar > img {
-        height: 8rem;
-        width: 8rem;
-    }
-}
-
-@media only screen and (max-width: 1023px) {
-    #sidebar > .left-bar > .avatar > img {
-        height: 5rem;
-        width: 5rem;
-    }
-}
-
-@media only screen and (max-width: 767px) {
-    #sidebar > .left-bar > .avatar > img {
-        display: none;
-    }
-
-    .left-bar .bar-item:first-child {
-        margin-top: 6rem;
-    }
-
-    .left-bar .bar-item:last-child {
-        margin-top: 6rem;
-    }
-    .right-bar {
-        display: none;
-    }
-    
-    .small-screen {
-        display: block;
-    }
-}
 </style>
