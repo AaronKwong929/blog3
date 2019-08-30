@@ -217,4 +217,8 @@ export default {
 .btn-group button {
     margin: 1rem;
 }
+
+button .iconfont {
+    // color: rgb(96, 126, 121);
+}
 </style>

@@ -69,6 +69,10 @@
 </template>
 
 <style lang="scss" scoped>
+#about {
+    color: rgb(96, 126, 121);
+}
+
 .about-me,
 .about-blog {
     vertical-align: top;
@@ -98,6 +102,7 @@
     font-size: 2.5rem;
     width: 4rem;
     height: 4rem;
+    color: rgb(96, 126, 121);
 }
 
 .iconfont:hover,

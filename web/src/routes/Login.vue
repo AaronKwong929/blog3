@@ -10,7 +10,7 @@
                 <input
                     v-model="name"
                     type="text"
-                    placeholder="Account"
+                    placeholder="管理员账号"
                     v-focus
                 />
             </div>
@@ -19,7 +19,7 @@
                 <input
                     v-model="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="密码"
                     @keyup.enter="login()"
                 />
             </div>
@@ -77,6 +77,7 @@ export default {
 
 .input > .iconfont {
     font-size: 2rem;
+    color: rgb(96, 126, 121);
 }
 
 input {
@@ -86,11 +87,12 @@ input {
     padding: 0.5rem 1rem;
     margin-left: 0.5rem;
     border: 1px solid #ddd; // 适应focus的蓝色边框
+    color: rgb(96, 126, 121);
 }
 
 input:focus {
-    border: 1px solid #03a9f4;
-    box-shadow: 0 0 15px #03a9f4;
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
 }
 

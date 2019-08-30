@@ -103,6 +103,7 @@ export default {
 
 .iconfont {
     font-size: 1.6rem;
+    color: rgb(96, 126, 121);
 }
 
 .bar-item,

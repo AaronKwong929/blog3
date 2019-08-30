@@ -46,7 +46,7 @@ a {
     padding: 2rem 0 0 3rem;
     position: relative;
     box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
-    // font-family: Georgia;
+    font-family: Georgia;
 }
 
 .router-view-general > .iconfont {
@@ -60,25 +60,28 @@ a {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: rgb(96, 126, 121);
 }
 
 .router-title {
     font-family: Georgia;
     font-weight: 400;
     font-size: 2rem;
+    color: rgb(96, 126, 121);
 }
 
 .btn-small {
     padding: 1rem;
     border-radius: 0.5rem;
-    background-color: #03a9f4;
+    background-color: rgba(96, 126, 121, .5);
     border: none;
     cursor: pointer;
     outline: none;
 }
 
 .btn-small:hover {
-    background-color: #0070a3;
+    background-color: rgb(96, 126, 121);
+    transition: all .3s;
 }
 
 input,
@@ -109,7 +112,7 @@ textarea {
 }
 
 .list > .list-item:hover {
-    color: black;
+    color: rgb(96, 126, 121);
     transition: all .3s;
 }
 
@@ -126,15 +129,16 @@ textarea {
     cursor: pointer;
     outline: none;
     font-size: 1.1rem;
+    padding-bottom: .1rem;
 }
 
 .list button:hover {
-    color: black;
-    border-bottom: 1px solid black;
+    color: rgb(96, 126, 121);
+    border-bottom: 1px solid rgb(96, 126, 121);
     transition: all .4s;
 }
 
 .list button[class="active"] {
-    color: black;
-    border-bottom: 1px solid black;
+    color: rgb(96, 126, 121);
+    border-bottom: 1px solid rgb(96, 126, 121);
 }
