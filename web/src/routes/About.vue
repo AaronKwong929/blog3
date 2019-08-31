@@ -78,7 +78,6 @@
     vertical-align: top;
     box-shadow: 0 0 1rem 0.2rem #aaa;
     margin: 2rem;
-    // border-radius: 1rem;
     padding: 2rem;
 }
 

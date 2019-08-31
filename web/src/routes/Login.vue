@@ -78,7 +78,7 @@ input {
     outline: none;
     padding: 0.5rem 1rem;
     margin-left: 0.5rem;
-    border: 1px solid #ddd; // 适应focus的蓝色边框
+    border: 1px solid #ddd;
     color: rgb(96, 126, 121);
 }
 

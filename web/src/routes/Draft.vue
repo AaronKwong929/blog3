@@ -20,6 +20,8 @@
                 <select v-model="tag" @input="save">
                     <option disabled value="">标签</option>
                     <option value="js">JavaScript</option>
+                    <option value="vue">Vue</option>
+                    <option value="node">Node</option>
                     <option value="css">CSS</option>
                     <option value="html">HTML</option>
                     <option value="backend">后端</option>
@@ -49,7 +51,6 @@ export default {
             tag: "",
             type: "",
             content: "",
-            // now: new Date().toLocaleString()
             now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
         };
     },
@@ -74,13 +75,11 @@ export default {
             this.$store.state.articleDetails.tag = this.tag;
             this.$store.state.articleDetails.type = this.type;
             this.$store.state.articleDetails.content = this.content;
-            // console.log(this.$store.state.articleDetails);
             this.$store.dispatch("SAVE_ARTICLE");
             this.$store.dispatch("COMMON_GET_ARTICLES");
         }, 1000)
     },
     updated() {
-        // this.now = new Date().toLocaleString();
         this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
     },
     mounted() {

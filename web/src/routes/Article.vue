@@ -42,7 +42,6 @@ export default {
             }
         })
     },
-    // 不写 beforeMount 在获取了 list 之后再打开文章详情会报错，写了不会，但在情页刷新还会，顺序问题，暂未解决
     mounted() {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();

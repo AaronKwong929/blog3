@@ -68,6 +68,12 @@ export default {
                 js: this.$store.state.articleList.filter(item => {
                     return item.tag === "js";
                 }),
+                node: this.$store.state.articleList.filter(item => {
+                    return item.tag === "node";
+                }),
+                vue: this.$store.state.articleList.filter(item => {
+                    return item.tag === "vue";
+                }),
                 server: this.$store.state.articleList.filter(item => {
                     return item.tag === "server";
                 })
