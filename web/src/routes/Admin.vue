@@ -72,43 +72,17 @@
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
-    // 上线地址: http://106.53.89.236:3000
-    // 打包地址: http://127.0.0.1:3000 vue.config.js 注释 devServer.proxy
-    // 开发地址: /api vue.config.js 取消 devServer.proxy 注释
     methods: {
         ...mapMutations({
             logout: "LOG_OUT"
         }),
         ...mapActions({
             getArticles: "ADMIN_GET_ARTICLES",
-            updateCommonArticles: "COMMON_GET_ARTICLES"
+            updateCommonArticles: "COMMON_GET_ARTICLES",
+            newArticle: "NEW_ARTICLE",
+            publish: "PUBLISH_ARTICLE",
+            deleteArticle: "DELETE_ARTICLE"
         }),
-        newArticle() {
-            this.$axios.post("/api/admin/draft").then(() => {
-                this.getArticles();
-                this.updateCommonArticles();
-            });
-        },
-        async deleteArticle(id) {
-            await this.$axios
-                .post("/api/admin/delete", {
-                    id
-                })
-                .then(() => {
-                    this.getArticles();
-                });
-            await this.updateCommonArticles();
-        },
-        async publish(id) {
-            await this.$axios
-                .put("/api/admin/publish", {
-                    id
-                })
-                .then(() => {
-                    this.getArticles();
-                });
-            await this.updateCommonArticles();
-        },
         edit(id) {
             this.$router.push(`/draft/${id}`);
         }

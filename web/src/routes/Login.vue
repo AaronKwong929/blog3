@@ -20,48 +20,40 @@
                     v-model="password"
                     type="password"
                     placeholder="密码"
-                    @keyup.enter="login()"
+                    @keyup.enter="Login()"
                 />
             </div>
-            <div class="alert" v-show="fail">登陆失败</div>
-            <button class="btn btn-small" @click="login()">登陆</button>
+            <div class="alert" v-show="this.fail">登陆失败</div>
+            <button class="btn btn-small" @click="Login()">登陆</button>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
     data() {
         return {
             name: "",
-            password: "",
-            fail: false,
+            password: ""
         };
     },
+    computed: {
+        ...mapState({
+            fail: state => {
+                return state.loginFail;
+            }
+        })
+    },
     methods: {
-        login() {
-            // 上线地址: http://106.53.89.236:3000
-            // 打包地址: http://127.0.0.1:3000 vue.config.js 注释 devServer.proxy
-            // 开发地址: /api vue.config.js 取消 devServer.proxy 注释
-            this.$axios
-                .post("/api/admin/login", {
-                    name: this.name,
-                    password: this.password
-                })
-                .then(res => {
-                    if (res.data.code === 0) {
-                        this.$store.state.token = res.data.adminToken;
-                        localStorage.setItem('token', res.data.adminToken);
-                        this.$router.push("/admin");
-                    } else {
-                        this.fail = true;
-                    }
-                });
+        ...mapActions({ LOGIN: "LOGIN" }),
+        Login() {
+            return this.LOGIN({ name: this.name, password: this.password });
         }
     },
     mounted() {
         if (this.$store.state.token) {
-            this.$router.push('/admin');
+            this.$router.push("/admin");
         }
     }
 };

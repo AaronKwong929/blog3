@@ -43,7 +43,7 @@ export default {
         })
     },
     // 不写 beforeMount 在获取了 list 之后再打开文章详情会报错，写了不会，但在情页刷新还会，顺序问题，暂未解决
-    beforeMount() {
+    mounted() {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();
             // 不加一秒会显示不出来 未知原因
@@ -64,6 +64,7 @@ export default {
     padding-top: 1rem;
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+    color: rgb(96, 126, 121);
 }
 
 .article-title {

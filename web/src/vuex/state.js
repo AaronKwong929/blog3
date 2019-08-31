@@ -2,7 +2,8 @@ let state = {
     token: '',
     articleList: [],
     articleDetails: {},
-    adminArticleList: []
+    adminArticleList: [],
+    loginFail: false,
 }
 
 export default state;
