@@ -21,7 +21,7 @@
                         <i class="iconfont icon-yingyongAPP"></i>{{ item.type }}
                     </div>
                 </div>
-                <div class="short">{{ item.content }}</div>
+                <div class="short" v-html="compiledMarkdown(item.content)"></div>
             </router-link>
         </div>
     </div>
@@ -29,6 +29,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import marked from "marked";
 export default {
     computed: {
         ...mapState({
@@ -40,7 +41,10 @@ export default {
     methods: {
         ...mapActions({
             getArticles: "COMMON_GET_ARTICLES"
-        })
+        }),
+        compiledMarkdown: function(content) {
+            return marked(content);
+        },
     },
     mounted() {
         if (this.$store.state.articleList.length === 0) {
@@ -100,10 +104,10 @@ export default {
 
 .short {
     margin-top: 1rem;
-    height: 2rem;
+    height: 1.2rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 60%;
+    width: 70%;
 }
 </style>
