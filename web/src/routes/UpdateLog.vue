@@ -33,8 +33,20 @@
 </template>
 
 <style lang="scss" scoped>
+#log {
+    color: rgb(96, 126, 121);
+}
+
 .log-items > li {
     margin: 2rem auto;
+    box-shadow: 0 0 .6rem .2rem #aaa;
+    padding: .5rem;
+}
+
+.log-items > li:hover {
+    border-radius: 1rem;
+    font-size: 1.1rem;
+    transition: all .3s
 }
 
 .ver {
@@ -45,15 +57,5 @@
 
 .new {
     line-height: 1.5rem;
-}
-
-.new-item {
-    font-size: .9rem;
-}
-
-.log-items > li {
-    box-shadow: 0 0 .6rem .2rem #aaa;
-    border-radius: 1rem;
-    padding: .5rem;
 }
 </style>
