@@ -8,10 +8,13 @@
             <li>
                 <div class="ver">2019-8-28 开发版本3.2 上线版本1.2</div>
                 <div class="new">
-                    <div class="new-item">边栏移动端支持</div>
+                    <div class="new-item">移动端支持</div>
                     <div class="new-item">首页和关于页更新</div>
                     <div class="new-item">
                         时间格式化更新（Linux和Win下格式保持一致）
+                    </div>
+                    <div class="new-item">
+                        各种操作完全整合到actions
                     </div>
                 </div>
             </li>
