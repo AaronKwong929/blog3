@@ -30,6 +30,18 @@
                 CSS({{ this.list.css.length }})
             </button>
             <button
+                :class="{ active: currentTag === 'vue' }"
+                @click="changeTag('vue')"
+            >
+                Vue({{ this.list.vue.length }})
+            </button>
+            <button
+                :class="{ active: currentTag === 'node' }"
+                @click="changeTag('node')"
+            >
+                Node({{ this.list.node.length }})
+            </button>
+            <button
                 :class="{ active: currentTag === 'server' }"
                 @click="changeTag('server')"
             >
