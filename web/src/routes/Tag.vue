@@ -6,10 +6,10 @@
         </div>
         <div class="list">
             <button
-                :class="{ active: currentTag === 'backend' }"
-                @click="changeTag('backend')"
+                :class="{ active: currentTag === 'algo' }"
+                @click="changeTag('algo')"
             >
-                Backend({{ this.list.backend.length }})
+                算法({{ this.list.algo.length }})
             </button>
             <button
                 :class="{ active: currentTag === 'html' }"
@@ -68,8 +68,8 @@ export default {
     data() {
         return {
             list: {
-                backend: this.$store.state.articleList.filter(item => {
-                    return item.tag === "backend";
+                algo: this.$store.state.articleList.filter(item => {
+                    return item.tag === "algo";
                 }),
                 html: this.$store.state.articleList.filter(item => {
                     return item.tag === "html";
@@ -90,7 +90,7 @@ export default {
                     return item.tag === "server";
                 })
             },
-            currentTag: "backend"
+            currentTag: "algo"
         };
     },
     computed: {
@@ -118,7 +118,3 @@ export default {
     }
 };
 </script>
-
-
-<style lang="scss" scoped>
-</style>

@@ -24,7 +24,7 @@
                     <option value="node">Node</option>
                     <option value="css">CSS</option>
                     <option value="html">HTML</option>
-                    <option value="backend">后端</option>
+                    <option value="algo">算法</option>
                     <option value="server">服务器</option>
                 </select>
             </div>
@@ -132,8 +132,8 @@ input {
 }
 
 input:focus {
-    border: 1px solid #03a9f4;
-    box-shadow: 0 0 15px #03a9f4;
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
 }
 
@@ -163,8 +163,8 @@ select {
 }
 
 select:focus {
-    border: 1px solid #03a9f4;
-    box-shadow: 0 0 15px #03a9f4;
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
 }
 
@@ -181,8 +181,8 @@ textarea {
 }
 
 textarea:focus {
-    border: 1px solid #03a9f4;
-    box-shadow: 0 0 15px #03a9f4;
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
 }
 </style>

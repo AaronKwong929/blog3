@@ -6,3 +6,14 @@
 .article-content img {
     max-width: 80%;
 }
+
+.article-content a {
+    color: blue;
+    padding: 0 .1rem;
+}
+
+.article-content a:hover {
+    color: red;
+    border-bottom: 1px solid red;
+    transition: all .3s;
+}
