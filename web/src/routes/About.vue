@@ -11,7 +11,7 @@
                     <li>使用过 vue 和 koa 做过小项目</li>
                     <li>副业 python 爬虫和 数据分析</li>
                     <li>(即将)毕业于广州大学</li>
-                    <li>计算机科学与网络工程学院 软件工程专业</li>
+                    <li>计算机科学与网络工程学院 软件工程</li>
                 </ul>
             </div>
             <div class="right">

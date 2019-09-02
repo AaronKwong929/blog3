@@ -95,7 +95,7 @@ export default {
 #draft > div {
     display: inline-block;
     vertical-align: top;
-    padding: 1.5rem 1.5rem 0 1.5rem;
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
 }
 
 .write input {
@@ -128,7 +128,7 @@ input {
     outline: none;
     padding: 0.5rem 1rem;
     margin-left: 0.5rem;
-    border: 1px solid #ddd; // 适应focus的蓝色边框
+    border: 1px solid #ddd;
 }
 
 input:focus {
@@ -172,9 +172,8 @@ textarea {
     margin-left: 0.5rem;
     border-radius: 0.5rem;
     padding: 0.5rem;
-    height: 30rem;
+    height: 35rem;
     width: 100%;
-    font-family: "Helvetica Neue", Arial, sans-serif;
     margin-top: 3rem;
     color: #333;
     line-height: 1.2rem;
