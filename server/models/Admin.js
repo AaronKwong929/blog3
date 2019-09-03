@@ -11,10 +11,6 @@ const adminSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true
-    },
-    isAdmin: {
-        type: String,
-        default: true
     }
 });
 

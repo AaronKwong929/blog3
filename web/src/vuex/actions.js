@@ -11,11 +11,11 @@ const actions = {
             state.adminArticleList = res.data.articleList;
         });
     },
-    async SAVE_ARTICLE({ state }) {
+    async SAVE_ARTICLE({ state, dispatch }) {
         await Axios.put('/api/admin/draft', {
             article: state.articleDetails
-        }).then(res => {
-            state.adminArticleList = res.data.articleList;
+        }).then(() => {
+            dispatch('ADMIN_GET_ARTICLES');
         });
     },
     async COMMON_GET_ARTICLES({ state }) {

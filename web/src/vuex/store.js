@@ -2,7 +2,6 @@ import vuex from 'vuex';
 import Vue from 'vue';
 
 import state from './state.js';
-// import getters from "./getters.js";
 import mutations from './mutations';
 import actions from './actions.js';
 

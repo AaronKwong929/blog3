@@ -68,45 +68,26 @@ adminRouter.get('/', verifyToken, async ctx => {
 adminRouter.post('/draft', verifyToken, async ctx => {
     let article = new Article();
     await article.save();
-    ctx.response.body = {
-        article
-    };
 });
 
 adminRouter.put('/draft', verifyToken, async ctx => {
     const update = ctx.request.body.article;
-    // console.log(update);
-    // console.log(update._id);
     const article = await Article.findById(update._id)
     article.title = update.title;
     article.type = update.type;
     article.tag = update.tag;
     article.content = update.content;
     await article.save();
-    // ctx.response.body = { article };
-    const articleList = await Article.find({});
-    ctx.response.body = {
-        articleList
-    }
 });
 
 adminRouter.post('/delete', verifyToken, async ctx => {
-    const id = ctx.request.body.id;
-    // console.log(id);
-    await Article.findByIdAndDelete(id);
-    ctx.response.body = {
-        msg: 'success'
-    }
+    await Article.findByIdAndDelete(ctx.request.body.id);
 });
 
 adminRouter.put('/publish', verifyToken, async ctx => {
-    const id = ctx.request.body.id;
-    let article = await Article.findById(id);
+    let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
     await article.save();
-    ctx.response.body = {
-        article
-    }
 });
 
 module.exports = adminRouter;
