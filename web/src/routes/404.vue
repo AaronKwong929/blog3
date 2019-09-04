@@ -12,7 +12,7 @@
     flex-direction: column;
     align-content: center;
     text-align: center;
-    color: #0380df;
+    color: rgb(96, 126, 121);
     user-select: none;
 }
 
