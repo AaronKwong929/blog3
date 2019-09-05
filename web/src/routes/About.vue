@@ -47,6 +47,7 @@
                     <ul>
                         <li>前端：Vue.JS 全家桶</li>
                         <li>后端：Koa.JS</li>
+                        <li>数据库：MongoDB</li>
                     </ul>
                 </li>
                 <li class="li-title">未来期待实现的内容</li>
@@ -63,6 +64,9 @@
                         </li>
                         <li>
                             4. UI优化
+                        </li>
+                        <li>
+                            5. 多级标签？分类？
                         </li>
                     </ul>
                 </li>
