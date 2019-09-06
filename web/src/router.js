@@ -15,6 +15,7 @@ import Draft from './routes/Draft.vue';
 import NotFound from './routes/404.vue';
 import Unauthorized from './routes/401.vue';
 import UpdateLog from './routes/UpdateLog.vue';
+import SearchResult from './routes/SearchResult.vue'
 
 Vue.use(VueRouter);
 
@@ -32,7 +33,8 @@ const routes = [
     { path: '*', redirect: '404' },
     { path: '/404', component: NotFound },
     { path: '/401', component: Unauthorized },
-    { path: '/update', component: UpdateLog }
+    { path: '/update', component: UpdateLog },
+    { path: '/search', component: SearchResult }
 ];
 
 const router = new VueRouter({
