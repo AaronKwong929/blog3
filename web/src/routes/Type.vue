@@ -30,7 +30,7 @@
                 tag="div"
                 class="list-item"
             >
-                <div class="time">{{ item.updatedAt }}</div>
+                <time>{{ item.updatedAt }}</time>
                 <div class="line"></div>
                 <div class="title">{{ item.title }}</div>
             </router-link>

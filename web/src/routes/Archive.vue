@@ -4,6 +4,11 @@
         <div class="router-title">
             归档
         </div>
+        <searchBar></searchBar>
+        <!-- <div class="search">
+            <input type="text" v-model="searchTerm"/>
+            <button @click="search">搜索</button>
+        </div> -->
         <div class="list">
             <router-link
                 v-for="(item, index) in List"
@@ -12,7 +17,7 @@
                 tag="div"
                 class="list-item"
             >
-                <div class="time">{{ item.updatedAt }}</div>
+                <time>{{ item.updatedAt }}</time>
                 <div class="line"></div>
                 <div class="title">{{ item.title }}</div>
             </router-link>
@@ -21,8 +26,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions} from "vuex";
+import searchBar from "../components/SearchBar";
 export default {
+    data() {
+        return {
+            searchTerm: "",
+        }
+    },
     computed: {
         ...mapState({
             List: state => {
@@ -39,6 +50,9 @@ export default {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();
         }
+    },
+    components: {
+        searchBar
     }
 };
 </script>

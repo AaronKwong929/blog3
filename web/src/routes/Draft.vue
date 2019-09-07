@@ -36,7 +36,7 @@
                 <i class="iconfont icon-yingyongAPP"></i>{{ type }}
                 <i class="iconfont icon-biaoqian"></i>{{ tag }}
             </div>
-            <div class="article-time article-info">{{ now }}</div>
+            <time class="article-time article-info">{{ now }}</time>
             <div v-html="compiledMarkdown" v-highlight class="article-content"></div>
         </div>
     </div>
