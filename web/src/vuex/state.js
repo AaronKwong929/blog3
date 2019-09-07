@@ -5,8 +5,10 @@ let state = {
     adminArticleList: [],
     loginFail: false,
     searchTerm: '',
-    searchTitleResults: [],
-    searchContentResults: []
-}
+    searchResults: {
+        titleResults: [],
+        contentResults: []
+    }
+};
 
 export default state;
