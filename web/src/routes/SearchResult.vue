@@ -1,23 +1,23 @@
 <template>
     <div id="search-result">
         <input type="text"/><br />
-        {{ this.$store.state.searchTerm }}<br />
-        <!-- 
-        {{ this.$store.state.searchResults }}<br /> -->
-        <div>
+        <div v-if="!this.$store.state.searchTerm">
+            没有搜索内容
+        </div>
+        <div v-else>
             <button
                 :class="{ active: currentType === 'title' }"
                 @click="changeType('title')"
             >
                 标题搜索
-                <!-- ({{ this.list.title.length }}) -->
+                ({{ this.list.title.length }})
             </button>
             <button
                 :class="{ active: currentType === 'content' }"
                 @click="changeType('content')"
             >
                 全文搜索
-                <!-- ({{ this.list.content.length }}) -->
+                ({{ this.list.content.length }})
             </button>
             <router-link
                 v-for="(item, index) in articleLists"

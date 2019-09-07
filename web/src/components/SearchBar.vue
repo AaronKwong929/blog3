@@ -1,7 +1,7 @@
 <template>
     <div id="search-bar">
-        <input type="text" v-model="term" required/>
-        <button @click="search()">搜索</button>
+        <input type="text" v-model="term" @keyup.enter="search" />
+        <button class="btn-small" @click="search">搜索</button>
     </div>
 </template>
 
@@ -22,5 +22,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input {
+    border: none;
+    border-radius: 0.5rem;
+    outline: none;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    border: 1px solid #ddd;
+    color: rgb(96, 126, 121);
+}
 
+input:focus {
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
+    text-shadow: none;
+}
+.btn-small {
+    margin-left: .3rem;
+    padding: .5rem
+}
 </style>
