@@ -22,11 +22,13 @@
                     全文搜索
                 </button>
                 <div class="has-result">
-                    搜索内容：{{ this.$store.state.searchTerm }}<br />
+                    搜索内容：<span class="result-key">{{
+                        this.$store.state.searchTerm
+                    }}</span
+                    ><br />
                     <span class="result-count">
-                        共有<span class="result-number">{{
-                            this.list[this.currentType].length
-                        }}</span
+                        共有<span class="result-num">
+                            {{ this.list[this.currentType].length }} </span
                         >个搜索结果
                     </span>
                 </div>
@@ -38,9 +40,8 @@
                 tag="div"
                 class="list-item"
             >
-                <time class="time">{{ item.updatedAt }}</time>
-                <div class="line"></div>
                 <div class="title" v-html="replaceHighlight(item.title)"></div>
+                <time>{{ item.updatedAt }}</time>
                 <div
                     class="content-short"
                     v-show="isContentSearch"
@@ -99,6 +100,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#search-result {
+    padding-bottom: 3rem;
+}
+
 /deep/.highlight {
     background-color: rgba(96, 126, 121, 0.4);
 }
@@ -115,5 +120,31 @@ export default {
 .result-count {
     margin-top: 1rem;
     color: rgb(96, 126, 121);
+}
+
+.result-key,
+.result-num {
+    font-size: 1.3rem;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 800;
+}
+
+.list-item {
+    cursor: pointer;
+    display: block;
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+    box-shadow: 0 0 1rem -0.3rem #aaa;
+}
+
+.list-item:hover {
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem 0.3rem #aaa;
+    transition: all 0.3s;
+}
+
+.list-item:first-child {
+    margin-top: 0;
 }
 </style>
