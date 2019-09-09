@@ -73,6 +73,11 @@
                 ><i class="iconfont icon-custom-update"></i
             ></router-link>
         </div>
+        <div class="beian">
+            <a href="http://beian.miitbeian.gov.cn" target="_blank"
+                >粤ICP备19111987</a
+            >
+        </div>
     </div>
 </template>
 
@@ -174,5 +179,14 @@ export default {
 
 .right-bar .bar-item:nth-child(n + 2) {
     margin-top: 80%;
+}
+
+.beian {
+    text-align: center;
+    font-size: .6rem;
+    position: fixed;
+    bottom: 0;
+    left: 3%;
+    height: 2%;
 }
 </style>
