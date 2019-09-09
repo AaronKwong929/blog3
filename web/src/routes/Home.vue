@@ -14,11 +14,9 @@
             >
                 <div class="item-info clearfix">
                     <div class="title">{{ item.title }}</div>
-                    <div class="tag">
-                        <i class="iconfont icon-biaoqian"></i>{{ item.tag }}
-                    </div>
-                    <div class="type">
-                        <i class="iconfont icon-yingyongAPP"></i>{{ item.type }}
+                    <div class="item-info-details">
+                        <span><i class="iconfont icon-biaoqian"></i>{{ item.tag }}</span>
+                        <span><i class="iconfont icon-yingyongAPP"></i>{{ item.type }}</span>
                     </div>
                 </div>
                 <div class="short" v-html="compiledMarkdown(item.content)"></div>
@@ -91,15 +89,16 @@ export default {
 .title {
     font-size: 1.4rem;
     font-weight: 600;
-    float: left;
     color: rgb(96, 126, 121);
 }
 
-.type,
-.tag {
-    float: right;
-    margin-left: .3rem;
-    font-size: .8rem;
+.item-info-details {
+    padding: .3rem;
+    padding-left: 0;
+}
+
+.item-info-details > span:first-child {
+    padding-right: .3rem;
 }
 
 .short {
