@@ -1,7 +1,7 @@
 <template>
     <div id="unauthorized">
         <div class="title">401</div>
-        <div class="details">授权已过期╮( •́ω•̀ )╭</div>
+        <div class="details">╮( •́ω•̀ )╭ 要重新登陆呢 </div>
         两秒后跳转到登陆页面
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div id="not-found">
         <div class="title">404</div>
-        <div class="details">输入链接有误╮( •́ω•̀ )╭</div>
+        <div class="details">╮( •́ω•̀ )╭ 找不到这一页呢 </div>
     </div>
 </template>
 
