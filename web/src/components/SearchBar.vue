@@ -1,6 +1,6 @@
 <template>
     <div id="search-bar">
-        <input type="text" v-model="term" @keyup.enter="search" />
+        <input type="text" v-model="term" @keyup.enter="search" v-focus/>
         <button class="btn-small" @click="search">搜索</button>
     </div>
 </template>
@@ -27,7 +27,6 @@ input {
     border-radius: 0.5rem;
     outline: none;
     padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
     border: 1px solid #ddd;
     color: rgb(96, 126, 121);
 }
@@ -39,6 +38,6 @@ input:focus {
 }
 .btn-small {
     margin-left: .3rem;
-    padding: .5rem
+    padding: .8rem
 }
 </style>
