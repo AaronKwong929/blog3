@@ -4,6 +4,7 @@
         <div class="router-title">
             标签
         </div>
+        <SearchBar></SearchBar>
         <div class="list">
             <button
                 :class="{ active: currentTag === 'algo' }"
@@ -63,6 +64,7 @@
 </template>
 
 <script>
+import SearchBar from "../components/SearchBar";
 import { mapState, mapActions } from "vuex";
 export default {
     data() {
@@ -115,6 +117,9 @@ export default {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();
         }
+    },
+    components: {
+        SearchBar
     }
 };
 </script>

@@ -5,10 +5,6 @@
             归档
         </div>
         <searchBar></searchBar>
-        <!-- <div class="search">
-            <input type="text" v-model="searchTerm"/>
-            <button @click="search">搜索</button>
-        </div> -->
         <div class="list">
             <router-link
                 v-for="(item, index) in List"
@@ -29,11 +25,6 @@
 import { mapState, mapActions} from "vuex";
 import searchBar from "../components/SearchBar";
 export default {
-    data() {
-        return {
-            searchTerm: "",
-        }
-    },
     computed: {
         ...mapState({
             List: state => {
