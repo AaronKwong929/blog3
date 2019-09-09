@@ -68,6 +68,9 @@ adminRouter.get('/', verifyToken, async ctx => {
 adminRouter.post('/draft', verifyToken, async ctx => {
     let article = new Article();
     await article.save();
+    ctx.response.body = {
+        code: 1
+    };
 });
 
 adminRouter.put('/draft', verifyToken, async ctx => {
@@ -78,16 +81,25 @@ adminRouter.put('/draft', verifyToken, async ctx => {
     article.tag = update.tag;
     article.content = update.content;
     await article.save();
+    ctx.response.body = {
+        code: 1
+    };
 });
 
 adminRouter.post('/delete', verifyToken, async ctx => {
     await Article.findByIdAndDelete(ctx.request.body.id);
+    ctx.response.body = {
+        code: 1
+    };
 });
 
 adminRouter.put('/publish', verifyToken, async ctx => {
     let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
     await article.save();
+    ctx.response.body = {
+        code: 1
+    };
 });
 
 module.exports = adminRouter;
