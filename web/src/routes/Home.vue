@@ -15,11 +15,20 @@
                 <div class="item-info clearfix">
                     <div class="title">{{ item.title }}</div>
                     <div class="item-info-details">
-                        <span><i class="iconfont icon-biaoqian"></i>{{ item.tag }}</span>
-                        <span><i class="iconfont icon-yingyongAPP"></i>{{ item.type }}</span>
+                        <span
+                            ><i class="iconfont icon-biaoqian"></i
+                            >{{ item.tag }}</span
+                        >
+                        <span
+                            ><i class="iconfont icon-yingyongAPP"></i
+                            >{{ item.type }}</span
+                        >
                     </div>
                 </div>
-                <div class="short" v-html="compiledMarkdown(item.content)"></div>
+                <div
+                    class="short"
+                    v-html="compiledMarkdown(item.content)"
+                ></div>
             </router-link>
         </div>
     </div>
@@ -42,7 +51,7 @@ export default {
         }),
         compiledMarkdown: function(content) {
             return marked(content);
-        },
+        }
     },
     mounted() {
         if (this.$store.state.articleList.length === 0) {
@@ -93,12 +102,12 @@ export default {
 }
 
 .item-info-details {
-    padding: .3rem;
+    padding: 0.3rem;
     padding-left: 0;
 }
 
 .item-info-details > span:first-child {
-    padding-right: .3rem;
+    padding-right: 0.3rem;
 }
 
 .short {

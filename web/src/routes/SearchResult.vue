@@ -42,6 +42,16 @@
             >
                 <div class="title" v-html="replaceHighlight(item.title)"></div>
                 <time>{{ item.updatedAt }}</time>
+                <div class="item-info-details">
+                    <span
+                        ><i class="iconfont icon-biaoqian"></i
+                        >{{ item.tag }}</span
+                    >
+                    <span
+                        ><i class="iconfont icon-yingyongAPP"></i
+                        >{{ item.type }}</span
+                    >
+                </div>
                 <div
                     class="content-short"
                     v-show="isContentSearch"
@@ -100,10 +110,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#search-result {
-    padding-bottom: 3rem;
-}
-
 /deep/.highlight {
     background-color: rgba(96, 126, 121, 0.4);
 }
@@ -134,17 +140,35 @@ export default {
     display: block;
     padding: 1rem;
     margin-top: 1rem;
+    border-radius: 1rem;
     text-align: center;
     box-shadow: 0 0 1rem -0.3rem #aaa;
+    background-color: rgba(96, 126, 121, 0.4);
 }
 
 .list-item:hover {
-    border-radius: 1rem;
     box-shadow: 0 0 1rem 0.3rem #aaa;
     transition: all 0.3s;
 }
 
 .list-item:first-child {
     margin-top: 0;
+}
+
+.list-item:last-child {
+    margin-bottom: 3rem;
+}
+
+.title {
+    margin-bottom: 0.3rem;
+}
+
+.item-info-details {
+    padding: 0.3rem;
+    padding-left: 0;
+}
+
+.item-info-details > span:first-child {
+    padding-right: 0.3rem;
 }
 </style>
