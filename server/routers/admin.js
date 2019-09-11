@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const Admin = require('../models/Admin');
@@ -36,12 +35,28 @@ adminRouter.post('/login', async ctx => {
         if (!admin || !isMatch) {
             throw new Error();
         }
-        const adminToken = addToken(admin.name);
+        const adminToken = await addToken(admin.name);
+        await ctx.response.set({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+            'Access-Control-Allow-Headers':
+                'x-requested-with, accept, origin, content-type',
+            'Access-Control-Max-Age': 10000,
+            'Access-Control-Allow-Credentials': 'true'
+        });
         ctx.response.body = {
             adminToken,
             code: 0
         };
     } catch (e) {
+        ctx.response.set({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+            'Access-Control-Allow-Headers':
+                'x-requested-with, accept, origin, content-type',
+            'Access-Control-Max-Age': 10000,
+            'Access-Control-Allow-Credentials': 'true'
+        });
         ctx.response.body = {
             code: 1,
             msg: '账号或密码错误'
@@ -58,16 +73,32 @@ adminRouter.get('/', verifyToken, async ctx => {
         bTimeString = bTimeString.replace(/-/g, '/');
         let aTime = new Date(aTimeString).getTime();
         let bTime = new Date(bTimeString).getTime();
-        return bTime - aTime
+        return bTime - aTime;
+    });
+    ctx.response.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+        'Access-Control-Allow-Headers':
+            'x-requested-with, accept, origin, content-type',
+        'Access-Control-Max-Age': 10000,
+        'Access-Control-Allow-Credentials': true
     });
     ctx.response.body = {
         articleList
-    }
+    };
 });
 
 adminRouter.post('/draft', verifyToken, async ctx => {
     let article = new Article();
     await article.save();
+    ctx.response.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+        'Access-Control-Allow-Headers':
+            'x-requested-with, accept, origin, content-type',
+        'Access-Control-Max-Age': 10000,
+        'Access-Control-Allow-Credentials': true
+    });
     ctx.response.body = {
         code: 1
     };
@@ -75,12 +106,20 @@ adminRouter.post('/draft', verifyToken, async ctx => {
 
 adminRouter.put('/draft', verifyToken, async ctx => {
     const update = ctx.request.body.article;
-    const article = await Article.findById(update._id)
+    const article = await Article.findById(update._id);
     article.title = update.title;
     article.type = update.type;
     article.tag = update.tag;
     article.content = update.content;
     await article.save();
+    ctx.response.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+        'Access-Control-Allow-Headers':
+            'x-requested-with, accept, origin, content-type',
+        'Access-Control-Max-Age': 10000,
+        'Access-Control-Allow-Credentials': true
+    });
     ctx.response.body = {
         code: 1
     };
@@ -88,6 +127,14 @@ adminRouter.put('/draft', verifyToken, async ctx => {
 
 adminRouter.post('/delete', verifyToken, async ctx => {
     await Article.findByIdAndDelete(ctx.request.body.id);
+    ctx.response.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+        'Access-Control-Allow-Headers':
+            'x-requested-with, accept, origin, content-type',
+        'Access-Control-Max-Age': 10000,
+        'Access-Control-Allow-Credentials': true
+    });
     ctx.response.body = {
         code: 1
     };
@@ -97,6 +144,14 @@ adminRouter.put('/publish', verifyToken, async ctx => {
     let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
     await article.save();
+    ctx.response.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+        'Access-Control-Allow-Headers':
+            'x-requested-with, accept, origin, content-type',
+        'Access-Control-Max-Age': 10000,
+        'Access-Control-Allow-Credentials': true
+    });
     ctx.response.body = {
         code: 1
     };
