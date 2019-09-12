@@ -1,23 +1,18 @@
 const Router = require('koa-router');
-
 const bcrypt = require('bcryptjs');
-
 const Admin = require('../models/Admin');
 const Article = require('../models/Articles');
-
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
-
 let adminRouter = new Router();
-
 // 添加管理员账号用（一次性
-adminRouter.post('/add', async ctx => {
-    const admin = new Admin(ctx.request.body);
-        await admin.save();
-        ctx.response.body = {
-            msg: 1
-    }
-});
+// adminRouter.post('/add', async ctx => {
+//     const admin = new Admin(ctx.request.body);
+//         await admin.save();
+//         ctx.response.body = {
+//             msg: 1
+//     }
+// });
 
 // 管理员登陆、发放token
 adminRouter.post('/login', async ctx => {
