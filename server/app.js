@@ -3,11 +3,28 @@ const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const compress = require('koa-compress');
 const serve = require('koa-static');
+const cors = require('koa2-cors');
 const path = require('path');
 const app = new Koa();
 const routers = require('./routers/index');
 
 app.use(bodyParser());
+
+app.use(
+    cors({
+        origin: function(ctx) {
+            if (ctx.url === '/test') {
+                return false;
+            }
+            return '*';
+        },
+        exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+        maxAge: 5,
+        credentials: true,
+        allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
+        allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+    })
+);
 
 app.use(
     compress({
@@ -20,7 +37,7 @@ app.use(
 );
 
 app.use(async (ctx, next) => {
-    ctx.compress = true; //是否压缩数据
+    ctx.compress = true;
     await next();
 });
 
