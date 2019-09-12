@@ -19,14 +19,6 @@ commonRouter.get('/articles', async ctx => {
             let bTime = new Date(bTimeString).getTime();
             return bTime - aTime;
         });
-    ctx.response.set({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
-        'Access-Control-Allow-Headers':
-            'x-requested-with, accept, origin, content-type',
-        'Access-Control-Max-Age': 10000,
-        'Access-Control-Allow-Credentials': true
-    });
     ctx.response.body = {
         articleList
     };
