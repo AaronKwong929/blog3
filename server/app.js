@@ -19,7 +19,7 @@ app.use(
     })
 );
 
-app.use(async(ctx, next) => {
+app.use(async (ctx, next) => {
     ctx.compress = true; //是否压缩数据
     await next();
 });
@@ -27,8 +27,6 @@ app.use(async(ctx, next) => {
 app.use(routers.routes()).use(routers.allowedMethods());
 
 app.use(serve(path.resolve('dist')));
-
-
 
 app.listen(3000, () => {
     console.log(`app started at port 3000`);
