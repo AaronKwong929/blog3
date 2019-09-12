@@ -38,7 +38,7 @@ adminRouter.post('/login', async ctx => {
         const adminToken = await addToken(admin.name);
         await ctx.response.set({
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'OPTIONS,HEAD,DELETE,GET,PUT,POST',
+            'Access-Control-Allow-Methods': '*',
             'Access-Control-Allow-Headers':
                 'x-requested-with, accept, origin, content-type',
             'Access-Control-Max-Age': 10000,
