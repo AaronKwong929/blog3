@@ -7,35 +7,41 @@ const cors = require('koa2-cors');
 const path = require('path');
 const app = new Koa();
 const routers = require('./routers/index');
+const errorHandler = require('./middlewares/errorHandler');
+const corsConfig = require('./configs/cors');
 
 app.use(serve(path.resolve('dist')));
 
 app.use(bodyParser());
 
-app.use(
-    cors({
-        origin: function(ctx) {
-            if (ctx.url === '/test') {
-                return false;
-            }
-            return '*';
-        },
-        exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-        maxAge: 5,
-        credentials: true,
-        allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
-        allowHeaders: ['Content-Type', 'Authorization', 'Accept']
-    })
-);
+// app.use(
+//     cors({
+//         origin: function(ctx) {
+//             if (ctx.url === '/test') {
+//                 return false;
+//             }
+//             return '*';
+//         },
+//         exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+//         maxAge: 5,
+//         credentials: true,
+//         allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
+//         allowHeaders: ['Content-Type', 'Authorization', 'Accept']
+//     })
+// );
 
-app.use(async (ctx, next) => {
-    try {
-        await next();
-    } catch (err) {
-        ctx.set('Access-Control-Allow-Origin', '*');
-        ctx.status = err.status;
-    }
-});
+app.use(cors(corsConfig));
+
+// app.use(async (ctx, next) => {
+//     try {
+//         await next();
+//     } catch (err) {
+//         ctx.set('Access-Control-Allow-Origin', '*');
+//         ctx.status = err.status;
+//     }
+// });
+
+app.use(errorHandler());
 
 app.use(routers.routes()).use(routers.allowedMethods());
 
