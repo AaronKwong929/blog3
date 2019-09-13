@@ -8,6 +8,8 @@ const path = require('path');
 const app = new Koa();
 const routers = require('./routers/index');
 
+app.use(serve(path.resolve('dist')));
+
 app.use(bodyParser());
 
 app.use(
@@ -26,6 +28,22 @@ app.use(
     })
 );
 
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        ctx.set('Access-Control-Allow-Origin', '*');
+        ctx.status = err.status;
+    }
+});
+
+app.use(routers.routes()).use(routers.allowedMethods());
+
+app.use(async (ctx, next) => {
+    ctx.compress = true;
+    await next();
+});
+
 app.use(
     compress({
         filter: function(content_type) {
@@ -35,15 +53,6 @@ app.use(
         flush: require('zlib').Z_SYNC_FLUSH
     })
 );
-
-app.use(async (ctx, next) => {
-    ctx.compress = true;
-    await next();
-});
-
-app.use(routers.routes()).use(routers.allowedMethods());
-
-app.use(serve(path.resolve('dist')));
 
 app.listen(3000, () => {
     console.log(`app started at port 3000`);
