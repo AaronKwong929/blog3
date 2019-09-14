@@ -45,10 +45,10 @@ app.use(errorHandler());
 
 app.use(routers.routes()).use(routers.allowedMethods());
 
-app.use(async (ctx, next) => {
-    ctx.compress = true;
-    await next();
-});
+// app.use(async (ctx, next) => {
+//     ctx.compress = true;
+//     await next();
+// });
 
 app.use(
     compress({
