@@ -7,7 +7,7 @@
         <searchBar></searchBar>
         <div class="list">
             <router-link
-                v-for="(item, index) in List"
+                v-for="(item, index) in currentPage"
                 :key="index"
                 :to="'/article/' + item._id"
                 tag="div"
@@ -18,19 +18,35 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
+        <input v-model="page" />
+        共{{ this.pageCount }}页
     </div>
 </template>
 
 <script>
-import { mapState, mapActions} from "vuex";
+import { mapState, mapActions } from "vuex";
 import searchBar from "../components/SearchBar";
 export default {
+    data() {
+        return {
+            page: 1
+        };
+    },
     computed: {
         ...mapState({
             List: state => {
                 return state.articleList;
             }
-        })
+        }),
+        currentPage() {
+            return this.List.slice(
+                (this.page - 1) * 10,
+                this.page * 10 - 1
+            );
+        },
+        pageCount() {
+            return Math.ceil(this.List.length / 9);
+        }
     },
     methods: {
         ...mapActions({
