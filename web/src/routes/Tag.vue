@@ -49,7 +49,7 @@
                 服务器({{ this.list.server.length }})
             </button>
             <router-link
-                v-for="(item, index) in articles"
+                v-for="(item, index) in currentPage"
                 :key="index"
                 :to="'/article/' + item._id"
                 tag="div"
@@ -59,6 +59,10 @@
                 <div class="line"></div>
                 <div class="title">{{ item.title }}</div>
             </router-link>
+        </div>
+        <div class="pagination">
+            <input v-model="page" type="text" class="page-input" />
+            共<span>{{ this.pageCount }}</span>页
         </div>
     </div>
 </template>
@@ -92,7 +96,8 @@ export default {
                     return item.tag === "server";
                 })
             },
-            currentTag: "algo"
+            currentTag: "algo",
+            page: 1
         };
     },
     computed: {
@@ -103,6 +108,18 @@ export default {
         }),
         articles() {
             return this.list[this.currentTag];
+        },
+        currentPage() {
+            if (this.page > 0 && this.page <= this.pageCount) {
+                return this.articles.slice(
+                    (this.page - 1) * 10,
+                    this.page * 10 - 1
+                );
+            }
+            return this.articles.slice(0, 9);
+        },
+        pageCount() {
+            return Math.ceil(this.articles.length / 9);
         }
     },
     methods: {
@@ -123,3 +140,22 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" scoped>
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.page-input {
+    width: 8%;
+    padding: .3rem .6rem;
+}
+
+.pagination > span::before,
+.pagination > span::after {
+    content: "  ";
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+</style>

@@ -18,8 +18,10 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <input v-model="page" />
-        共{{ this.pageCount }}页
+        <div class="pagination">
+            <input v-model="page" type="text" class="page-input" />
+            共<span>{{ this.pageCount }}</span>页
+        </div>
     </div>
 </template>
 
@@ -39,10 +41,13 @@ export default {
             }
         }),
         currentPage() {
-            return this.List.slice(
-                (this.page - 1) * 10,
-                this.page * 10 - 1
-            );
+            if (this.page > 0 && this.page <= this.pageCount) {
+                return this.List.slice(
+                    (this.page - 1) * 10,
+                    this.page * 10 - 1
+                );
+            }
+            return this.List.slice(0, 9);
         },
         pageCount() {
             return Math.ceil(this.List.length / 9);
@@ -63,3 +68,22 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" scoped>
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.page-input {
+    width: 8%;
+    padding: .3rem .6rem;
+}
+
+.pagination > span::before,
+.pagination > span::after {
+    content: "  ";
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+</style>

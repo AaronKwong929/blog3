@@ -90,6 +90,22 @@ textarea {
     outline: none;
 }
 
+input {
+    border: none;
+    border-radius: 0.5rem;
+    outline: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    color: rgb(96, 126, 121);
+}
+
+input:focus {
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
+    text-shadow: none;
+}
+
+
 .line {
     width: 30%;
     transform: translateY(-51%);
