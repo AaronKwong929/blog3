@@ -19,8 +19,13 @@
             </router-link>
         </div>
         <div class="pagination">
+            <button @click="prev" :class="{ unselectable: page === 1 }">←</button>
+            第
             <input v-model="page" type="text" class="page-input" />
-            共<span>{{ this.pageCount }}</span>页
+            页
+            <button @click="next" :class="{ unselectable: page === pageCount }">→</button>
+            ， 共<span>{{ this.pageCount }}</span
+            >页
         </div>
     </div>
 </template>
@@ -56,7 +61,21 @@ export default {
     methods: {
         ...mapActions({
             getArticles: "COMMON_GET_ARTICLES"
-        })
+        }),
+        prev() {
+            if (this.page > 1) {
+                this.page--;
+            } else {
+                this.page = 1;
+            }
+        },
+        next() {
+            if (this.page < this.pageCount) {
+                this.page++;
+            } else {
+                this.page = this.pageCount;
+            }
+        }
     },
     mounted() {
         if (this.$store.state.articleList.length === 0) {
@@ -77,7 +96,7 @@ export default {
 
 .page-input {
     width: 8%;
-    padding: .3rem .6rem;
+    padding: 0.3rem 0.6rem;
 }
 
 .pagination > span::before,
@@ -85,5 +104,9 @@ export default {
     content: "  ";
     font-size: 1.3rem;
     font-weight: 800;
+}
+
+.unselectable {
+    background-color: brown;
 }
 </style>
