@@ -1,6 +1,6 @@
 <template>
     <div id="search-bar">
-        <input type="text" v-model="term" @keyup.enter="search" v-focus/>
+        <input type="text" v-model="term" @keyup.enter="search" v-focus placeholder="搜索标题或内容"/>
         <button class="btn-small" @click="search">搜索</button>
     </div>
 </template>

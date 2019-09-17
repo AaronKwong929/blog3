@@ -60,11 +60,24 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <div class="pagination">
-            <button @click="prev">←</button>
+        <div class="pagination" v-show="this.pageCount">
+            <button
+                class="btn-small"
+                @click="prev"
+                :class="{ unselectable: page === 1 }"
+            >
+                ←
+            </button>
             第
             <input v-model="page" type="text" class="page-input" />
-            <button @click="next">→</button>
+            页
+            <button
+                class="btn-small"
+                @click="next"
+                :class="{ unselectable: page === pageCount }"
+            >
+                →
+            </button>
             ， 共<span>{{ this.pageCount }}</span
             >页
         </div>
@@ -116,14 +129,14 @@ export default {
         currentPage() {
             if (this.page > 0 && this.page <= this.pageCount) {
                 return this.articles.slice(
-                    (this.page - 1) * 10,
-                    this.page * 10 - 1
+                    (this.page - 1) * 8,
+                    this.page * 8 - 1
                 );
             }
-            return this.articles.slice(0, 9);
+            return this.articles.slice(0, 8);
         },
         pageCount() {
-            return Math.ceil(this.articles.length / 9);
+            return Math.ceil(this.articles.length / 8);
         }
     },
     methods: {
@@ -158,22 +171,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss" scoped>
-.pagination {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.page-input {
-    width: 8%;
-    padding: 0.3rem 0.6rem;
-}
-
-.pagination > span::before,
-.pagination > span::after {
-    content: "  ";
-    font-size: 1.3rem;
-    font-weight: 800;
-}
-</style>

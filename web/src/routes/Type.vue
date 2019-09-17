@@ -36,6 +36,27 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
+        <div class="pagination" v-show="this.pageCount">
+            <button
+                class="btn-small"
+                @click="prev"
+                :class="{ unselectable: page === 1 }"
+            >
+                ←
+            </button>
+            第
+            <input v-model="page" type="text" class="page-input" />
+            页
+            <button
+                class="btn-small"
+                @click="next"
+                :class="{ unselectable: page === pageCount }"
+            >
+                →
+            </button>
+            ， 共<span>{{ this.pageCount }}</span
+            >页
+        </div>
     </div>
 </template>
 
@@ -56,7 +77,8 @@ export default {
                     return item.type === "life";
                 })
             },
-            currentType: "code"
+            currentType: "code",
+            page: 1
         };
     },
     computed: {
@@ -67,6 +89,18 @@ export default {
         }),
         articles() {
             return this.list[this.currentType];
+        },
+        currentPage() {
+            if (this.page > 0 && this.page <= this.pageCount) {
+                return this.articles.slice(
+                    (this.page - 1) * 9,
+                    this.page * 9 - 1
+                );
+            }
+            return this.articles.slice(0, 9);
+        },
+        pageCount() {
+            return Math.ceil(this.articles.length / 8);
         }
     },
     methods: {
@@ -75,6 +109,20 @@ export default {
         }),
         changeType(type) {
             this.currentType = type;
+        },
+        prev() {
+            if (this.page > 1) {
+                this.page--;
+            } else {
+                this.page = 1;
+            }
+        },
+        next() {
+            if (this.page < this.pageCount) {
+                this.page++;
+            } else {
+                this.page = this.pageCount;
+            }
         }
     },
     mounted() {
