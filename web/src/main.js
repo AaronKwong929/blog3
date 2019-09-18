@@ -12,13 +12,20 @@ import './static/css/media.queries.scss';
 
 import router from './router';
 import store from './vuex/store';
-
+import VueLazyload from 'vue-lazyload';
 import hljs from 'highlight.js';
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = Axios;
 Vue.prototype.$dateFormat = dateFormat;
+
+Vue.use(VueLazyload, {
+    preLoad: 1.3,
+    error: '',
+    loading: '',
+    attempt: 1
+});
 
 Vue.directive('highlight', function(el) {
     let blocks = el.querySelectorAll('pre code');
