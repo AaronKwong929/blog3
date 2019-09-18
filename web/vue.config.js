@@ -1,12 +1,12 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const productionGzipExtensions = ['js', 'css'];
+const productionGzipExtensions = ['js', 'css', 'svg'];
 
 module.exports = {
     devServer: {
         port: 8080,
         host: 'localhost',
         https: false,
-        open: true,  // 自动启动浏览器
+        open: true, // 自动启动浏览器
         // 打包和上线版本需要注释proxy
         proxy: {
             '/api/*': {
@@ -14,23 +14,39 @@ module.exports = {
                 changeOrigin: true, //是否跨域
                 ws: true,
                 pathRewrite: {
-                    '^/api': '',
+                    '^/api': ''
                 }
             }
         }
     },
     productionSourceMap: false,
+    // configureWebpack: config => {
+    //     if (process.env.NODE_ENV === 'production') {
+    //         return {
+    //             plugins: [
+    //                 new CompressionWebpackPlugin({
+    //                     test: /\.js$|\.html$|\.css/,
+    //                     threshold: 10240,
+    //                     deleteOriginalAssets: false
+    //                 })
+    //             ]
+    //         }
+    //     }
+    // },
     configureWebpack: config => {
         if (process.env.NODE_ENV === 'production') {
-            return {
-                plugins: [
-                    new CompressionWebpackPlugin({
-                        test: /\.js$|\.html$|\.css/,
-                        threshold: 10240,
-                        deleteOriginalAssets: false
-                    })
-                ]
-            }
+            // 生产环境
+            config.plugins.push(
+                new CompressionWebpackPlugin({
+                    filename: '[path].gz[query]', // 提示示compression-webpack-plugin@3.0.0的话asset改为filename
+                    algorithm: 'gzip',
+                    test: new RegExp(
+                        '\\.(' + productionGzipExtensions.join('|') + ')$'
+                    ),
+                    threshold: 10240,
+                    minRatio: 0.8
+                })
+            );
         }
-    },
+    }
 };
