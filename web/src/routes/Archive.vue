@@ -4,7 +4,7 @@
         <div class="router-title">
             归档
         </div>
-        <searchBar></searchBar>
+        <SearchBar></SearchBar>
         <div class="list">
             <router-link
                 v-for="(item, index) in currentPage"
@@ -44,7 +44,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import searchBar from "../components/SearchBar";
+const SearchBar = () => import('../components/SearchBar');
 export default {
     data() {
         return {
@@ -95,7 +95,7 @@ export default {
         }
     },
     components: {
-        searchBar
+        SearchBar
     }
 };
 </script>

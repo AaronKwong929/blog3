@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import SearchBar from "../components/SearchBar"
+const SearchBar = () => import('../components/SearchBar');
 import { mapState, mapActions } from "vuex";
 export default {
     data() {
