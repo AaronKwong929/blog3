@@ -2,7 +2,7 @@
     <div id="sidebar">
         <div class="left-bar">
             <div class="avatar">
-                <img src="../static/img/avatar.jpg" />
+                <img src='@/static/img/avatar.jpg' />
             </div>
             <div class="routers">
                 <router-link to="/home" tag="div" class="bar-item" title="首页"
@@ -183,7 +183,7 @@ export default {
 
 .beian {
     text-align: center;
-    font-size: .6rem;
+    font-size: 0.6rem;
     position: fixed;
     bottom: 0;
     left: 3%;
