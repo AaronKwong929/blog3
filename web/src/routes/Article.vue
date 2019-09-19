@@ -17,6 +17,7 @@
         ></div>
     </div>
 </template>
+
 <script>
 import marked from "marked";
 import { mapActions, mapState } from "vuex";
@@ -55,6 +56,7 @@ export default {
     }
 };
 </script>
+
 <style lang="scss" scoped>
 #Article {
     margin: 6rem;
