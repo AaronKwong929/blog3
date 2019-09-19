@@ -36,7 +36,7 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <div class="pagination" v-show="this.pageCount">
+        <div class="pagination" v-show="this.pageCount > 1">
             <button
                 class="btn-small"
                 @click="prev"
