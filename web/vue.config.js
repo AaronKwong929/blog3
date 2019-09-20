@@ -1,5 +1,9 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css', 'svg'];
+const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
+
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
 
 module.exports = {
     devServer: {
@@ -20,22 +24,8 @@ module.exports = {
         }
     },
     productionSourceMap: false,
-    // configureWebpack: config => {
-    //     if (process.env.NODE_ENV === 'production') {
-    //         return {
-    //             plugins: [
-    //                 new CompressionWebpackPlugin({
-    //                     test: /\.js$|\.html$|\.css/,
-    //                     threshold: 10240,
-    //                     deleteOriginalAssets: false
-    //                 })
-    //             ]
-    //         }
-    //     }
-    // },
     configureWebpack: config => {
-        if (process.env.NODE_ENV === 'production') {
-            // 生产环境
+        if (IS_PROD) {
             config.plugins.push(
                 new CompressionWebpackPlugin({
                     filename: '[path].gz[query]', // 提示示compression-webpack-plugin@3.0.0的话asset改为filename
@@ -47,6 +37,29 @@ module.exports = {
                     minRatio: 0.8
                 })
             );
+            config.plugins.push(
+                new BundleAnalyzerPlugin({
+                    analyzerMode: 'server',
+                    analyzerHost: '127.0.0.1',
+                    analyzerPort: 8889,
+                    reportFilename: 'report.html',
+                    defaultSizes: 'parsed',
+                    openAnalyzer: true,
+                    generateStatsFile: false,
+                    statsFilename: 'stats.json',
+                    statsOptions: null,
+                    logLevel: 'info'
+                })
+            );
+            config.externals = {
+                vue: 'Vue',
+                axios: 'axios',
+                'vue-router': 'VueRouter',
+                lodash: '_',
+                vuex: 'Vuex',
+                'highlight.js': 'hljs',
+                marked: 'marked'
+            };
         }
     }
 };
