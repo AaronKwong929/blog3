@@ -6,11 +6,17 @@
         </div>
         <ul class="log-items">
             <li>
+                <div class="ver">2019-9-20 开发版本3.4 上线版本1.4</div>
+                <ul class="new">
+                    <li class="new-item"></li>
+                    <li class="new-item">评论区？</li>
+                </ul>
+            </li>
+            <li>
                 <div class="ver">2019-9-8 开发版本3.3 上线版本1.3</div>
                 <ul class="new">
-                    <li class="new-item">归档/分类/标签页增加全文/标题搜索；搜索结果高亮？</li>
-                    <li class="new-item">分页器</li>
-                    <li class="new-item">评论区？</li>
+                    <li class="new-item">归档/分类/标签页增加全文/标题搜索；搜索结果高亮</li>
+                    <li class="new-item">前端处理的分页器</li>
                 </ul>
             </li>
             <li>

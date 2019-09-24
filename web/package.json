@@ -29,7 +29,9 @@
         "node-sass": "^4.12.0",
         "sass-loader": "^7.1.0",
         "vue-template-compiler": "^2.6.10",
-        "webpack-bundle-analyzer": "^3.5.0"
+        "webpack-bundle-analyzer": "^3.5.0",
+        "terser-webpack-plugin": "^2.1.0",
+        "happypack": "^2.0.5"
     },
     "eslintConfig": {
         "root": true,
