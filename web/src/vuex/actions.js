@@ -61,6 +61,23 @@ const actions = {
                 state.loginFail = true;
             }
         });
+    },
+    async SEND_COMMENT({ dispatch }, comment) {
+        await Axios.post(`${baseURL}/comment/publish`, {
+            user: comment.user,
+            content: comment.content,
+            id: comment.id
+        }).then(() => {
+            // dispatch('ADMIN_GET_ARTICLES');
+            dispatch('COMMON_GET_ARTICLES');
+        })
+    },
+    async DELETE_COMMENT({dispatch}, commentID) {
+        await Axios.post(`${baseURL}/comment/delete`, {
+            id: commentID.id
+        }).then(() => {
+            dispatch('COMMON_GET_ARTICLES');
+        })
     }
 };
 
