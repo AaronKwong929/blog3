@@ -1,4 +1,5 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 const productionGzipExtensions = ['js', 'css', 'svg'];
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 
@@ -51,6 +52,19 @@ module.exports = {
                     logLevel: 'info'
                 })
             );
+            config.plugins.push(
+                new TerserWebpackPlugin({
+                    terserOptions: {
+                        compress: {
+                            warnings: false,
+                            drop_console: true,
+                            drop_debugger: true,
+                            pure_funcs: ['console.log']
+                        }
+                    }
+                })
+            );
+
             config.externals = {
                 vue: 'Vue',
                 axios: 'axios',
