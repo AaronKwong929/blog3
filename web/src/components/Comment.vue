@@ -26,9 +26,10 @@ export default {
                 content: this.content,
                 id: this.$route.params.id
             });
+            // 不设一秒不能加载出来
             setTimeout(() => {
                this.getDetails(this.$route.params.id); 
-            }, 500);
+            }, 1000);
         }
     },
     computed: {},

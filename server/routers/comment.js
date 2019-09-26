@@ -19,4 +19,12 @@ commentRouter.post('/publish', async ctx => {
     }
 });
 
+commentRouter.post('/delete', async ctx => {
+    const id = ctx.request.body.id;
+    console.log(id);
+    ctx.response.body = {
+        code: 1,
+        msg: 'comment deleted'
+    }
+});
 module.exports = commentRouter;
