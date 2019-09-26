@@ -68,8 +68,8 @@ const actions = {
             content: comment.content,
             id: comment.id
         }).then(() => {
-            // dispatch('ADMIN_GET_ARTICLES');
             dispatch('COMMON_GET_ARTICLES');
+            // dispatch('FIND_ARTICLE', comment.id);
         })
     },
     async DELETE_COMMENT({dispatch}, commentID) {

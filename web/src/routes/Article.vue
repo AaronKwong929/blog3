@@ -15,12 +15,21 @@
             v-highlight
             v-html="compiledMarkdown"
         ></div>
+        <div class="comment-area" v-if="Details.comments">
+            <div v-for="(item, index) in Details.comments" :key="index">
+                {{ item.user }} {{ item.time }}<br />
+                {{ item.content }}
+                <hr />
+            </div>
+        </div>
+        <CommentArea></CommentArea>
     </div>
 </template>
 
 <script>
 import marked from "marked";
 import { mapActions, mapState } from "vuex";
+import CommentArea from "../components/Comment";
 export default {
     data() {
         return {
@@ -53,6 +62,9 @@ export default {
         } else {
             this.getDetailss(this.$route.params.id);
         }
+    },
+    components: {
+        CommentArea
     }
 };
 </script>
