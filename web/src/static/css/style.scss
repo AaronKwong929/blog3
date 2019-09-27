@@ -186,3 +186,30 @@ input:focus {
 .pagination .btn-small {
     padding: .5rem;
 }
+
+/* 评论区 */
+.comment {
+    box-shadow: 0 0 0.8rem 0 #aaa;
+    padding: 1rem;
+    border-radius: 1rem;
+    width: 60vw;
+    margin: 1rem 6rem;
+}
+
+.comment-user {
+    font-size: 1.2rem;
+}
+
+.comment-time {
+    font-size: .9rem;
+}
+
+.comment-time::before {
+    content: " - ";
+}
+
+.comment-details {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin: .5rem 0;
+}
