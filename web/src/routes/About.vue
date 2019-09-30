@@ -41,7 +41,7 @@
                     毕业设计?
                 </li>
                 <li class="li-title">版本号</li>
-                <li class="li-content">开发版本3.2 - 上线版本1.2</li>
+                <li class="li-content">开发版本3.4.2 - 上线版本1.4.2</li>
                 <li class="li-title">技术栈</li>
                 <li class="li-content">
                     <ul>
