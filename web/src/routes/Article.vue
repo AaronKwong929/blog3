@@ -15,23 +15,6 @@
             v-highlight
             v-html="compiledMarkdown"
         ></div>
-        <!-- <div class="comment-area" v-if="Details.comments">
-            <div
-                v-for="(item, index) in Details.comments"
-                :key="index"
-                class="comment"
-            >
-                <span class="comment-user">{{ item.from }} </span>
-                <span class="comment-time">
-                    {{ item.time }}
-                </span>
-                <div v-if="item.to">回复：@{{ item.to }}</div>
-                <div class="comment-details">
-                    {{ item.content }}
-                </div>
-                <button @click="changeTo(item.from)">回复</button>
-            </div>
-        </div> -->
         <CommentArea :comments="Details.comments"></CommentArea>
     </div>
 </template>
