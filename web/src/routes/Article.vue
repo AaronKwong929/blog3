@@ -15,7 +15,7 @@
             v-highlight
             v-html="compiledMarkdown"
         ></div>
-        <div class="comment-area" v-if="Details.comments">
+        <!-- <div class="comment-area" v-if="Details.comments">
             <div
                 v-for="(item, index) in Details.comments"
                 :key="index"
@@ -31,8 +31,8 @@
                 </div>
                 <button @click="changeTo(item.from)">回复</button>
             </div>
-        </div>
-        <CommentArea></CommentArea>
+        </div> -->
+        <CommentArea :comments="Details.comments"></CommentArea>
     </div>
 </template>
 
@@ -41,20 +41,11 @@ import marked from "marked";
 import { mapActions, mapState } from "vuex";
 import CommentArea from "../components/Comment";
 export default {
-    data() {
-        return {
-            details: "",
-            to: ""
-        };
-    },
     methods: {
         ...mapActions({
             getArticles: "COMMON_GET_ARTICLES",
             getDetailss: "FIND_ARTICLE"
-        }),
-        changeTo(name) {
-            this.to = name;
-        }
+        })
     },
     computed: {
         compiledMarkdown: function() {

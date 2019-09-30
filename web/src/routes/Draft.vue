@@ -110,7 +110,7 @@ export default {
             });
             setTimeout(() => {
                 this.getDetails();
-            }, 500);
+            }, 1000);
         }
     },
     updated() {
