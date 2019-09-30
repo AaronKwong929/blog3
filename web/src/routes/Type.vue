@@ -25,7 +25,7 @@
                 生活({{ this.list.life.length }})
             </button>
             <router-link
-                v-for="(item, index) in articles"
+                v-for="(item, index) in currentPage"
                 :key="index"
                 :to="'/article/' + item._id"
                 tag="div"
