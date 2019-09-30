@@ -1,8 +1,10 @@
 <template>
     <div class="Comment">
-        <input type="text" v-model="from" placeholder="user" />
-        <textarea v-model="content" placeholder="comment goes here"></textarea>
-        <button @click="sendComment">123</button>
+        <input disabled type="text" v-model="this.$parent.to" />
+        <input type="text" v-model="from" placeholder="From" />
+        <textarea v-model="content" placeholder="Comment"></textarea>
+        <button @click="sendComment">发送</button>
+        <button @click="resetReply">Reset</button>
     </div>
 </template>
 
@@ -22,14 +24,22 @@ export default {
         }),
         async sendComment() {
             await this.Send({
-                user: this.from,
+                from: this.from,
                 content: this.content,
+                to: this.$parent.to,
                 id: this.$route.params.id
             });
             // 不设一秒不能加载出来
             setTimeout(() => {
-               this.getDetails(this.$route.params.id); 
-            }, 1000);
+                this.getDetails(this.$route.params.id);
+            }, 500);
+            this.from = "";
+            this.content = "";
+        },
+        resetReply() {
+            this.$parent.to = "";
+            this.from = "";
+            this.content = "";
         }
     },
     computed: {},

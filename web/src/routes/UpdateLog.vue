@@ -6,10 +6,10 @@
         </div>
         <ul class="log-items">
             <li>
-                <div class="ver">2019-9-20 开发版本3.4 上线版本1.4</div>
+                <div class="ver">2019-9-30 开发版本3.4.1 上线版本1.4.1</div>
                 <ul class="new">
-                    <li class="new-item"></li>
-                    <li class="new-item">评论区？</li>
+                    <li class="new-item">评论区上线</li>
+                    <li class="new-item">项目体积优化，加载速度优化</li>
                 </ul>
             </li>
             <li>

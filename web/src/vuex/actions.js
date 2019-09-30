@@ -64,19 +64,21 @@ const actions = {
     },
     async SEND_COMMENT({ dispatch }, comment) {
         await Axios.post(`${baseURL}/comment/publish`, {
-            user: comment.user,
+            from: comment.from,
             content: comment.content,
+            to: comment.to,
             id: comment.id
         }).then(() => {
             dispatch('COMMON_GET_ARTICLES');
-            // dispatch('FIND_ARTICLE', comment.id);
         })
     },
-    async DELETE_COMMENT({dispatch}, commentID) {
+    async DELETE_COMMENT({ dispatch }, comment) {
         await Axios.post(`${baseURL}/comment/delete`, {
-            id: commentID.id
+            articleID: comment.articleID,
+            commentID: comment.commentID
         }).then(() => {
             dispatch('COMMON_GET_ARTICLES');
+            dispatch('ADMIN_GET_ARTICLES');
         })
     }
 };
