@@ -28,7 +28,10 @@ export default {
         ...mapActions({
             getArticles: "COMMON_GET_ARTICLES",
             getDetailss: "FIND_ARTICLE"
-        })
+        }),
+        changeTo(name) {
+            this.to = name;
+        }
     },
     computed: {
         compiledMarkdown: function() {

@@ -44,6 +44,8 @@ export default {
             getDetails: "FIND_ARTICLE"
         }),
         async sendComment() {
+            this.from = "";
+            this.content = "";
             await this.Send({
                 from: this.from,
                 content: this.content,
