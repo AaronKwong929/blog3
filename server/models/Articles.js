@@ -28,23 +28,13 @@ const articleSchema = new mongoose.Schema({
     },
     comments: [
         {
-            user: { type: String, default: '匿名用户' },
+            from: { type: String, default: '' },
+            to: { type: String, default: '' },
             content: { type: String, default: '' },
             time: {
                 type: String,
                 default: dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
-            },
-            reply: [
-                {
-                    responder: { type: String, default: '' },
-                    reviewers: { type: String, default: '匿名用户' },
-                    time: {
-                        type: String,
-                        default: dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
-                    },
-                    content: ''
-                }
-            ]
+            }
         }
     ]
 });

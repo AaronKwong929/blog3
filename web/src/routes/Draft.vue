@@ -37,7 +37,30 @@
                 <i class="iconfont icon-biaoqian"></i>{{ tag }}
             </div>
             <time class="article-time article-info">{{ now }}</time>
-            <div v-html="compiledMarkdown" v-highlight class="article-content"></div>
+            <div
+                v-html="compiledMarkdown"
+                v-highlight
+                class="article-content"
+            ></div>
+        </div>
+        <div class="comment-area" v-if="this.comments">
+            <div
+                v-for="(item, index) in this.comments"
+                :key="index"
+                class="comment clearfix"
+            >
+                <span class="comment-user">{{ item.from }} </span>
+                <span class="comment-time">
+                    {{ item.time }}
+                </span>
+                <div v-if="item.to">回复：@{{ item.to }}</div>
+                <div class="comment-details">
+                    {{ item.content }}
+                </div>
+                <button class="btn-small" @click="deleteComment(item._id)">
+                    删除
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -51,6 +74,7 @@ export default {
             tag: "",
             type: "",
             content: "",
+            comments: "",
             now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
         };
     },
@@ -69,6 +93,7 @@ export default {
             this.type = details.type;
             this.tag = details.tag;
             this.content = details.content;
+            this.comments = details.comments;
         },
         save: lodash.debounce(function() {
             this.$store.state.articleDetails.title = this.title;
@@ -77,7 +102,16 @@ export default {
             this.$store.state.articleDetails.content = this.content;
             this.$store.dispatch("SAVE_ARTICLE");
             this.$store.dispatch("COMMON_GET_ARTICLES");
-        }, 1000)
+        }, 1000),
+        deleteComment(id) {
+            this.$store.dispatch("DELETE_COMMENT", {
+                articleID: this.$route.params.id,
+                commentID: id
+            });
+            setTimeout(() => {
+                this.getDetails();
+            }, 500);
+        }
     },
     updated() {
         this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
@@ -183,5 +217,10 @@ textarea:focus {
     border: 1px solid rgb(96, 126, 121);
     box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
+}
+
+.comment .btn-small {
+    padding: 0.4rem;
+    display: inline-block;
 }
 </style>
