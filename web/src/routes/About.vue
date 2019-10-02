@@ -22,7 +22,7 @@
                     ><i class="iconfont icon-icon-test5"></i
                 ></a>
                 <a
-                    href="http://106.53.89.236:3000"
+                    href="http://aaronkwong.xyz"
                     target="_blank"
                     title="个人主页"
                     ><i class="iconfont icon-gerentouxiang"></i
