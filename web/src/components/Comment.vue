@@ -17,7 +17,6 @@
                 <button @click="changeTo(item.from)">回复</button>
             </div>
         </div>
-
         <input disabled type="text" v-model="this.to" />
         <input type="text" v-model="from" placeholder="From" />
         <textarea v-model="content" placeholder="Comment"></textarea>
@@ -70,4 +69,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.comment {
+    box-shadow: 0 0 0.8rem 0 #aaa;
+    padding: 1rem;
+    border-radius: 1rem;
+    min-width: 40vw;
+    margin: 1rem 6rem;
+}
+.comment-user {
+    font-size: 1.2rem;
+}
+.comment-time {
+    font-size: .9rem;
+}
+.comment-time::before {
+    content: " - ";
+}
+.comment-details {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin: .5rem 0;
+}
 </style>

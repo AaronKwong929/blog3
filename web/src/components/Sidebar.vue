@@ -1,42 +1,26 @@
 <template>
-    <div id="sidebar">
-        <div class="left-bar">
-            <div class="avatar">
-                <img src='@/static/img/avatar.jpg' />
-            </div>
-            <div class="routers">
-                <router-link to="/home" tag="div" class="bar-item" title="首页"
-                    ><i class="iconfont icon-cangku"></i
-                ></router-link>
+    <nav id="sidebar">
+        <!-- <div class="avatar">
+            <img src="@/static/img/avatar.jpg" />
+        </div> -->
+        <div class="routers">
+            <router-link to="/home" tag="div" class="bar-item" title="首页"
+                ><i class="iconfont icon-cangku"></i> 首 页
+            </router-link>
 
-                <router-link
-                    to="/archive"
-                    tag="div"
-                    class="bar-item"
-                    title="归档"
-                    ><i class="iconfont icon-liebiao1"></i
-                ></router-link>
+            <router-link to="/archive" tag="div" class="bar-item" title="归档"
+                ><i class="iconfont icon-liebiao1"></i> 归 档
+            </router-link>
 
-                <router-link to="/type" tag="div" class="bar-item" title="分类"
-                    ><i class="iconfont icon-yingyongAPP"></i
-                ></router-link>
+            <router-link to="/type" tag="div" class="bar-item" title="分类"
+                ><i class="iconfont icon-yingyongAPP"></i> 分 类
+            </router-link>
 
-                <router-link to="/tag" tag="div" class="bar-item" title="标签"
-                    ><i class="iconfont icon-biaoqian"></i
-                ></router-link>
+            <router-link to="/tag" tag="div" class="bar-item" title="标签"
+                ><i class="iconfont icon-biaoqian"></i> 标 签
+            </router-link>
 
-                <router-link to="/about" tag="div" class="bar-item" title="关于"
-                    ><i class="iconfont icon-guanyu"></i
-                ></router-link>
-
-                <router-link
-                    to="/update"
-                    tag="div"
-                    class="bar-item small-screen"
-                    title="开发日志"
-                    ><i class="iconfont icon-custom-update"></i
-                ></router-link>
-
+            <div class="other-btn">
                 <router-link
                     to="/login"
                     tag="div"
@@ -54,31 +38,34 @@
                     v-else
                     ><i class="iconfont icon-gerentouxiang"></i
                 ></router-link>
+
+                <router-link
+                    to="/update"
+                    tag="div"
+                    class="bar-item"
+                    title="开发日志"
+                    ><i class="iconfont icon-custom-update"></i
+                ></router-link>
+
+                <router-link to="/about" tag="div" class="bar-item" title="关于"
+                    ><i class="iconfont icon-guanyu"></i
+                ></router-link>
+
+                <button class="bar-item" @click="top" title="回到顶部">
+                    <i class="iconfont icon-zhiding"></i>
+                </button>
+
+                <button class="bar-item" @click="back" title="返回">
+                    <i class="iconfont icon-chexiaofanhuichehuishangyibu"></i>
+                </button>
             </div>
-        </div>
-        <div class="right-bar">
-            <button class="bar-item" @click="back" title="返回">
-                <i class="iconfont icon-chexiaofanhuichehuishangyibu"></i>
-            </button>
-
-            <button class="bar-item" @click="top" title="回到顶部">
-                <i class="iconfont icon-zhiding"></i>
-            </button>
-
-            <router-link
-                to="/update"
-                tag="div"
-                class="bar-item"
-                title="开发日志"
-                ><i class="iconfont icon-custom-update"></i
-            ></router-link>
         </div>
         <div class="beian">
             <a href="http://beian.miitbeian.gov.cn" target="_blank"
                 >粤ICP备19111987</a
             >
         </div>
-    </div>
+    </nav>
 </template>
 
 <script>
@@ -99,11 +86,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/* 整个组件的 */
+#sidebar {
+    width: 15%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    box-shadow: 0.6rem 0 0.6rem -0.6rem #aaa;
+    background-color: #ddd;
+}
+
 .router-link-active {
     background-color: rgba(96, 126, 121, 0.4);
     box-shadow: 0 0 1rem #aaa;
-    border-radius: 50%;
+    border-radius: 9999rem;
 }
 
 .iconfont {
@@ -111,11 +107,14 @@ export default {
     color: rgb(96, 126, 121);
 }
 
-.bar-item,
-.bar-item:link,
-.bar-item:visited {
+.routers {
+    display: flex;
+    flex-direction: column;
+}
+
+.bar-item {
     margin: 1rem auto;
-    width: 3rem;
+    width: 6rem;
     height: 3rem;
     cursor: pointer;
     display: flex;
@@ -125,68 +124,49 @@ export default {
     outline: none;
 }
 
+.routers > .bar-item:first-child {
+    margin-top: 50%;
+}
+
 .bar-item:hover,
 .bar-item:active {
     background-color: rgba(96, 126, 121, 0.4);
     box-shadow: 0 0 1rem #aaa;
-    border-radius: 50%;
-    transition: all 0.5s;
+    border-radius: 9999rem;
+    transition: all 0.8s;
 }
 
-/* 左边的bar */
-.left-bar {
-    width: 15%;
-    min-width: 10%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    box-shadow: 0.6rem 0 0.6rem -0.6rem #aaa;
-    background-color: #ddd;
+// .avatar {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// .avatar img {
+//     max-height: 10rem;
+//     max-width: 10rem;
+//     height: auto;
+//     width: auto;
+//     border-radius: 50%;
+// }
+
+.other-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60%;
+    flex-wrap: wrap;
 }
 
-.avatar img {
-    display: block;
-    margin: 2rem auto;
-    height: 10rem;
-    width: 10rem;
-    border-radius: 50%;
-}
-
-.left-bar .bar-item:last-child {
-    margin-top: 4rem;
-}
-
-.small-screen {
-    display: none;
-}
-
-/* 右边的bar */
-.right-bar {
-    width: 5%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background-color: #ddd;
-    box-shadow: -0.6rem 0 0.6rem -0.6rem #aaa;
-}
-
-.right-bar .bar-item:first-child {
-    margin-top: 600%;
-}
-
-.right-bar .bar-item:nth-child(n + 2) {
-    margin-top: 80%;
+.other-btn > .bar-item {
+    width: 3.5rem;
+    height: 3.5rem;
 }
 
 .beian {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     font-size: 0.6rem;
-    position: fixed;
-    bottom: 0;
-    left: 3%;
-    height: 2%;
 }
 </style>

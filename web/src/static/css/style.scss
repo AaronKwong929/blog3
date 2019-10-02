@@ -3,11 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     background-color: #ddd;
 }
-
 /* 伪类清除浮动 */
 .clearfix::after {
     display: block;
@@ -17,7 +15,6 @@ body {
     height: 0;
     overflow: hidden;
 }
-
 /* 伪类三角形 方向：▲ */
 .triangle::after {
     width: 0;
@@ -31,16 +28,13 @@ body {
     margin-top: 11px;
     margin-left: 10px;
 }
-
 li {
     list-style: none;
 }
-
 a {
     color: black;
     text-decoration: none;
 }
-
 .router-view-general {
     margin: 6rem 6rem 0 6rem;
     padding: 2rem 0 0 3rem;
@@ -48,7 +42,6 @@ a {
     box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
     
 }
-
 .router-view-general > .iconfont {
     font-size: 3rem;
     position: absolute;
@@ -62,14 +55,12 @@ a {
     align-items: center;
     color: rgb(96, 126, 121);
 }
-
 .router-title {
     font-family: Georgia;
     font-weight: 400;
     font-size: 2rem;
     color: rgb(96, 126, 121);
 }
-
 .btn-small {
     padding: 1rem;
     border-radius: 0.5rem;
@@ -78,18 +69,15 @@ a {
     cursor: pointer;
     outline: none;
 }
-
 .btn-small:hover {
     background-color: rgb(96, 126, 121);
     transition: all .3s;
 }
-
 input,
 select,
 textarea {
     outline: none;
 }
-
 input {
     border: none;
     border-radius: 0.5rem;
@@ -98,14 +86,11 @@ input {
     border: 1px solid #ddd;
     color: rgb(96, 126, 121);
 }
-
 input:focus {
     border: 1px solid rgb(96, 126, 121);
     box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
 }
-
-
 .line {
     width: 30%;
     transform: translateY(-51%);
@@ -113,11 +98,9 @@ input:focus {
     margin: 0 1.5rem;
     width: .3s,margin .3s;
 }
-
 .list {
     margin-top: 1rem;
 }
-
 .list > .list-item {
     display: flex;
     margin-top: .5rem;
@@ -126,16 +109,13 @@ input:focus {
     color: rgb(131, 131, 131);
     font-size: 1.2rem;
 }
-
 .list > .list-item:hover {
     color: rgb(96, 126, 121);
     transition: all .3s;
 }
-
 .list > .list-item > div {
     display: flex;
 }
-
 .list button {
     text-decoration: none;
     margin: 1rem;
@@ -147,69 +127,35 @@ input:focus {
     font-size: 1.1rem;
     padding-bottom: .1rem;
 }
-
 .list button:hover {
     color: rgb(96, 126, 121);
     border-bottom: 1px solid rgb(96, 126, 121);
     transition: all .4s;
 }
-
 .list button[class="active"] {
     color: rgb(96, 126, 121);
     border-bottom: 1px solid rgb(96, 126, 121);
 }
-
 /** 分页器 */
 .pagination {
     text-align: center;
     margin-top: 2rem;
     color: rgb(96, 126, 121);
 }
-
 .page-input {
     width: 8%;
     padding: 0.3rem 0.6rem;
 }
-
 .pagination > span::before,
 .pagination > span::after {
     content: "  ";
     font-size: 1.3rem;
     font-weight: 800;
 }
-
 .unselectable {
     background-color: rgb(96, 126, 121);
     cursor: default;
 }
-
 .pagination .btn-small {
     padding: .5rem;
-}
-
-/* 评论区 */
-.comment {
-    box-shadow: 0 0 0.8rem 0 #aaa;
-    padding: 1rem;
-    border-radius: 1rem;
-    min-width: 40vw;
-    margin: 1rem 6rem;
-}
-
-.comment-user {
-    font-size: 1.2rem;
-}
-
-.comment-time {
-    font-size: .9rem;
-}
-
-.comment-time::before {
-    content: " - ";
-}
-
-.comment-details {
-    font-size: 1.1rem;
-    font-weight: 300;
-    margin: .5rem 0;
 }

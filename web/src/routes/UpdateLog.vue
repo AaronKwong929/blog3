@@ -6,23 +6,18 @@
         </div>
         <ul class="log-items">
             <li>
-                <div class="ver">2019-9-30 开发版本3.4.1 上线版本1.4.1</div>
-                <ul class="new">
-                    <li class="new-item">评论区上线</li>
-                    <li class="new-item">项目体积优化，加载速度优化</li>
-                </ul>
+                <div class="ver">2019-8-23 开发版本3.0 上线版本1.0</div>
             </li>
             <li>
-                <div class="ver">2019-9-8 开发版本3.3 上线版本1.3</div>
-                <ul class="new">
-                    <li class="new-item">归档/分类/标签页增加全文/标题搜索；搜索结果高亮</li>
-                    <li class="new-item">前端处理的分页器</li>
-                </ul>
+                <div class="ver">2019-8-26 开发版本3.1 上线版本1.1</div>
+                <div class="new">
+                    <div class="new-item">登陆持久化</div>
+                    <div class="new-item">开发日志页面</div>
+                </div>
             </li>
             <li>
                 <div class="ver">2019-8-28 开发版本3.2 上线版本1.2</div>
                 <div class="new">
-                    <div class="new-item">移动端支持</div>
                     <div class="new-item">首页和关于页更新</div>
                     <div class="new-item">
                         时间格式化更新（Linux和Win下格式保持一致）
@@ -33,14 +28,20 @@
                 </div>
             </li>
             <li>
-                <div class="ver">2019-8-26 开发版本3.1 上线版本1.1</div>
-                <div class="new">
-                    <div class="new-item">登陆持久化</div>
-                    <div class="new-item">开发日志页面</div>
-                </div>
+                <div class="ver">2019-9-8 开发版本3.3 上线版本1.3</div>
+                <ul class="new">
+                    <li class="new-item">
+                        归档/分类/标签页增加全文/标题搜索；搜索结果高亮
+                    </li>
+                    <li class="new-item">前端处理的分页器</li>
+                </ul>
             </li>
             <li>
-                <div class="ver">2019-8-23 开发版本3.0 上线版本1.0</div>
+                <div class="ver">2019-9-30 开发版本3.4.1 上线版本1.4.1</div>
+                <ul class="new">
+                    <li class="new-item">评论区上线</li>
+                    <li class="new-item">项目体积优化，加载速度优化</li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -50,25 +51,23 @@
 #log {
     color: rgb(96, 126, 121);
 }
-
+.log-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .log-items > li {
-    margin: 2rem auto;
-    box-shadow: 0 0 .6rem .2rem #aaa;
-    padding: .5rem;
-}
-
-.log-items > li:hover {
+    margin-top: 1rem;
+    box-shadow: 0 0 0.6rem 0.2rem #aaa;
+    padding: .6rem;
     border-radius: 1rem;
-    font-size: 1.1rem;
-    transition: all .3s
+    width: 80%;
 }
-
 .ver {
     font-size: 1.4rem;
     font-weight: 400;
-    padding-bottom: .3rem;
+    padding-bottom: 0.3rem;
 }
-
 .new {
     line-height: 1.5rem;
 }
