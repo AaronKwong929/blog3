@@ -15,8 +15,8 @@
                 </div>
                 <div class="list-head">
                     <div class="item-head">标题</div>
-                    <div class="item-info">分类</div>
-                    <div class="item-info">标签</div>
+                    <div class="item-info item-type">分类</div>
+                    <div class="item-info item-tag">标签</div>
                     <div class="item-info-other">日期</div>
                 </div>
                 <div
@@ -25,8 +25,8 @@
                     class="list-body"
                 >
                     <div class="item-head">{{ item.title }}</div>
-                    <div class="item-info">{{ item.type }}</div>
-                    <div class="item-info">{{ item.tag }}</div>
+                    <div class="item-info item-type">{{ item.type }}</div>
+                    <div class="item-info item-tag">{{ item.tag }}</div>
                     <div class="item-info-other">{{ item.updatedAt }}</div>
                     <button @click="edit(item._id)" title="修改">
                         <i class="iconfont icon-bianji"></i>
@@ -45,8 +45,8 @@
                 </div>
                 <div class="list-head">
                     <div class="item-head">标题</div>
-                    <div class="item-info">分类</div>
-                    <div class="item-info">标签</div>
+                    <div class="item-info item-type">分类</div>
+                    <div class="item-info item-tag">标签</div>
                     <div class="item-info-other">日期</div>
                 </div>
                 <div
@@ -55,8 +55,8 @@
                     class="list-body"
                 >
                     <div class="item-head">{{ item.title }}</div>
-                    <div class="item-info">{{ item.type }}</div>
-                    <div class="item-info">{{ item.tag }}</div>
+                    <div class="item-info item-type">{{ item.type }}</div>
+                    <div class="item-info item-tag">{{ item.tag }}</div>
                     <div class="item-info-other">{{ item.updatedAt }}</div>
                     <button @click="publish(item._id)" title="撤回">
                         <i
@@ -167,16 +167,19 @@ export default {
 }
 
 .item-head {
-    width: calc(30% - 1rem);
+    width: calc(25% - 1rem);
     padding-left: 1rem;
 }
 
-.item-info {
-    width: calc(15% - 1rem);
+.item-type {
+    width: calc(10% - 1rem);
+}
+.item-tag {
+    width: calc(30% - 1rem);
 }
 
 .item-info-other {
-    width: calc(30% - 1rem);
+    width: calc(20% - 1rem);
 }
 
 .published > .title {

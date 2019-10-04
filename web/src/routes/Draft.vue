@@ -17,16 +17,7 @@
                     <option value="game">游戏</option>
                     <option value="life">生活</option>
                 </select>
-                <select v-model="tag" @input="save">
-                    <option disabled value="">标签</option>
-                    <option value="js">JavaScript</option>
-                    <option value="vue">Vue</option>
-                    <option value="node">Node</option>
-                    <option value="css">CSS</option>
-                    <option value="html">HTML</option>
-                    <option value="algo">算法</option>
-                    <option value="server">服务器</option>
-                </select>
+                <input type="text" v-model="tag" @input="save" />
             </div>
             <textarea v-model="content" v-focus @input="save"></textarea>
         </div>

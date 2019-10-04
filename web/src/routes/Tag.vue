@@ -92,25 +92,25 @@ export default {
         return {
             list: {
                 algo: this.$store.state.articleList.filter(item => {
-                    return item.tag === "algo";
+                    return item.tag.includes('algo');
                 }),
                 html: this.$store.state.articleList.filter(item => {
-                    return item.tag === "html";
+                    return item.tag.includes('html');
                 }),
                 css: this.$store.state.articleList.filter(item => {
-                    return item.tag === "css";
+                    return item.tag.includes('css');
                 }),
                 js: this.$store.state.articleList.filter(item => {
-                    return item.tag === "js";
+                    return item.tag.includes('js')
                 }),
                 node: this.$store.state.articleList.filter(item => {
-                    return item.tag === "node";
+                    return item.tag.includes('node');
                 }),
                 vue: this.$store.state.articleList.filter(item => {
-                    return item.tag === "vue";
+                    return item.tag.includes('vue');
                 }),
                 server: this.$store.state.articleList.filter(item => {
-                    return item.tag === "server";
+                    return item.tag.includes('server');
                 })
             },
             currentTag: "algo",
