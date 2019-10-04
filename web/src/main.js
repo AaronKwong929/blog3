@@ -8,7 +8,6 @@ import './static/css/style.scss';
 import './static/css/v-html.scss';
 import './static/icon/iconfont.css';
 import './static/css/atom-one-dark.css';
-import './static/css/media.queries.scss';
 
 import router from './router';
 import store from './vuex/store';
