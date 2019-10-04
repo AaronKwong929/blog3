@@ -18,10 +18,10 @@
                 disabled
                 type="text"
                 v-model="this.to"
-                placeholder="回复本篇文章"
+                placeholder="本篇文章"
             />
             <input type="text" v-model="from" placeholder="From" v-focus />
-            <textarea v-model="content" placeholder="留下您的高见"></textarea>
+            <textarea v-model="content"></textarea>
             <div class="empty-alert" v-show="empty">不能为空</div>
             <div class="comment-btn">
                 <button @click="sendComment" class="btn-small">发送</button>
