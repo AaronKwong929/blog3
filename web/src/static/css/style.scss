@@ -3,6 +3,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+html{
+overflow-y: overlay;
+}
 body {
     background-color: #ddd;
 }
@@ -87,6 +90,11 @@ input {
     color: rgb(96, 126, 121);
 }
 input:focus {
+    border: 1px solid rgb(96, 126, 121);
+    box-shadow: 0 0 15px rgb(96, 126, 121);
+    text-shadow: none;
+}
+textarea:focus {
     border: 1px solid rgb(96, 126, 121);
     box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;

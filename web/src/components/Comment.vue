@@ -1,11 +1,7 @@
 <template>
-    <div class="Comment">
+    <div id="Comment">
         <div class="comment-area" v-if="comments">
-            <div
-                v-for="(item, index) in comments"
-                :key="index"
-                class="comment"
-            >
+            <div v-for="(item, index) in comments" :key="index" class="comment">
                 <span class="comment-user">{{ item.from }} </span>
                 <span class="comment-time">
                     {{ item.time }}
@@ -17,12 +13,21 @@
                 <button @click="changeTo(item.from)">回复</button>
             </div>
         </div>
-        <input disabled type="text" v-model="this.to" />
-        <input type="text" v-model="from" placeholder="From" />
-        <textarea v-model="content" placeholder="Comment"></textarea>
-
-        <button @click="sendComment">发送</button>
-        <button @click="resetReply">Reset</button>
+        <div class="comment-create">
+            <input
+                disabled
+                type="text"
+                v-model="this.to"
+                placeholder="回复本篇文章"
+            />
+            <input type="text" v-model="from" placeholder="From" v-focus />
+            <textarea v-model="content" placeholder="留下您的高见"></textarea>
+            <div class="empty-alert" v-show="empty">不能为空</div>
+            <div class="comment-btn">
+                <button @click="sendComment" class="btn-small">发送</button>
+                <button @click="resetReply" class="btn-small">Reset</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -33,7 +38,8 @@ export default {
         return {
             from: "",
             content: "",
-            to: ""
+            to: "",
+            empty: false
         };
     },
     props: ["comments"],
@@ -43,6 +49,12 @@ export default {
             getDetails: "FIND_ARTICLE"
         }),
         async sendComment() {
+            if (!this.from || this.content) {
+                this.empty = true;
+                return setTimeout(() => {
+                    return (this.empty = false);
+                }, 3000);
+            }
             await this.Send({
                 from: this.from,
                 content: this.content,
@@ -69,7 +81,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .comment {
     box-shadow: 0 0 0.8rem 0 #aaa;
     padding: 1rem;
@@ -81,7 +92,7 @@ export default {
     font-size: 1.2rem;
 }
 .comment-time {
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 .comment-time::before {
     content: " - ";
@@ -89,6 +100,46 @@ export default {
 .comment-details {
     font-size: 1.1rem;
     font-weight: 300;
-    margin: .5rem 0;
+    margin: 0.5rem 0;
+}
+
+.comment-create {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.comment-create > input,
+.comment-create > textarea {
+    margin-bottom: 1rem;
+}
+
+.comment-create > textarea {
+    padding: 0.6rem;
+    width: 60%;
+    height: 20vh;
+    border-radius: 1rem;
+
+    color: #333;
+    line-height: 1.2rem;
+}
+
+.comment-btn {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.comment-btn > button:first-child {
+    margin-right: 1rem;
+}
+
+.empty-alert {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.527);
+    background-color: rgba(255, 0, 0, 0.527);
+    color: black;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
 }
 </style>

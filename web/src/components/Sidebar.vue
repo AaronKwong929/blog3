@@ -115,7 +115,7 @@ export default {
 .bar-item {
     margin: 1rem auto;
     width: 6rem;
-    height: 3rem;
+    height: 2rem;
     cursor: pointer;
     display: flex;
     justify-content: center;

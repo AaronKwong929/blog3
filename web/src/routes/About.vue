@@ -1,154 +1,98 @@
 <template>
-    <div id="about">
-        <div class="about-me">
-            <div class="about-title">关于我</div>
-            <div class="left">
+    <div id="about" class="router-view-general">
+        <i class="iconfont icon-guanyu"></i>
+        <div class="router-title">
+            关于
+        </div>
+        <div class="about">
+            <div id="me" class="section">
+                <div class="about-title">关于我</div>
+                <div class="about-link">
+                    <a
+                        href="https://github.com/AaronKwong929"
+                        target="_blank"
+                        title="Aaron's GitHub"
+                        ><i class="iconfont icon-icon-test5"></i
+                    ></a>
+                    <a
+                        href="http://aaronkwong.xyz"
+                        target="_blank"
+                        title="个人主页"
+                        ><i class="iconfont icon-gerentouxiang"></i
+                    ></a>
+                </div>
                 <ul>
-                    <li>现居 广东 广州</li>
+                    <li>广东 广州</li>
+                    <li>(即将)毕业于广州大学 计算机学院</li>
                     <li>(截至 2019/8)半年前端编程经验</li>
                     <li>大三下学期开始进行前端学习</li>
-                    <li>目前对 html，css，js 有不够深的了解</li>
-                    <li>使用过 vue 和 koa 做过小项目</li>
-                    <li>副业 python 爬虫和 数据分析</li>
-                    <li>(即将)毕业于广州大学</li>
-                    <li>计算机科学与网络工程学院 软件工程</li>
+                    <li>使用 vue 和 koa 做过小项目</li>
+                    <li>略懂爬虫、数据分析</li>
                 </ul>
             </div>
-            <div class="right">
-                <a
-                    href="https://github.com/AaronKwong929"
-                    target="_blank"
-                    title="Aaron's GitHub"
-                    ><i class="iconfont icon-icon-test5"></i
-                ></a>
-                <a
-                    href="http://aaronkwong.xyz"
-                    target="_blank"
-                    title="个人主页"
-                    ><i class="iconfont icon-gerentouxiang"></i
-                ></a>
+            <div id="blog" class="section">
+                <div class="about-title">关于Blog</div>
+                <ul>
+                    <li>
+                        vue koa前后端分离开发尝试
+                    </li>
+                    <li>
+                        毕业设计
+                    </li>
+                    <li>
+                        想做就做
+                    </li>
+                    <li>
+                        前端 Vue.JS 全家桶
+                    </li>
+                    <li>
+                        后端 Koa.JS
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="about-blog">
-            <div class="about-title">关于本博客</div>
-            <ul>
-                <li class="li-title">开发原因</li>
-                <li class="li-content">
-                    <div class="line-through">
-                        没有自己搭建的个人博客的前端仔都是咸鱼
-                    </div>
-                    vue koa前后端分离开发尝试<br />
-                    毕业设计?
-                </li>
-                <li class="li-title">版本号</li>
-                <li class="li-content">开发版本3.4.2 - 上线版本1.4.2</li>
-                <li class="li-title">技术栈</li>
-                <li class="li-content">
-                    <ul>
-                        <li>前端：Vue.JS 全家桶</li>
-                        <li>后端：Koa.JS</li>
-                        <li>数据库：MongoDB</li>
-                    </ul>
-                </li>
-                <li class="li-title">未来期待实现的内容</li>
-                <li class="li-content">
-                    <ul>
-                        <li>
-                            1. 移动端支持
-                        </li>
-                        <li>
-                            2. 评论区
-                        </li>
-                        <li>
-                            3. 标题搜索与全文搜索
-                        </li>
-                        <li>
-                            4. UI优化
-                        </li>
-                        <li>
-                            5. 多级标签？分类？
-                        </li>
-                    </ul>
-                </li>
-            </ul>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-#about {
-    color: rgb(96, 126, 121);
+.about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.about-me,
-.about-blog {
-    vertical-align: top;
-    box-shadow: 0 0 1rem 0.2rem #aaa;
-    margin: 2rem;
-    padding: 2rem;
+.section {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: 0 0 0.5rem 0.1rem #aaa;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
 }
 
 .about-title {
+    justify-self: center;
+    align-self: center;
     font-size: 1.5rem;
     font-weight: 600;
-    box-shadow: 0 0.3rem 0.3rem -0.2rem #aaa;
-    text-align: center;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
 }
 
-.about-me ul li {
-    line-height: 1.5rem;
+.about-link {
+    justify-self: center;
+    align-self: center;
+}
+
+.about-link .iconfont {
+    font-size: 2rem;
+}
+
+.section > ul > li {
     font-size: 1.1rem;
-    font-weight: 300;
-    margin-bottom: 0.5rem;
-}
-
-.iconfont {
-    font-size: 2.5rem;
-    width: 4rem;
-    height: 4rem;
-    color: rgb(96, 126, 121);
-}
-
-.iconfont:hover,
-.iconfont:active {
-    background-color: rgba(96, 126, 121, 0.4);
-    box-shadow: 0 0 1rem #aaa;
-    border-radius: 50%;
-    transition: all 0.5s;
-}
-
-.about-me a {
-    margin: 1rem;
-}
-
-.li-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-.li-content {
-    padding-left: 1rem;
-    font-size: 1.1rem;
-    font-weight: 300;
-    margin-bottom: 1rem;
-}
-
-.left,
-.right {
-    display: inline-block;
-    width: 50%;
-    vertical-align: top;
-}
-
-.line-through {
-    text-decoration: line-through;
-}
-
-#about > div:hover {
-    border-radius: 1rem;
-    box-shadow: 0 0 .5rem .1rem #aaa;
-    transition: all .3s
+    line-height: 150%;
+    font-weight: 100;
 }
 </style>

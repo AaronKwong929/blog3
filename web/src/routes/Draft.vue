@@ -213,12 +213,6 @@ textarea {
     line-height: 1.2rem;
 }
 
-textarea:focus {
-    border: 1px solid rgb(96, 126, 121);
-    box-shadow: 0 0 15px rgb(96, 126, 121);
-    text-shadow: none;
-}
-
 .comment .btn-small {
     padding: 0.4rem;
     display: inline-block;
