@@ -60,11 +60,11 @@
                 </button>
             </div>
         </div>
-        <div class="beian">
+        <footer class="beian">
             <a href="http://beian.miitbeian.gov.cn" target="_blank"
                 >粤ICP备19111987</a
             >
-        </div>
+        </footer>
     </nav>
 </template>
 

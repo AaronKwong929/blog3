@@ -1,5 +1,5 @@
 <template>
-    <div id="Article">
+    <article id="Article">
         <div class="article-title">
             {{ Details.title }}
         </div>
@@ -16,7 +16,7 @@
             v-html="compiledMarkdown"
         ></div>
         <CommentArea :comments="Details.comments"></CommentArea>
-    </div>
+    </article>
 </template>
 
 <script>
