@@ -20,6 +20,8 @@
                 ><i class="iconfont icon-biaoqian"></i> 标 签
             </router-link>
 
+            <Timer></Timer>
+
             <div class="other-btn">
                 <router-link
                     to="/login"
@@ -69,6 +71,7 @@
 </template>
 
 <script>
+const Timer = () => import("../components/Time");
 export default {
     methods: {
         back() {
@@ -81,6 +84,9 @@ export default {
         toUpdate() {
             this.$router.push("/update");
         }
+    },
+    components: {
+        Timer
     }
 };
 </script>
