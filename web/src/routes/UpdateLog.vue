@@ -43,6 +43,14 @@
                     <li class="new-item">项目体积优化，加载速度优化</li>
                 </ul>
             </li>
+            <li>
+                <div class="ver">2019-10-12 开发版本3.5 上线版本1.5</div>
+                <ul class="new">
+                    <li class="new-item">首页UI更改</li>
+                    <li class="new-item">轮播图实现</li>
+                    <li class="new-item">增加最近动态栏</li>
+                </ul>
+            </li>
         </ul>
     </div>
 </template>
