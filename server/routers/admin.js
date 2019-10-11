@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin');
 const Article = require('../models/Articles');
+const Recent = require('../models/Recent');
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
 let adminRouter = new Router();
@@ -87,6 +88,22 @@ adminRouter.put('/publish', verifyToken, async ctx => {
     await article.save();
     ctx.response.body = {
         code: 1
+    };
+});
+
+adminRouter.post('/recent', verifyToken, async ctx => {
+    let list = await Recent.find();
+    if (list.length > 0) {
+        let first = list[0];
+        first.content = ctx.request.body.content;
+        await first.save();
+    } else {
+        const recent = new Recent(ctx.request.body);
+        await recent.save();
+    }
+    ctx.response.body = {
+        code: 1,
+        msg: `recent updated`
     };
 });
 

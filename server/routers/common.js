@@ -1,11 +1,12 @@
 const Router = require('koa-router');
 
 const Article = require('../models/Articles');
+const Recent = require('../models/Recent');
 
 let commonRouter = new Router();
 
 commonRouter.get('/articles', async ctx => {
-    let articleList = await Article.find({});
+    let articleList = await Article.find();
     articleList = articleList
         .filter(item => {
             return item.published === true;
@@ -22,6 +23,13 @@ commonRouter.get('/articles', async ctx => {
     ctx.response.body = {
         articleList
     };
+});
+
+commonRouter.get('/recent', async ctx => {
+    let recent = await Recent.find();
+    ctx.response.body = {
+        recent
+    }
 });
 
 module.exports = commonRouter;
