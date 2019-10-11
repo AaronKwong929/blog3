@@ -11,7 +11,7 @@
         <div class="recent">
             最近动态：
             <input v-model="recent" class="recent-input" />
-            <button @click="updateRecent" class="btn btn-small">更新</button>
+            <button @click="updateRecent" class="btn btn-small recent-btn">更新</button>
         </div>
         <div class="list">
             <div class="published" v-show="this.unpublishedList.length">
@@ -233,5 +233,8 @@ export default {
 
 .recent-input {
     margin-right: 1rem;
+}
+.recent-btn {
+    padding: .5rem 1rem;
 }
 </style>

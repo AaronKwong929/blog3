@@ -3,7 +3,7 @@
         <header>
             <Carousal></Carousal>
             <div class="recent">
-                <div class="recent-title">最近动态</div>
+                <span class="recent-title">最近动态</span>
                 <div class="recent-content">
                     {{ Recent.content }}
                 </div>
@@ -12,14 +12,18 @@
                 </div>
             </div>
         </header>
-        <div class="resent resent-articles">
-            <div
-                class="resent-article-item"
+        <div class="recent-articles">
+            <span class="recent-title">最新文章</span>
+            <router-link
                 v-for="(item, index) in List"
                 :key="index"
+                :to="'/article/' + item._id"
+                tag="div"
+                class="list-item"
             >
-                {{ item.title }}
-            </div>
+                <span class="title">{{ item.title }}</span>
+                <span class="time">{{ item.updatedAt }}</span>
+            </router-link>
         </div>
     </div>
 </template>
@@ -80,7 +84,35 @@ header {
     font-size: 1.5rem;
 }
 .recent-time {
-    font-size: .8rem;
+    font-size: 0.8rem;
     margin: 5rem 1rem 0 18vw;
+}
+.recent-articles {
+    box-shadow: 0 0 0.8rem 0 #aaa;
+    padding: 1rem;
+    margin: 3rem;
+    border-radius: 1rem;
+}
+.list-item {
+    cursor: pointer;
+    width: 40vw;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.list-item:hover {
+    box-shadow: 0 0 0.8rem 0 #aaa;
+    border-radius: 1rem;
+    transition: all 1s;
+}
+.list-item > .title {
+    flex-grow: 1;
+}
+.list-item > .time {
+    align-self: flex-end;
+    justify-self: flex-end;
 }
 </style>
