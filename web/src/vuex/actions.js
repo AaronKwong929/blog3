@@ -70,7 +70,7 @@ const actions = {
             id: comment.id
         }).then(() => {
             dispatch('COMMON_GET_ARTICLES');
-        })
+        });
     },
     async DELETE_COMMENT({ dispatch }, comment) {
         await Axios.post(`${baseURL}/comment/delete`, {
@@ -79,7 +79,19 @@ const actions = {
         }).then(() => {
             dispatch('COMMON_GET_ARTICLES');
             dispatch('ADMIN_GET_ARTICLES');
-        })
+        });
+    },
+    async GET_RECENT({ state }) {
+        await Axios.get(`${baseURL}/common/recent`).then(res => {
+            state.recent = res.data.recent[0];
+        });
+    },
+    async UPDATE_RECENT({ dispatch }, content) {
+        await Axios.post(`${baseURL}/admin/recent`, {
+            content: content.content
+        }).then(() => {
+            dispatch('GET_RECENT');
+        });
     }
 };
 

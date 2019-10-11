@@ -8,7 +8,8 @@ let state = {
     searchResults: {
         titleResults: [],
         contentResults: []
-    }
+    },
+    recent: ""
 };
 
 export default state;

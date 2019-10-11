@@ -8,10 +8,17 @@
                 <i class="iconfont icon-jiahao"></i>
             </button>
         </div>
+        <div class="recent">
+            最近动态：
+            <input v-model="recent" class="recent-input" />
+            <button @click="updateRecent" class="btn btn-small">更新</button>
+        </div>
         <div class="list">
             <div class="published" v-show="this.unpublishedList.length">
                 <div class="title">
-                    <i class="iconfont icon-detail"></i>未发布({{ this.unpublishedList.length }})
+                    <i class="iconfont icon-detail"></i>未发布({{
+                        this.unpublishedList.length
+                    }})
                 </div>
                 <div class="list-head">
                     <div class="item-head">标题</div>
@@ -41,7 +48,9 @@
             </div>
             <div class="published" v-show="this.publishedList.length">
                 <div class="title">
-                    <i class="iconfont icon-fabu5"></i>已发布({{ this.publishedList.length }})
+                    <i class="iconfont icon-fabu5"></i>已发布({{
+                        this.publishedList.length
+                    }})
                 </div>
                 <div class="list-head">
                     <div class="item-head">标题</div>
@@ -72,6 +81,11 @@
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
+    data() {
+        return {
+            recent: ""
+        };
+    },
     methods: {
         ...mapMutations({
             logout: "LOG_OUT"
@@ -85,6 +99,19 @@ export default {
         }),
         edit(id) {
             this.$router.push(`/draft/${id}`);
+        },
+        async updateRecent() {
+            return this.$store.dispatch("UPDATE_RECENT", {
+                content: this.recent
+            });
+        },
+        async getRecent() {
+            if (!this.$store.state.recent) {
+                await this.$store.dispatch("GET_RECENT");
+            }
+            this.recent = this.$store.state.recent
+                ? this.$store.state.recent.content
+                : "";
         }
     },
     computed: {
@@ -105,7 +132,10 @@ export default {
         })
     },
     mounted() {
-        this.getArticles();
+        if (this.$store.state.adminArticleList.length === 0) {
+            this.getArticles();
+        }
+        this.getRecent();
     }
 };
 </script>
@@ -156,7 +186,7 @@ export default {
     background-color: rgba(96, 126, 121, 0.4);
 }
 
-.list-head > div{
+.list-head > div {
     display: inline-block;
 }
 
@@ -195,7 +225,13 @@ export default {
     margin: 1rem;
 }
 
-button .iconfont {
-    // color: rgb(96, 126, 121);
+.recent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recent-input {
+    margin-right: 1rem;
 }
 </style>
