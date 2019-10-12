@@ -49,7 +49,7 @@ export default {
             getDetails: "FIND_ARTICLE"
         }),
         async sendComment() {
-            if (!this.from || this.content) {
+            if (!this.from || !this.content) {
                 this.empty = true;
                 return setTimeout(() => {
                     return (this.empty = false);
