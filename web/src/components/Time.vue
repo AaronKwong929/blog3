@@ -1,6 +1,5 @@
 <template>
     <div id="Time">
-        <span>当前时间：</span>
         <span>{{ date | formatDate }}</span>
     </div>
 </template>
