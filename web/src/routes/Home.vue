@@ -110,9 +110,7 @@ header {
     padding: 0.5rem;
     margin-top: 0.5rem;
     display: flex;
-    // flex-direction: row;
     flex-direction: column;
-    // align-items: center;
     justify-content: flex-start;
 }
 .list-item:hover {
