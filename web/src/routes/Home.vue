@@ -21,8 +21,18 @@
                 tag="div"
                 class="list-item"
             >
-                <span class="title">{{ item.title }}</span>
-                <span class="time">{{ item.updatedAt }}</span>
+                <div class="article-col">
+                    <span class="title item-left">{{ item.title }}</span>
+                    <span class="time item-right">{{ item.updatedAt }}</span>
+                </div>
+                <div class="article-col">
+                    <span class="item-left">
+                        <i class="iconfont icon-yingyongAPP"></i>{{ item.type }}
+                    </span>
+                    <span class="item-right">
+                        <i class="iconfont icon-biaoqian"></i>{{ item.tag }}
+                    </span>
+                </div>
             </router-link>
         </div>
     </div>
@@ -86,6 +96,7 @@ header {
 .recent-time {
     font-size: 0.8rem;
     margin: 5rem 1rem 0 18vw;
+    flex-wrap: wrap;
 }
 .recent-articles {
     box-shadow: 0 0 0.8rem 0 #aaa;
@@ -99,8 +110,9 @@ header {
     padding: 0.5rem;
     margin-top: 0.5rem;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    // flex-direction: row;
+    flex-direction: column;
+    // align-items: center;
     justify-content: flex-start;
 }
 .list-item:hover {
@@ -108,11 +120,14 @@ header {
     border-radius: 1rem;
     transition: all 1s;
 }
-.list-item > .title {
+.item-left {
     flex-grow: 1;
 }
-.list-item > .time {
+.item-right {
     align-self: flex-end;
     justify-self: flex-end;
+}
+.article-col {
+    display: flex;
 }
 </style>
