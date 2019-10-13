@@ -17,7 +17,12 @@
                     <option value="game">游戏</option>
                     <option value="life">生活</option>
                 </select>
-                <input type="text" v-model="tag" @input="save" />
+                <input
+                    type="text"
+                    v-model="tag"
+                    @input="save"
+                    placeholder="标签"
+                />
             </div>
             <textarea v-model="content" v-focus @input="save"></textarea>
         </div>
@@ -27,7 +32,7 @@
                 <i class="iconfont icon-yingyongAPP"></i>{{ type }}
                 <i class="iconfont icon-biaoqian"></i>{{ tag }}
             </div>
-            <time class="article-time article-info">{{ now }}</time>
+            <div class="article-time article-info">{{ now }}</div>
             <div
                 v-html="compiledMarkdown"
                 v-highlight
@@ -134,7 +139,7 @@ export default {
 .read {
     width: 45%;
     border-radius: 1rem;
-    box-shadow: 0 0 0.6rem 0.6rem #aaa;
+    box-shadow: 0 0 0.2rem 0.2rem #aaa;
     margin-top: 1.5rem;
     margin-left: 2.5rem;
 }
