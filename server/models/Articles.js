@@ -24,7 +24,7 @@ const articleSchema = new mongoose.Schema({
     },
     updatedAt: {
         type: String,
-        default: dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
+        default: dateFormat(new Date(), 'yyyy-MM-dd hh:mm')
     },
     comments: [
         {
@@ -32,8 +32,7 @@ const articleSchema = new mongoose.Schema({
             to: { type: String, default: '' },
             content: { type: String, default: '' },
             time: {
-                type: String,
-                default: dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
+                type: String
             }
         }
     ]
@@ -42,7 +41,7 @@ const articleSchema = new mongoose.Schema({
 articleSchema.pre('save', async function(next) {
     const article = this;
     if (!article.isModified('comments')) {
-        article.updatedAt = dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss');
+        article.updatedAt = dateFormat(new Date(), 'yyyy-MM-dd hh:mm');
     }
     next();
 });

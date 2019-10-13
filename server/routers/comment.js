@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Article = require('../models/Articles');
-
+const dateFormat = require('../utils/dateFormat');
 let commentRouter = new Router();
 
 commentRouter.post('/publish', async ctx => {
@@ -8,11 +8,13 @@ commentRouter.post('/publish', async ctx => {
         content = ctx.request.body.content,
         to = ctx.request.body.to,
         id = ctx.request.body.id,
-        article = await Article.findById(id);
+        time = dateFormat(new Date(), 'yyyy-MM-dd hh:mm');
+    article = await Article.findById(id);
     article.comments.push({
         from,
         to,
-        content
+        content,
+        time
     });
     await article.save();
     ctx.response.body = {
