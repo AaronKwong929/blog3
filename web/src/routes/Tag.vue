@@ -86,7 +86,7 @@
 
 <script>
 const SearchBar = () => import('../components/SearchBar');
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -118,11 +118,6 @@ export default {
         };
     },
     computed: {
-        ...mapState({
-            List: state => {
-                return state.articleList;
-            }
-        }),
         articles() {
             return this.list[this.currentTag];
         },

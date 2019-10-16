@@ -57,11 +57,11 @@
 
 <style lang="scss" scoped>
 #log {
-    color: rgb(96, 126, 121);
+    margin-bottom: 1rem;
 }
 .log-items {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
 }
 .log-items > li {
