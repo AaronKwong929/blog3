@@ -8,7 +8,7 @@
 </template>
 
 <script>
-const Sidebar = () => import('./components/Sidebar');
+const Sidebar = () => import("./components/Sidebar");
 export default {
     components: {
         Sidebar

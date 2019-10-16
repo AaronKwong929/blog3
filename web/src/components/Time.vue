@@ -55,7 +55,7 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    width: 80%;
+    width: 90%;
     border-radius: 1rem;
 }
 </style>
