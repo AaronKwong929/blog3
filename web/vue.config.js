@@ -2,10 +2,8 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const productionGzipExtensions = ['js', 'css', 'svg'];
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
-
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
-
 module.exports = {
     devServer: {
         port: 8080,
@@ -64,7 +62,6 @@ module.exports = {
                     }
                 })
             );
-
             config.externals = {
                 vue: 'Vue',
                 axios: 'axios',

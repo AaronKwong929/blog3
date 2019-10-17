@@ -55,6 +55,7 @@
                 <div class="ver">2019-10-17 开发版本3.5.1 上线版本1.5.1</div>
                 <ul class="new">
                     <li class="new-item">Markdown编辑器重写</li>
+                    <li class="new-item">样式修正 大量改用flex</li>
                 </ul>
             </li>
         </ul>

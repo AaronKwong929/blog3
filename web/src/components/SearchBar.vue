@@ -10,7 +10,6 @@
         <button class="btn-small" @click="search">搜索</button>
     </div>
 </template>
-
 <script>
 export default {
     data() {
@@ -26,10 +25,12 @@ export default {
     }
 };
 </script>
-
 <style lang="scss" scoped>
+#search-bar {
+    margin-top: 1rem
+}
 .btn-small {
-    margin-left: 0.3rem;
-    padding: 0.8rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
 }
 </style>
