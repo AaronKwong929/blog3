@@ -88,6 +88,7 @@ header {
 .recent-title {
     font-size: 2rem;
     border-bottom: 1px solid rgba(96, 126, 121, 0.4);
+    align-self: flex-start;
 }
 .recent-content {
     font-weight: 300;
@@ -101,12 +102,15 @@ header {
 .recent-articles {
     box-shadow: 0 0 0.8rem 0 #aaa;
     padding: 1rem;
-    margin: 3rem;
+    margin: 1rem 20%;
     border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .list-item {
     cursor: pointer;
-    width: 40vw;
+    width: 100%;
     padding: 0.5rem;
     margin-top: 0.5rem;
     display: flex;

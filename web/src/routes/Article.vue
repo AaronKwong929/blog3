@@ -18,7 +18,6 @@
         <CommentArea :comments="Details.comments"></CommentArea>
     </article>
 </template>
-
 <script>
 import marked from "marked";
 import { mapActions, mapState } from "vuex";
@@ -46,7 +45,7 @@ export default {
     mounted() {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();
-            // 不加一秒会显示不出来 未知原因
+            // 不加一秒会显示不出来
             setTimeout(() => {
                 this.getDetailss(this.$route.params.id);
             }, 1000);
@@ -59,7 +58,6 @@ export default {
     }
 };
 </script>
-
 <style lang="scss" scoped>
 #Article {
     margin: 2rem;
@@ -68,9 +66,7 @@ export default {
     padding-top: 1rem;
     padding-left: 2.5rem;
     padding-right: 2.5rem;
-    color: rgb(96, 126, 121);
 }
-
 .article-title {
     font-weight: 600;
     font-size: 2rem;
@@ -78,12 +74,10 @@ export default {
     box-shadow: 0 0.3rem 0.3rem -0.2rem #aaa;
     padding-bottom: 1rem;
 }
-
 .article-info {
     text-align: center;
     margin-top: 0.3rem;
 }
-
 .article-content {
     overflow: hidden;
     padding-bottom: 1rem;

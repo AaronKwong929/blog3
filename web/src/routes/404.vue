@@ -4,7 +4,6 @@
         <div class="details">╮( •́ω•̀ )╭ 找不到这一页呢 </div>
     </div>
 </template>
-
 <style lang="scss" scoped>
 #not-found {
     padding-top: 10rem;
@@ -15,7 +14,6 @@
     color: rgb(96, 126, 121);
     user-select: none;
 }
-
 .title {
     font-family: "Georgia";
     font-weight: 600;
@@ -23,7 +21,6 @@
     width: 30rem;
     margin: 0 auto;
 }
-
 .details {
     font-size: 2rem;
     font-weight: 400;

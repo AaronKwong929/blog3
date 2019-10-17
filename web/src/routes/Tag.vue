@@ -83,7 +83,6 @@
         </div>
     </div>
 </template>
-
 <script>
 const SearchBar = () => import('../components/SearchBar');
 import { mapActions } from "vuex";

@@ -7,8 +7,7 @@
 export default {
     data() {
         return {
-            date: "",
-            dateId: ""
+            date: ""
         };
     },
     filters: {
@@ -28,7 +27,7 @@ export default {
         setTimer() {
             this.timeId = setInterval(() => {
                 this.date = new Date();
-            }, 59000);
+            }, 60000);
         },
         destroyTimer() {
             if (this.timeId) {
@@ -44,7 +43,6 @@ export default {
     }
 };
 </script>
-
 <style lang="scss" scoped>
 #Time {
     font-weight: 300;
@@ -55,7 +53,7 @@ export default {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    width: 90%;
+    width: 100%;
     border-radius: 1rem;
 }
 </style>

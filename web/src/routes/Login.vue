@@ -23,12 +23,14 @@
                     @keyup.enter="Login()"
                 />
             </div>
-            <div class="alert" v-show="this.fail">登陆失败</div>
-            <button class="btn btn-small" @click="Login()">登陆</button>
+            <div class="alert" v-show="this.fail">
+                登陆失败<br />账号或密码错误
+            </div>
+            <button class="btn-small" @click="Login">登陆</button>
+            <button class="btn-small" @click="reset">重置</button>
         </div>
     </div>
 </template>
-
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
@@ -49,6 +51,10 @@ export default {
         ...mapActions({ LOGIN: "LOGIN" }),
         Login() {
             return this.LOGIN({ name: this.name, password: this.password });
+        },
+        reset() {
+            this.name = ``;
+            this.password = ``;
         }
     },
     mounted() {
@@ -58,59 +64,39 @@ export default {
     }
 };
 </script>
-
-
 <style lang="scss" scoped>
 .input {
     margin-top: 1rem;
     display: flex;
     align-items: center;
 }
-
 .input > .iconfont {
     font-size: 2rem;
     color: rgb(96, 126, 121);
 }
-
 input {
-    border: none;
-    border-radius: 0.5rem;
-    outline: none;
-    padding: 0.5rem 1rem;
     margin-left: 0.5rem;
-    border: 1px solid #ddd;
-    color: rgb(96, 126, 121);
 }
-
-input:focus {
-    border: 1px solid rgb(96, 126, 121);
-    box-shadow: 0 0 15px rgb(96, 126, 121);
-    text-shadow: none;
-}
-
 .btn-small {
-    margin: 1rem 0 1rem 6rem;
+    margin: 1rem 1rem;
     padding: 0.5rem 1.3rem;
 }
-
 .login-fail .iconfont {
     display: block;
     font-size: 5rem;
     padding-left: 5.5rem;
     color: red;
 }
-
 .fail-msg {
     padding-left: 6rem;
 }
-
 .alert {
     border-radius: 1rem;
-    border: 1px solid red;
+    border: 1px solid rgba(96, 126, 121, 0.6);
     padding: 1rem 0.5rem;
     width: 10rem;
     margin: 1rem 3rem;
-    background: rgb(255, 132, 132);
+    background: rgb(96, 126, 121);
     text-align: center;
 }
 </style>

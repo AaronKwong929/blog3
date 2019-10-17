@@ -25,7 +25,7 @@
             <div class="empty-alert" v-show="empty">不能为空</div>
             <div class="comment-btn">
                 <button @click="sendComment" class="btn-small">发送</button>
-                <button @click="resetReply" class="btn-small">Reset</button>
+                <button @click="resetReply" class="btn-small">重置</button>
             </div>
         </div>
     </div>
@@ -79,7 +79,6 @@ export default {
     }
 };
 </script>
-
 <style lang="scss" scoped>
 .comment {
     box-shadow: 0 0 0.8rem 0 #aaa;

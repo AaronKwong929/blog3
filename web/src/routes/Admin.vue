@@ -77,7 +77,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
@@ -139,7 +138,6 @@ export default {
     }
 };
 </script>
-
 <style lang="scss" scoped>
 .published {
     box-shadow: 0 0 0.6rem 0 #aaa;
@@ -147,7 +145,6 @@ export default {
     padding: 1rem 2rem;
     border-radius: 1rem;
 }
-
 .list button {
     margin: 0.5rem;
     font-size: 1rem;
@@ -155,82 +152,65 @@ export default {
     height: 1.5rem;
     width: 1.5rem;
 }
-
 .list button:hover {
     color: black;
     border: none;
     transition: all 0.4s;
 }
-
 .list-head {
     margin-top: 1rem;
 }
-
 .list-body {
     border-radius: 1rem;
 }
-
 .list-body:nth-of-type(2n-1) {
     background-color: rgba(96, 126, 121, 0.28);
 }
-
 .list-body:nth-of-type(2n-1) button {
     background-color: rgba(96, 126, 121, 0.28);
 }
-
 .list-body:nth-of-type(2n) {
     background-color: rgba(96, 126, 121, 0.4);
 }
-
 .list-body:nth-of-type(2n) button {
     background-color: rgba(96, 126, 121, 0.4);
 }
-
 .list-head > div {
     display: inline-block;
 }
-
 .item-info,
 .item-head,
 .item-info-other {
     display: inline-block;
 }
-
 .item-head {
     width: calc(25% - 1rem);
     padding-left: 1rem;
 }
-
 .item-type {
     width: calc(10% - 1rem);
 }
 .item-tag {
     width: calc(30% - 1rem);
 }
-
 .item-info-other {
     width: calc(20% - 1rem);
 }
-
 .published > .title {
     box-shadow: 0 0.6rem 0.6rem -0.6rem #aaa;
     padding-bottom: 0.3rem;
 }
-
 .btn-group {
     text-align: center;
 }
-
 .btn-group button {
     margin: 1rem;
 }
-
 .recent {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 .recent-input {
     margin-right: 1rem;
 }

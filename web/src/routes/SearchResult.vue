@@ -113,7 +113,6 @@ export default {
 /deep/.highlight {
     background-color: rgba(96, 126, 121, 0.4);
 }
-
 .has-result {
     margin: 1rem 0;
     padding: 1rem;
@@ -122,19 +121,16 @@ export default {
     color: rgb(96, 126, 121);
     background-color: rgba(96, 126, 121, 0.4);
 }
-
 .result-count {
     margin-top: 1rem;
     color: rgb(96, 126, 121);
 }
-
 .result-key,
 .result-num {
     font-size: 1.3rem;
     font-family: "Times New Roman", Times, serif;
     font-weight: 800;
 }
-
 .list-item {
     cursor: pointer;
     display: block;
@@ -145,29 +141,23 @@ export default {
     box-shadow: 0 0 1rem -0.3rem #aaa;
     background-color: rgba(96, 126, 121, 0.4);
 }
-
 .list-item:hover {
     box-shadow: 0 0 1rem 0.3rem #aaa;
     transition: all 0.3s;
 }
-
 .list-item:first-child {
     margin-top: 0;
 }
-
 .list-item:last-child {
     margin-bottom: 3rem;
 }
-
 .title {
     margin-bottom: 0.3rem;
 }
-
 .item-info-details {
     padding: 0.3rem;
     padding-left: 0;
 }
-
 .item-info-details > span:first-child {
     padding-right: 0.3rem;
 }

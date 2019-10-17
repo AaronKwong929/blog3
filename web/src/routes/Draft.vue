@@ -1,7 +1,7 @@
 <template>
     <div id="draft" class="clearfix">
         <div class="write clearfix">
-            <div class="left">
+            <div class="write-info">
                 <input
                     type="text"
                     v-model="title"
@@ -9,20 +9,13 @@
                     class="title left"
                     @input="save"
                 />
-            </div>
-            <div class="right">
-                <select v-model="type" @input="save">
+                <input type="text" v-model="tag" placeholder="标签" />
+                <select v-model="type">
                     <option disabled value="">分类</option>
                     <option value="code">编程</option>
                     <option value="game">游戏</option>
                     <option value="life">生活</option>
                 </select>
-                <input
-                    type="text"
-                    v-model="tag"
-                    @input="save"
-                    placeholder="标签"
-                />
             </div>
             <div class="button_bar">
                 <span v-on:click="addBold"><B>B</B></span>
@@ -124,12 +117,11 @@ export default {
                 this.getDetails();
             }, 1000);
         },
-        //////////////////////////////////////////
         addBold() {
             this.changeSelectedText("**", "**");
         },
         addItalic() {
-            this.changeSelectedText("***", "***");
+            this.changeSelectedText("*", "*");
         },
         addUnderline() {
             this.changeSelectedText("<u>", "</u>");
@@ -142,7 +134,7 @@ export default {
             if (!this.content) {
                 this.content = `${prefix} `;
             } else {
-                this.content = this.content += `\n${prefix} `;
+                this.content = this.content += `\n\n${prefix} `;
             }
             this.$refs.md_area.focus();
         },
@@ -165,28 +157,9 @@ export default {
                 }
             }
         }
-        //////////////////////////////////////////
     },
-    /////////////////////////////
-    watch: {
-        //监听markString变化
-        markString: function(value) {
-            marked.setOptions({
-                renderer: new marked.Renderer(),
-                gfm: true,
-                tables: true,
-                breaks: true,
-                pedantic: false,
-                sanitize: false,
-                smartLists: true,
-                smartypants: false
-            });
-            this.htmlString = marked(value);
-        }
-    },
-    //////////////////////////
     updated() {
-        this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
+        this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm");
     },
     mounted() {
         this.getDetails();
@@ -197,21 +170,17 @@ export default {
 #draft {
     vertical-align: top;
 }
-
 #draft > div {
     display: inline-block;
     vertical-align: top;
     padding: 1.5rem 1.5rem 1rem 1.5rem;
 }
-
 .write input {
     display: block;
 }
-
 .write {
     width: 45%;
 }
-
 .read {
     width: 45%;
     border-radius: 1rem;
@@ -219,30 +188,22 @@ export default {
     margin-top: 1.5rem;
     margin-left: 2.5rem;
 }
-
 .write button {
     margin: 1rem 0.5rem 0 0;
 }
-
 .write .iconfont {
     font-size: 1.3rem;
 }
-
+.write-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 input {
-    border: none;
-    border-radius: 0.5rem;
-    outline: none;
-    padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
-    border: 1px solid #ddd;
+    margin: 0.5rem 0;
+    width: 100%;
 }
-
-input:focus {
-    border: 1px solid rgb(96, 126, 121);
-    box-shadow: 0 0 15px rgb(96, 126, 121);
-    text-shadow: none;
-}
-
 .article-title {
     font-weight: 600;
     font-size: 2rem;
@@ -250,60 +211,51 @@ input:focus {
     box-shadow: 0 0.3rem 0.3rem -0.2rem #aaa;
     padding-bottom: 1rem;
 }
-
 .article-info {
     text-align: center;
     margin-top: 0.3rem;
 }
-
 select {
     height: 2.5rem;
-    width: 10rem;
+    width: 100%;
     line-height: 1rem;
     border-radius: 0.5rem;
-    margin-top: 1rem;
-    margin-left: 0.5rem;
+    margin: 1rem 0;
     padding: 0.5rem;
     outline: none;
     border: 1px solid #ddd;
 }
-
 select:focus {
     border: 1px solid rgb(96, 126, 121);
     box-shadow: 0 0 15px rgb(96, 126, 121);
     text-shadow: none;
 }
-
 textarea {
     margin-left: 0.5rem;
     border-radius: 0.5rem;
     padding: 0.5rem;
     height: 35rem;
     width: 100%;
-    margin-top: 3rem;
-    color: #333;
+    margin-top: 1rem;
     line-height: 1.2rem;
 }
-
 .comment .btn-small {
     padding: 0.4rem;
     display: inline-block;
 }
-////////////////////////////////////////////////////
 .button_bar {
-    width: 100%;
-    height: 40px;
+    margin-top: 1rem;
     background-color: #d4d4d4;
     display: flex;
-    display: -webkit-flex;
     align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
 }
-
 div.button_bar span {
-    width: 30px;
+    margin-right: 1rem;
     line-height: 40px;
     text-align: center;
-    color: orange;
+    color: rgb(96, 126, 121);
     cursor: pointer;
 }
 </style>

@@ -30,7 +30,6 @@ export default {
     color: rgb(96, 126, 121);
     user-select: none;
 }
-
 .title {
     font-family: "Georgia";
     font-weight: 600;
@@ -38,7 +37,6 @@ export default {
     width: 30rem;
     margin: 0 auto;
 }
-
 .details {
     font-size: 2rem;
     font-weight: 400;

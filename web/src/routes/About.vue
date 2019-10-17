@@ -37,12 +37,6 @@
                         vue koa前后端分离开发尝试
                     </li>
                     <li>
-                        毕业设计
-                    </li>
-                    <li>
-                        想做就做
-                    </li>
-                    <li>
                         前端 Vue.JS 全家桶
                     </li>
                     <li>
@@ -61,7 +55,6 @@
     justify-content: center;
     align-items: center;
 }
-
 .section {
     width: 60%;
     display: flex;
@@ -73,23 +66,19 @@
     margin-bottom: 1rem;
     padding: 1rem;
 }
-
 .about-title {
     justify-self: center;
     align-self: center;
     font-size: 1.5rem;
     font-weight: 600;
 }
-
 .about-link {
     justify-self: center;
     align-self: center;
 }
-
 .about-link .iconfont {
     font-size: 2rem;
 }
-
 .section > ul > li {
     font-size: 1.1rem;
     line-height: 150%;
