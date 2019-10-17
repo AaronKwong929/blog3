@@ -24,7 +24,23 @@
                     placeholder="标签"
                 />
             </div>
-            <textarea v-model="content" v-focus @input="save"></textarea>
+            <div class="button_bar">
+                <span v-on:click="addBold"><B>B</B></span>
+                <span v-on:click="addUnderline"><B>U</B></span>
+                <span v-on:click="addItalic"><B>I</B></span>
+                <span @click="addH(1)"><B>H1</B></span>
+                <span @click="addH(2)"><B>H2</B></span>
+                <span @click="addH(3)"><B>H3</B></span>
+                <span @click="addH(4)"><B>H4</B></span>
+                <span @click="addH(5)"><B>H5</B></span>
+                <span @click="addH(6)"><B>H6</B></span>
+            </div>
+            <textarea
+                v-model="content"
+                v-focus
+                @input="save"
+                ref="md_area"
+            ></textarea>
         </div>
         <div class="read">
             <div class="article-title">{{ title }}</div>
@@ -71,7 +87,7 @@ export default {
             type: "",
             content: "",
             comments: "",
-            now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss")
+            now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm")
         };
     },
     computed: {
@@ -98,7 +114,7 @@ export default {
             this.$store.state.articleDetails.content = this.content;
             this.$store.dispatch("SAVE_ARTICLE");
             this.$store.dispatch("COMMON_GET_ARTICLES");
-        }, 1000),
+        }, 3000),
         deleteComment(id) {
             this.$store.dispatch("DELETE_COMMENT", {
                 articleID: this.$route.params.id,
@@ -107,8 +123,68 @@ export default {
             setTimeout(() => {
                 this.getDetails();
             }, 1000);
+        },
+        //////////////////////////////////////////
+        addBold() {
+            this.changeSelectedText("**", "**");
+        },
+        addItalic() {
+            this.changeSelectedText("***", "***");
+        },
+        addUnderline() {
+            this.changeSelectedText("<u>", "</u>");
+        },
+        addH(i) {
+            let prefix = ``;
+            for (let k = 0; k < i; k++) {
+                prefix += `#`;
+            }
+            if (!this.content) {
+                this.content = `${prefix} `;
+            } else {
+                this.content = this.content += `\n${prefix} `;
+            }
+            this.$refs.md_area.focus();
+        },
+        changeSelectedText(startString, endString) {
+            let t = this.$refs.md_area;
+            if (window.getSelection) {
+                if (
+                    t.selectionStart != undefined &&
+                    t.selectionEnd != undefined
+                ) {
+                    let str1 = t.value.substring(0, t.selectionStart);
+                    let str2 = t.value.substring(
+                        t.selectionStart,
+                        t.selectionEnd
+                    );
+                    let str3 = t.value.substring(t.selectionEnd);
+                    let result = str1 + startString + str2 + endString + str3;
+                    t.value = result;
+                    this.content = t.value;
+                }
+            }
+        }
+        //////////////////////////////////////////
+    },
+    /////////////////////////////
+    watch: {
+        //监听markString变化
+        markString: function(value) {
+            marked.setOptions({
+                renderer: new marked.Renderer(),
+                gfm: true,
+                tables: true,
+                breaks: true,
+                pedantic: false,
+                sanitize: false,
+                smartLists: true,
+                smartypants: false
+            });
+            this.htmlString = marked(value);
         }
     },
+    //////////////////////////
     updated() {
         this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss");
     },
@@ -212,5 +288,22 @@ textarea {
 .comment .btn-small {
     padding: 0.4rem;
     display: inline-block;
+}
+////////////////////////////////////////////////////
+.button_bar {
+    width: 100%;
+    height: 40px;
+    background-color: #d4d4d4;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+}
+
+div.button_bar span {
+    width: 30px;
+    line-height: 40px;
+    text-align: center;
+    color: orange;
+    cursor: pointer;
 }
 </style>
