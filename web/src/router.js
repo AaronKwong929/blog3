@@ -24,7 +24,6 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    // mode: 'history',
     routes
 });
 
@@ -39,7 +38,6 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
-
     if (to.fullPath === '/login') {
         const token = store.state.token;
         if (token && token !== null) {
@@ -49,5 +47,4 @@ router.beforeEach((to, from, next) => {
         }
     }
 });
-
 export default router;

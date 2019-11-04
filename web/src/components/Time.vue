@@ -27,7 +27,7 @@ export default {
         setTimer() {
             this.timeId = setInterval(() => {
                 this.date = new Date();
-            }, 60000);
+            }, 30000);
         },
         destroyTimer() {
             if (this.timeId) {
