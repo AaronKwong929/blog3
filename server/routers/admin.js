@@ -14,7 +14,6 @@ let adminRouter = new Router();
 //             msg: 1
 //     }
 // });
-
 // 管理员登陆、发放token
 adminRouter.post('/login', async ctx => {
     const name = ctx.request.body.name,
@@ -37,7 +36,6 @@ adminRouter.post('/login', async ctx => {
         };
     }
 });
-
 adminRouter.get('/', verifyToken, async ctx => {
     let articleList = await Article.find();
     articleList = articleList.sort((a, b) => {
@@ -53,7 +51,6 @@ adminRouter.get('/', verifyToken, async ctx => {
         articleList
     };
 });
-
 adminRouter.post('/draft', verifyToken, async ctx => {
     let article = new Article();
     await article.save();
@@ -61,7 +58,6 @@ adminRouter.post('/draft', verifyToken, async ctx => {
         code: 1
     };
 });
-
 adminRouter.put('/draft', verifyToken, async ctx => {
     const update = ctx.request.body.article;
     const article = await Article.findById(update._id);
@@ -74,14 +70,12 @@ adminRouter.put('/draft', verifyToken, async ctx => {
         code: 1
     };
 });
-
 adminRouter.post('/delete', verifyToken, async ctx => {
     await Article.findByIdAndDelete(ctx.request.body.id);
     ctx.response.body = {
         code: 1
     };
 });
-
 adminRouter.put('/publish', verifyToken, async ctx => {
     let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
@@ -90,7 +84,6 @@ adminRouter.put('/publish', verifyToken, async ctx => {
         code: 1
     };
 });
-
 adminRouter.post('/recent', verifyToken, async ctx => {
     let list = await Recent.find();
     if (list.length > 0) {
@@ -106,5 +99,4 @@ adminRouter.post('/recent', verifyToken, async ctx => {
         msg: `recent updated`
     };
 });
-
 module.exports = adminRouter;

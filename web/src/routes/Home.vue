@@ -12,28 +12,37 @@
                 </div>
             </div>
         </header>
-        <div class="recent-articles">
-            <span class="recent-title">最新文章</span>
-            <router-link
-                v-for="(item, index) in List"
-                :key="index"
-                :to="'/article/' + item._id"
-                tag="div"
-                class="list-item"
-            >
-                <div class="article-col">
-                    <span class="title item-left">{{ item.title }}</span>
-                    <span class="time item-right">{{ item.updatedAt }}</span>
-                </div>
-                <div class="article-col">
-                    <span class="item-left">
-                        <i class="iconfont icon-yingyongAPP"></i>{{ item.type }}
-                    </span>
-                    <span class="item-right">
-                        <i class="iconfont icon-biaoqian"></i>{{ item.tag }}
-                    </span>
-                </div>
-            </router-link>
+        <div class="recent-wrapper">
+            <div class="recent-articles">
+                <span class="recent-title">最新文章</span>
+                <router-link
+                    v-for="(item, index) in List"
+                    :key="index"
+                    :to="'/article/' + item._id"
+                    tag="div"
+                    class="list-item"
+                >
+                    <div class="article-col">
+                        <span class="title item-left">{{ item.title }}</span>
+                        <span class="time item-right">{{
+                            item.updatedAt
+                        }}</span>
+                    </div>
+                    <div class="article-col">
+                        <span class="item-left">
+                            <i class="iconfont icon-yingyongAPP"></i
+                            >{{ item.type }}
+                        </span>
+                        <span class="item-right">
+                            <i class="iconfont icon-biaoqian"></i>{{ item.tag }}
+                        </span>
+                    </div>
+                </router-link>
+            </div>
+            <div class="recent-works">
+                <span class="recent-title">其他项目</span>
+                <a href="abc.aaronkwong.xyz" target="_blank">还没上线的移动音乐</a>
+            </div>
         </div>
     </div>
 </template>
@@ -102,11 +111,12 @@ header {
 .recent-articles {
     box-shadow: 0 0 0.8rem 0 #aaa;
     padding: 1rem;
-    margin: 1rem 20%;
+    margin: 1rem;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex: 2;
 }
 .list-item {
     cursor: pointer;
@@ -131,5 +141,17 @@ header {
 }
 .article-col {
     display: flex;
+}
+.recent-wrapper {
+    display: flex;
+}
+.recent-works {
+    flex: 1;
+    box-shadow: 0 0 0.8rem 0 #aaa;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 </style>
