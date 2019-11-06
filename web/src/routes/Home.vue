@@ -41,7 +41,7 @@
             </div>
             <div class="recent-works">
                 <span class="recent-title">其他项目</span>
-                <a href="abc.aaronkwong.xyz" target="_blank">还没上线的移动音乐</a>
+                <a href="abc.aaronkwong.xyz" target="_blank">还没上线的项目2</a>
             </div>
         </div>
     </div>

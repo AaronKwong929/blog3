@@ -54,7 +54,7 @@
         </div>
         <footer class="beian">
             <a href="http://beian.miitbeian.gov.cn" target="_blank"
-                >粤ICP备19111987</a
+                >粤ICP备19111987号-1</a
             >
         </footer>
     </nav>

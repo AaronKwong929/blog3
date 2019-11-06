@@ -26,7 +26,7 @@
 
 <script>
 import blog from "../static/img/blog.png";
-import commercial from "../static/img/commercial.png"
+import blog2 from "../static/img/blog2.png";
 export default {
     data() {
         return {
@@ -36,8 +36,8 @@ export default {
                     image: blog
                 },
                 {
-                    desc: "commercial",
-                    image: commercial
+                    desc: "blog2",
+                    image: blog2
                 }
             ],
             currentIndex: 0,
