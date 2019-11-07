@@ -7,16 +7,15 @@ const cors = require('koa2-cors');
 const path = require('path');
 const app = new Koa();
 const routers = require('./routers/index');
-const errorHandler = require('./middlewares/errorHandler');
 const corsConfig = require('./configs/cors');
 
 app.use(serve(path.resolve('dist')));
 
+app.use(serve(path.resolve('uploads')));
+
 app.use(bodyParser());
 
 app.use(cors(corsConfig));
-
-app.use(errorHandler());
 
 app.use(routers.routes()).use(routers.allowedMethods());
 
