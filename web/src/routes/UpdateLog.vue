@@ -58,6 +58,14 @@
                     <li class="new-item">样式修正 大量改用flex</li>
                 </ul>
             </li>
+            <li>
+                <div class="ver">2019-11-7 开发版本3.5.2 上线版本1.5.2</div>
+                <ul class="new">
+                    <li class="new-item">图片上传和返回</li>
+                    <li class="new-item">标签排序</li>
+                    <li class="new-item">即将实现后端分页器</li>
+                </ul>
+            </li>
         </ul>
     </div>
 </template>
