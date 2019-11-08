@@ -9,7 +9,8 @@ let state = {
         titleResults: [],
         contentResults: []
     },
-    recent: ""
+    recent: "",
+    imgUrls: []
 };
 
 export default state;
