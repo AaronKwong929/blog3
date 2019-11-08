@@ -16,11 +16,23 @@
                     <option value="game">游戏</option>
                     <option value="life">生活</option>
                 </select>
+                <label for="updateImg">此处本应有图片</label>
+                <input
+                    name="file"
+                    type="file"
+                    accept="image/png,image/gif,image/jpeg"
+                    id="updateImg"
+                    @change="update"
+                    hidden
+                />
+                <ul class="imgurl-box" v-if="this.imgUrls.length">
+                    <li class="imgurl" v-for="(item, index) in this.imgUrls" :key="index">{{ index }} - {{ item }}</li>
+                </ul>
             </div>
             <div class="button_bar">
-                <span v-on:click="addBold"><B>B</B></span>
-                <span v-on:click="addUnderline"><B>U</B></span>
-                <span v-on:click="addItalic"><B>I</B></span>
+                <span @click="addBold"><B>B</B></span>
+                <span @click="addUnderline"><B>U</B></span>
+                <span @click="addItalic"><B>I</B></span>
                 <span @click="addH(1)"><B>H1</B></span>
                 <span @click="addH(2)"><B>H2</B></span>
                 <span @click="addH(3)"><B>H3</B></span>
@@ -72,6 +84,7 @@
 <script>
 import lodash from "lodash";
 import marked from "marked";
+import { mapActions, mapState } from "vuex";
 export default {
     data() {
         return {
@@ -80,15 +93,23 @@ export default {
             type: "",
             content: "",
             comments: "",
-            now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm")
+            now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm"),
+            // urls: ""
         };
     },
     computed: {
         compiledMarkdown: function() {
             return marked(this.content);
-        }
+        },
+        ...mapState(["imgUrls"]),
+        // imgUrlsLen() {
+        //     return this.$store.state.imgUrls.length;
+        // }
     },
     methods: {
+        // init() {
+        //     this.urls = this.$store.state.imgUrls;
+        // },
         getDetails() {
             const details = this.$store.state.adminArticleList.find(item => {
                 return item._id === this.$route.params.id;
@@ -156,14 +177,30 @@ export default {
                     this.content = t.value;
                 }
             }
-        }
+        },
+        update(e) {
+            let event = {
+                file: e.target.files[0]
+            };
+            // console.log(event);
+            this.updateImg(event);
+        },
+        ...mapActions({
+            updateImg: "UPDATE_IMAGE"
+        })
     },
     updated() {
         this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm");
     },
     mounted() {
         this.getDetails();
-    }
+        // this.init();
+    },
+    // watch: {
+    //     imgUrlsLen() {
+    //         this.init();
+    //     }
+    // },
 };
 </script>
 <style lang="scss" scoped>
@@ -257,5 +294,17 @@ div.button_bar span {
     text-align: center;
     color: rgb(96, 126, 121);
     cursor: pointer;
+}
+
+.imgurl-box {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid rgb(96, 126, 121);
+    .imgurl {
+        padding: 0.3rem;
+    }
 }
 </style>
