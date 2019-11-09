@@ -66,11 +66,14 @@ export default {
                     return item.type === "life";
                 })
             },
-            currentType: "code",
+            
             page: 1
         };
     },
     computed: {
+        currentType() {
+            return this.buttonList[0].name;
+        },
         articles() {
             return this.list[this.currentType];
         },

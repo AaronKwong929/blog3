@@ -9,7 +9,7 @@
             <button
                 v-for="(item, index) in buttonList"
                 :key="index"
-                :class="{ active: currentType === item.name }"
+                :class="{ active: currentTag === item.name }"
                 @click="changeTag(item.name)"
             >
                 {{ item.desc }}-{{ item.count }}
@@ -78,11 +78,14 @@ export default {
                     return item.tag.includes('server');
                 })
             },
-            currentTag: "algo",
+
             page: 1
         };
     },
     computed: {
+        currentTag() {
+            return this.buttonList[0].name;
+        },
         articles() {
             return this.list[this.currentTag];
         },
