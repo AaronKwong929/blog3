@@ -103,7 +103,7 @@ const actions = {
             headers: { 'Content-Type': 'multipart/form-data' }
         }; //添加请求头
         Axios.post(`${baseURL}/admin/upload`, param, config).then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             state.imgUrls.push(res.data.filename)
         });
     }
