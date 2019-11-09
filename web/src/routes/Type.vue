@@ -66,14 +66,11 @@ export default {
                     return item.type === "life";
                 })
             },
-            
+            currentType: "",
             page: 1
         };
     },
     computed: {
-        currentType() {
-            return this.buttonList[0].name;
-        },
         articles() {
             return this.list[this.currentType];
         },
@@ -131,12 +128,16 @@ export default {
             } else {
                 this.page = this.pageCount;
             }
+        },
+        init() {
+            this.currentType = this.buttonList[0].name;
         }
     },
     mounted() {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();
         }
+        this.init();
     },
     components: {
         SearchBar

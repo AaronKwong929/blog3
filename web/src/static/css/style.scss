@@ -135,12 +135,12 @@ textarea:focus {
 }
 .list button:hover {
     color: rgb(96, 126, 121);
-    border-bottom: 1px solid rgb(96, 126, 121);
+    // border-bottom: 1px solid rgb(96, 126, 121);
     transition: all .4s;
 }
 .list button[class="active"] {
     color: rgb(96, 126, 121);
-    border-bottom: 1px solid rgb(96, 126, 121);
+    // border-bottom: 1px solid rgb(96, 126, 121);
 }
 /** 分页器 */
 .pagination {

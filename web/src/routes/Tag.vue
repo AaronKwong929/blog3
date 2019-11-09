@@ -11,9 +11,11 @@
                 :key="index"
                 :class="{ active: currentTag === item.name }"
                 @click="changeTag(item.name)"
+                v-show="index<showNum"
             >
                 {{ item.desc }}-{{ item.count }}
             </button>
+            <button @click="showMore" class="show-class">{{ showOption }}</button>
             <router-link
                 v-for="(item, index) in currentPage"
                 :key="index"
@@ -78,14 +80,14 @@ export default {
                     return item.tag.includes('server');
                 })
             },
-
-            page: 1
+            currentTag: '',
+            page: 1,
+            showAll: false,
+            showNum: 3,
+            showOption: '显示全部'
         };
     },
     computed: {
-        currentTag() {
-            return this.buttonList[0].name;
-        },
         articles() {
             return this.list[this.currentTag];
         },
@@ -163,12 +165,21 @@ export default {
             } else {
                 this.page = this.pageCount;
             }
+        },
+        init() {
+            this.currentTag = this.buttonList[0].name;
+        },
+        showMore() {
+            this.showAll = !this.showAll;
+            this.showNum = this.showAll ? this.buttonList.length : 3;
+            this.showOption = this.showAll ? '收起' : '显示全部';
         }
     },
     mounted() {
         if (this.$store.state.articleList.length === 0) {
             this.getArticles();
         }
+        this.init();
     },
     components: {
         SearchBar
