@@ -7,46 +7,12 @@
         <SearchBar></SearchBar>
         <div class="list">
             <button
-                :class="{ active: currentTag === 'algo' }"
-                @click="changeTag('algo')"
+                v-for="(item, index) in buttonList"
+                :key="index"
+                :class="{ active: currentType === item.name }"
+                @click="changeTag(item.name)"
             >
-                算法({{ this.list.algo.length }})
-            </button>
-            <button
-                :class="{ active: currentTag === 'html' }"
-                @click="changeTag('html')"
-            >
-                HTML({{ this.list.html.length }})
-            </button>
-            <button
-                :class="{ active: currentTag === 'js' }"
-                @click="changeTag('js')"
-            >
-                JS({{ this.list.js.length }})
-            </button>
-            <button
-                :class="{ active: currentTag === 'css' }"
-                @click="changeTag('css')"
-            >
-                CSS({{ this.list.css.length }})
-            </button>
-            <button
-                :class="{ active: currentTag === 'vue' }"
-                @click="changeTag('vue')"
-            >
-                Vue({{ this.list.vue.length }})
-            </button>
-            <button
-                :class="{ active: currentTag === 'node' }"
-                @click="changeTag('node')"
-            >
-                Node({{ this.list.node.length }})
-            </button>
-            <button
-                :class="{ active: currentTag === 'server' }"
-                @click="changeTag('server')"
-            >
-                服务器({{ this.list.server.length }})
+                {{ item.desc }}-{{ item.count }}
             </button>
             <router-link
                 v-for="(item, index) in currentPage"
@@ -131,6 +97,47 @@ export default {
         },
         pageCount() {
             return Math.ceil(this.articles.length / 8);
+        },
+        buttonList() {
+            return [
+                {
+                    desc: "算法",
+                    name: "algo",
+                    count: this.list.algo.length
+                },
+                {
+                    desc: "HTML",
+                    name: "html",
+                    count: this.list.html.length
+                },
+                {
+                    desc: "JavaScript",
+                    name: "js",
+                    count: this.list.js.length
+                },
+                {
+                    desc: "CSS",
+                    name: "css",
+                    count: this.list.css.length
+                },
+                {
+                    desc: "Vue",
+                    name: "vue",
+                    count: this.list.vue.length
+                },
+                {
+                    desc: "Node",
+                    name: "node",
+                    count: this.list.node.length
+                },
+                {
+                    desc: "服务器",
+                    name: "server",
+                    count: this.list.server.length
+                }
+            ].sort((a, b) => {
+                return b.count - a.count;
+            });
         }
     },
     methods: {

@@ -7,22 +7,12 @@
         <SearchBar></SearchBar>
         <div class="list">
             <button
-                :class="{ active: currentType === 'code' }"
-                @click="changeType('code')"
+                v-for="(item, index) in buttonList"
+                :key="index"
+                :class="{ active: currentType === item.name }"
+                @click="changeType(item.name)"
             >
-                编程({{ this.list.code.length }})
-            </button>
-            <button
-                :class="{ active: currentType === 'game' }"
-                @click="changeType('game')"
-            >
-                游戏({{ this.list.game.length }})
-            </button>
-            <button
-                :class="{ active: currentType === 'life' }"
-                @click="changeType('life')"
-            >
-                生活({{ this.list.life.length }})
+                {{ item.desc }}-{{ item.count }}
             </button>
             <router-link
                 v-for="(item, index) in currentPage"
@@ -60,7 +50,7 @@
     </div>
 </template>
 <script>
-const SearchBar = () => import('../components/SearchBar');
+const SearchBar = () => import("../components/SearchBar");
 import { mapActions } from "vuex";
 export default {
     data() {
@@ -95,6 +85,27 @@ export default {
         },
         pageCount() {
             return Math.ceil(this.articles.length / 8);
+        },
+        buttonList() {
+            return [
+                {
+                    desc: "编程",
+                    name: "code",
+                    count: this.list.code.length
+                },
+                {
+                    desc: "生活",
+                    name: "life",
+                    count: this.list.life.length
+                },
+                {
+                    desc: "游戏",
+                    name: "game",
+                    count: this.list.game.length
+                }
+            ].sort((a, b) => {
+                return b.count - a.count;
+            });
         }
     },
     methods: {
