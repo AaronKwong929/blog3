@@ -64,6 +64,7 @@
                     <li class="new-item">图片上传和返回</li>
                     <li class="new-item">标签排序</li>
                     <li class="new-item">即将实现后端分页器</li>
+                    <li class="new-item">整合better-scroll进列表</li>
                 </ul>
             </li>
         </ul>
