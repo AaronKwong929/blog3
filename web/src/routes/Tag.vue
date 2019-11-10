@@ -1,5 +1,5 @@
 <template>
-    <div id="tag" class="router-view-general">
+    <div id="tag" class="router-view-general" v-if="this.$store.state.articleList.length">
         <i class="iconfont icon-biaoqian root-icon"></i>
         <div class="router-title">
             标签
@@ -15,10 +15,10 @@
             >
                 {{ item.desc }}-{{ item.count }}
             </button>
-            <button @click="showMore" class="show-class">{{ showOption }}</button>
+            <button @click="showMore">{{ showOption }}</button>
             <router-link
                 v-for="(item, index) in currentPage"
-                :key="index"
+                :key="'link' + index"
                 :to="'/article/' + item._id"
                 tag="div"
                 class="list-item"
@@ -53,7 +53,6 @@
 </template>
 <script>
 const SearchBar = () => import('../components/SearchBar');
-import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -146,9 +145,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions({
-            getArticles: "COMMON_GET_ARTICLES"
-        }),
         changeTag(tag) {
             this.currentTag = tag;
         },
@@ -176,9 +172,6 @@ export default {
         }
     },
     mounted() {
-        if (this.$store.state.articleList.length === 0) {
-            this.getArticles();
-        }
         this.init();
     },
     components: {

@@ -1,5 +1,5 @@
 <template>
-    <div id="type" class="router-view-general">
+    <div id="type" class="router-view-general" v-if="this.$store.state.articleList.length">
         <i class="iconfont icon-yingyongAPP root-icon"></i>
         <div class="router-title">
             分类
@@ -11,12 +11,14 @@
                 :key="index"
                 :class="{ active: currentType === item.name }"
                 @click="changeType(item.name)"
+                v-show="index < showNum"
             >
                 {{ item.desc }}-{{ item.count }}
             </button>
+            <button @click="showMore">{{ showOption }}</button>
             <router-link
                 v-for="(item, index) in currentPage"
-                :key="index"
+                :key="'link' + index"
                 :to="'/article/' + item._id"
                 tag="div"
                 class="list-item"
@@ -51,7 +53,6 @@
 </template>
 <script>
 const SearchBar = () => import("../components/SearchBar");
-import { mapActions } from "vuex";
 export default {
     data() {
         return {
@@ -67,7 +68,10 @@ export default {
                 })
             },
             currentType: "",
-            page: 1
+            page: 1,
+            showAll: false,
+            showNum: 1,
+            showOption: "显示全部"
         };
     },
     computed: {
@@ -109,9 +113,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions({
-            getArticles: "COMMON_GET_ARTICLES"
-        }),
         changeType(type) {
             this.currentType = type;
         },
@@ -131,12 +132,14 @@ export default {
         },
         init() {
             this.currentType = this.buttonList[0].name;
+        },
+        showMore() {
+            this.showAll = !this.showAll;
+            this.showNum = this.showAll ? this.buttonList.length : 1;
+            this.showOption = this.showAll ? "收起" : "显示全部";
         }
     },
     mounted() {
-        if (this.$store.state.articleList.length === 0) {
-            this.getArticles();
-        }
         this.init();
     },
     components: {

@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 const SearchBar = () => import('../components/SearchBar');
 export default {
     data() {
@@ -70,9 +70,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions({
-            getArticles: "COMMON_GET_ARTICLES"
-        }),
         prev() {
             if (this.page > 1) {
                 this.page--;
@@ -86,11 +83,6 @@ export default {
             } else {
                 this.page = this.pageCount;
             }
-        }
-    },
-    mounted() {
-        if (this.$store.state.articleList.length === 0) {
-            this.getArticles();
         }
     },
     components: {
