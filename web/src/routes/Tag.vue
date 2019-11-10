@@ -17,7 +17,7 @@
             </button>
             <button @click="showMore">{{ showOption }}</button>
             <router-link
-                v-for="(item, index) in currentPage"
+                v-for="(item, index) in articles"
                 :key="'link' + index"
                 :to="'/article/' + item._id"
                 tag="div"
@@ -28,7 +28,7 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <div class="pagination" v-show="this.pageCount > 1">
+        <!-- <div class="pagination" v-show="this.pageCount > 1">
             <button
                 class="btn-small"
                 @click="prev"
@@ -48,7 +48,7 @@
             </button>
             ， 共<span>{{ this.pageCount }}</span
             >页
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -90,18 +90,18 @@ export default {
         articles() {
             return this.list[this.currentTag];
         },
-        currentPage() {
-            if (this.page > 0 && this.page <= this.pageCount) {
-                return this.articles.slice(
-                    (this.page - 1) * 8,
-                    this.page * 8 - 1
-                );
-            }
-            return this.articles.slice(0, 8);
-        },
-        pageCount() {
-            return Math.ceil(this.articles.length / 8);
-        },
+        // currentPage() {
+        //     if (this.page > 0 && this.page <= this.pageCount) {
+        //         return this.articles.slice(
+        //             (this.page - 1) * 8,
+        //             this.page * 8 - 1
+        //         );
+        //     }
+        //     return this.articles.slice(0, 8);
+        // },
+        // pageCount() {
+        //     return Math.ceil(this.articles.length / 8);
+        // },
         buttonList() {
             return [
                 {
@@ -148,20 +148,20 @@ export default {
         changeTag(tag) {
             this.currentTag = tag;
         },
-        prev() {
-            if (this.page > 1) {
-                this.page--;
-            } else {
-                this.page = 1;
-            }
-        },
-        next() {
-            if (this.page < this.pageCount) {
-                this.page++;
-            } else {
-                this.page = this.pageCount;
-            }
-        },
+        // prev() {
+        //     if (this.page > 1) {
+        //         this.page--;
+        //     } else {
+        //         this.page = 1;
+        //     }
+        // },
+        // next() {
+        //     if (this.page < this.pageCount) {
+        //         this.page++;
+        //     } else {
+        //         this.page = this.pageCount;
+        //     }
+        // },
         init() {
             this.currentTag = this.buttonList[0].name;
         },
