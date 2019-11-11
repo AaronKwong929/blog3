@@ -6,6 +6,7 @@
         </div>
         <SearchBar></SearchBar>
         <div class="list">
+            <button @click="loadMoreArticles" v-show="this.$store.state.currentPage<=this.$store.state.pageCount">加载更多</button>
             <router-link
                 v-for="(item, index) in currentPage"
                 :key="index"
@@ -18,7 +19,7 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <div class="pagination" v-show="this.pageCount > 1">
+        <div class="pagination" v-if="this.pageCount > 1">
             <button
                 class="btn-small"
                 @click="prev"
@@ -42,7 +43,7 @@
     </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 const SearchBar = () => import('../components/SearchBar');
 export default {
     data() {
@@ -60,13 +61,13 @@ export default {
             if (this.page > 0 && this.page <= this.pageCount) {
                 return this.List.slice(
                     (this.page - 1) * 10,
-                    this.page * 10 - 1
+                    this.page * 10
                 );
             }
-            return this.List.slice(0, 9);
+            return this.List.slice(0, 10);
         },
         pageCount() {
-            return Math.ceil(this.List.length / 9);
+            return Math.ceil(this.List.length / 10);
         }
     },
     methods: {
@@ -83,7 +84,10 @@ export default {
             } else {
                 this.page = this.pageCount;
             }
-        }
+        },
+        ...mapActions({
+            loadMoreArticles: "COMMON_GET_ARTICLES"
+        })
     },
     components: {
         SearchBar
