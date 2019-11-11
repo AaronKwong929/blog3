@@ -1,5 +1,9 @@
 <template>
-    <div id="tag" class="router-view-general" v-if="this.$store.state.articleList.length">
+    <div
+        id="tag"
+        class="router-view-general"
+        v-if="this.$store.state.articleList.length"
+    >
         <i class="iconfont icon-biaoqian root-icon"></i>
         <div class="router-title">
             标签
@@ -11,13 +15,21 @@
                 :key="index"
                 :class="{ active: currentTag === item.name }"
                 @click="changeTag(item.name)"
-                v-show="index<showNum"
+                v-show="index < showNum"
             >
                 {{ item.desc }}-{{ item.count }}
             </button>
             <button @click="showMore">{{ showOption }}</button>
+            <button
+                @click="loadMoreArticles"
+                v-show="
+                    this.$store.state.currentPage <= this.$store.state.pageCount
+                "
+            >
+                加载更多
+            </button>
             <router-link
-                v-for="(item, index) in articles"
+                v-for="(item, index) in currentPage"
                 :key="'link' + index"
                 :to="'/article/' + item._id"
                 tag="div"
@@ -28,7 +40,7 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <!-- <div class="pagination" v-show="this.pageCount > 1">
+        <div class="pagination" v-if="this.pageCount > 1">
             <button
                 class="btn-small"
                 @click="prev"
@@ -48,60 +60,61 @@
             </button>
             ， 共<span>{{ this.pageCount }}</span
             >页
-        </div> -->
+        </div>
     </div>
 </template>
 <script>
-const SearchBar = () => import('../components/SearchBar');
+const SearchBar = () => import("../components/SearchBar");
+import { mapActions } from "vuex";
 export default {
     data() {
         return {
             list: {
                 algo: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('algo');
+                    return item.tag.includes("algo");
                 }),
                 html: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('html');
+                    return item.tag.includes("html");
                 }),
                 css: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('css');
+                    return item.tag.includes("css");
                 }),
                 js: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('js')
+                    return item.tag.includes("js");
                 }),
                 node: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('node');
+                    return item.tag.includes("node");
                 }),
                 vue: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('vue');
+                    return item.tag.includes("vue");
                 }),
                 server: this.$store.state.articleList.filter(item => {
-                    return item.tag.includes('server');
+                    return item.tag.includes("server");
                 })
             },
-            currentTag: '',
+            currentTag: "",
             page: 1,
             showAll: false,
             showNum: 3,
-            showOption: '显示全部'
+            showOption: "显示全部"
         };
     },
     computed: {
         articles() {
             return this.list[this.currentTag];
         },
-        // currentPage() {
-        //     if (this.page > 0 && this.page <= this.pageCount) {
-        //         return this.articles.slice(
-        //             (this.page - 1) * 8,
-        //             this.page * 8 - 1
-        //         );
-        //     }
-        //     return this.articles.slice(0, 8);
-        // },
-        // pageCount() {
-        //     return Math.ceil(this.articles.length / 8);
-        // },
+        currentPage() {
+            if (this.page > 0 && this.page <= this.pageCount) {
+                return this.articles.slice(
+                    (this.page - 1) * 10,
+                    this.page * 10
+                );
+            }
+            return this.articles.slice(0, 10);
+        },
+        pageCount() {
+            return Math.ceil(this.articles.length / 10);
+        },
         buttonList() {
             return [
                 {
@@ -142,40 +155,71 @@ export default {
             ].sort((a, b) => {
                 return b.count - a.count;
             });
+        },
+        stateArticleListLength() {
+            return this.$store.state.articleList.length;
         }
     },
     methods: {
         changeTag(tag) {
             this.currentTag = tag;
         },
-        // prev() {
-        //     if (this.page > 1) {
-        //         this.page--;
-        //     } else {
-        //         this.page = 1;
-        //     }
-        // },
-        // next() {
-        //     if (this.page < this.pageCount) {
-        //         this.page++;
-        //     } else {
-        //         this.page = this.pageCount;
-        //     }
-        // },
+        prev() {
+            if (this.page > 1) {
+                this.page--;
+            } else {
+                this.page = 1;
+            }
+        },
+        next() {
+            if (this.page < this.pageCount) {
+                this.page++;
+            } else {
+                this.page = this.pageCount;
+            }
+        },
         init() {
             this.currentTag = this.buttonList[0].name;
         },
         showMore() {
             this.showAll = !this.showAll;
             this.showNum = this.showAll ? this.buttonList.length : 3;
-            this.showOption = this.showAll ? '收起' : '显示全部';
-        }
+            this.showOption = this.showAll ? "收起" : "显示全部";
+        },
+        ...mapActions({
+            loadMoreArticles: "COMMON_GET_ARTICLES"
+        })
     },
     mounted() {
         this.init();
     },
     components: {
         SearchBar
+    },
+    watch: {
+        stateArticleListLength: function() {
+            this.list.algo = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("algo");
+            });
+            this.list.html = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("html");
+            });
+            this.list.css = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("css");
+            });
+            this.list.js = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("js");
+            });
+            this.list.node = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("node");
+            });
+            this.list.vue = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("vue");
+            });
+            this.list.server = this.$store.state.articleList.filter(item => {
+                return item.tag.includes("server");
+            });
+        }
     }
 };
 </script>
