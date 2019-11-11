@@ -1,8 +1,6 @@
 import Axios from '../axios';
 import router from '../router';
-
 const baseURL = process.env.VUE_APP_API;
-
 const actions = {
     async ADMIN_GET_ARTICLES({ state }) {
         await Axios.get(`${baseURL}/admin`).then(res => {
@@ -17,9 +15,18 @@ const actions = {
         });
     },
     async COMMON_GET_ARTICLES({ state }) {
-        await Axios.get(`${baseURL}/common/articles`).then(res => {
-            state.articleList = res.data.articleList;
-        });
+        if (state.currentPage <= state.pageCount) {
+            await Axios.post(`${baseURL}/common/articles`, {
+                currentPage: state.currentPage
+            }).then(res => {
+                // console.log(res.data.articles);
+                state.pageCount = res.data.pageCount;
+                state.currentPage++;
+                state.articleList = state.articleList.concat(res.data.articles);
+                // console.log(state.articleList);
+                // console.log(`当前总页数：${state.pageCount}`);
+            });
+        }
     },
     async FIND_ARTICLE({ state }, id) {
         state.articleDetails = await state.articleList.find(item => {
@@ -104,7 +111,7 @@ const actions = {
         }; //添加请求头
         Axios.post(`${baseURL}/admin/upload`, param, config).then(res => {
             // console.log(res.data);
-            state.imgUrls.push(res.data.filename)
+            state.imgUrls.push(res.data.filename);
         });
     }
 };

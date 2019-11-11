@@ -5,7 +5,9 @@ const Article = require('../models/Articles');
 const Recent = require('../models/Recent');
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
+const multer = require('@koa/multer');
 let adminRouter = new Router();
+
 // 添加管理员账号用（一次性
 // adminRouter.post('/add', async ctx => {
 //     const admin = new Admin(ctx.request.body);
@@ -97,6 +99,26 @@ adminRouter.post('/recent', verifyToken, async ctx => {
     ctx.response.body = {
         code: 1,
         msg: `recent updated`
+    };
+});
+
+var storage = multer.diskStorage({
+    // 文件保存路径
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    // 修改文件名称
+    filename: function(req, file, cb) {
+        var fileFormat = file.originalname.split('.'); // 以点分割成数组，数组的最后一项就是后缀名
+        cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
+    }
+});
+// 加载配置
+var upload = multer({ storage });
+adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
+    ctx.body = {
+        filename: `http://localhost:3000/${ctx.request.file.filename}`
+        // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
     };
 });
 module.exports = adminRouter;
