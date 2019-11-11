@@ -11,15 +11,39 @@ const routes = [
     { path: '/archive', component: () => import('./routes/Archive.vue') },
     { path: '/type', component: () => import('./routes/Type.vue') },
     { path: '/tag', component: () => import('./routes/Tag.vue') },
-    { path: '/about', component: () => import('./routes/About.vue') },
+    {
+        path: '/about',
+        component: () => import('./routes/About.vue'),
+        meta: { keepAlive: true }
+    },
     { path: '/article/:id', component: () => import('./routes/Article.vue') },
     { path: '/login', component: () => import('./routes/Login.vue') },
-    { path: '/admin', component: () => import('./routes/Admin.vue'), meta: { requireAuth: true } },
-    { path: '/draft/:id', component: () => import('./routes/Draft.vue'), meta: { requireAuth: true } },
+    {
+        path: '/admin',
+        component: () => import('./routes/Admin.vue'),
+        meta: { requireAuth: true }
+    },
+    {
+        path: '/draft/:id',
+        component: () => import('./routes/Draft.vue'),
+        meta: { requireAuth: true }
+    },
     { path: '*', redirect: '404' },
-    { path: '/404', component: () => import('./routes/404.vue') },
-    { path: '/401', component: () => import('./routes/401.vue') },
-    { path: '/update', component: () => import('./routes/UpdateLog.vue') },
+    {
+        path: '/404',
+        component: () => import('./routes/404.vue'),
+        meta: { keepAlive: true }
+    },
+    {
+        path: '/401',
+        component: () => import('./routes/401.vue'),
+        meta: { keepAlive: true }
+    },
+    {
+        path: '/update',
+        component: () => import('./routes/UpdateLog.vue'),
+        meta: { keepAlive: true }
+    },
     { path: '/search', component: () => import('./routes/SearchResult.vue') }
 ];
 
