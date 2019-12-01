@@ -4,8 +4,9 @@ import App from './App.vue';
 import Axios from './axios';
 import dateFormat from './dateFormat';
 
-import './static/css/style.scss';
-import './static/css/v-html.scss';
+import './static/css/index.scss'
+// import './static/css/style.scss';
+// import './static/css/v-html.scss';
 import './static/icon/iconfont.css';
 import './static/css/atom-one-dark.css';
 
