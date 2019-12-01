@@ -137,7 +137,7 @@
             <i class="el-icon-s-tools"></i>
             <span slot="title">管 理</span>
         </el-menu-item>
-        <footer class="beian">
+        <footer class="beian" v-show="!isCollapse">
             <a href="http://beian.miitbeian.gov.cn" target="_blank"
                 >粤ICP备19111987号-1</a
             >

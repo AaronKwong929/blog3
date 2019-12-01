@@ -4,95 +4,102 @@
         <div class="router-title">
             开发日志
         </div>
-        <ul class="log-items">
-            <li>
-                <div class="ver">2019-8-23 开发版本3.0 上线版本1.0</div>
-            </li>
-            <li>
-                <div class="ver">2019-8-26 开发版本3.1 上线版本1.1</div>
-                <div class="new">
-                    <div class="new-item">登陆持久化</div>
-                    <div class="new-item">开发日志页面</div>
-                </div>
-            </li>
-            <li>
-                <div class="ver">2019-8-28 开发版本3.2 上线版本1.2</div>
-                <div class="new">
-                    <div class="new-item">首页和关于页更新</div>
-                    <div class="new-item">
-                        时间格式化更新（Linux和Win下格式保持一致）
-                    </div>
-                    <div class="new-item">
-                        各种操作完全整合到actions
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="ver">2019-9-8 开发版本3.3 上线版本1.3</div>
-                <ul class="new">
-                    <li class="new-item">
-                        归档/分类/标签页增加全文/标题搜索；搜索结果高亮
-                    </li>
-                    <li class="new-item">前端处理的分页器</li>
-                </ul>
-            </li>
-            <li>
-                <div class="ver">2019-9-30 开发版本3.4.1 上线版本1.4.1</div>
-                <ul class="new">
-                    <li class="new-item">评论区上线</li>
-                    <li class="new-item">项目体积优化，加载速度优化</li>
-                </ul>
-            </li>
-            <li>
-                <div class="ver">2019-10-12 开发版本3.5 上线版本1.5</div>
-                <ul class="new">
-                    <li class="new-item">首页UI更改</li>
-                    <li class="new-item">轮播图实现</li>
-                    <li class="new-item">增加最近动态栏</li>
-                </ul>
-            </li>
-            <li>
-                <div class="ver">2019-10-17 开发版本3.5.1 上线版本1.5.1</div>
-                <ul class="new">
-                    <li class="new-item">Markdown编辑器重写</li>
-                    <li class="new-item">样式修正 大量改用flex</li>
-                </ul>
-            </li>
-            <li>
-                <div class="ver">2019-11-7 开发版本3.5.2 上线版本1.5.2</div>
-                <ul class="new">
-                    <li class="new-item">图片上传和返回</li>
-                    <li class="new-item">标签排序</li>
-                    <li class="new-item">即将实现后端分页器</li>
-                    <li class="new-item">整合better-scroll进列表</li>
-                </ul>
-            </li>
-        </ul>
+        <div class="timeline">
+            <el-timeline :reverse="true">
+                <el-timeline-item
+                    v-for="(item, index) in log"
+                    :key="index"
+                    :timestamp="item.timestamp"
+                    placement="top"
+                    color="#74b9ff"
+                    size="large"
+                >
+                    <el-card>
+                        <h4>{{ item.title }}</h4>
+                        <p
+                            v-for="(content, index) in item.contents"
+                            :key="index"
+                        >
+                            {{ index + 1 }} {{ content }}
+                        </p>
+                    </el-card>
+                </el-timeline-item>
+            </el-timeline>
+        </div>
     </div>
 </template>
 
+<script>
+export default {
+    data() {
+        return {
+            log: [
+                {
+                    title: '开发版本3.0 上线版本1.0',
+                    contents: [],
+                    timestamp: '2019-8-23'
+                },
+                {
+                    title: '开发版本3.1 上线版本1.1',
+                    contents: ['登陆持久化', '新增开发日志页面'],
+                    timestamp: '2019-8-26'
+                },
+                {
+                    title: '开发版本3.2 上线版本1.2',
+                    contents: [
+                        '时间格式化更新（Linux和Win下格式保持一致）',
+                        '各种交互操作完全整合到vuex.actions'
+                    ],
+                    timestamp: '2019-8-28'
+                },
+                {
+                    title: '开发版本3.3 上线版本1.3',
+                    contents: [
+                        '增加搜索系统',
+                        '搜索相关结果高亮',
+                        '前端分页器'
+                    ],
+                    timestamp: '2019-9-8'
+                },
+                {
+                    title: '开发版本3.4 上线版本1.4',
+                    contents: ['评论区上线', '目体积优化'],
+                    timestamp: '2019-9-30'
+                },
+                {
+                    title: '开发版本3.5 上线版本1.5',
+                    contents: ['首页UI更改', '轮播图实现'],
+                    timestamp: '2019-10-12'
+                },
+                {
+                    title: '开发版本3.6 上线版本1.6',
+                    contents: ['Markdown编辑器样式更新，新增tool-bar'],
+                    timestamp: '2019-10-17'
+                },
+                {
+                    title: '开发版本3.7 上线版本1.7',
+                    contents: ['图片上传和返回', '标签排序', '后端分页器'],
+                    timestamp: '2019-11-7'
+                },
+                {
+                    title: '开发版本3.9 上线版本1.9',
+                    contents: ['Element-UI 重写侧栏/静态页'],
+                    timestamp: '2019-12-1'
+                }
+            ]
+        };
+    }
+};
+</script>
 <style lang="scss" scoped>
 #log {
     margin-bottom: 1rem;
 }
-.log-items {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-}
-.log-items > li {
-    margin-top: 1rem;
-    box-shadow: 0 0 0.6rem 0.2rem #aaa;
-    padding: .6rem;
-    border-radius: 1rem;
-    width: 80%;
-}
-.ver {
-    font-size: 1.4rem;
-    font-weight: 400;
-    padding-bottom: 0.3rem;
-}
-.new {
-    line-height: 1.5rem;
+
+h4 {
+    font: {
+        weight: 400;
+        size: 1.3rem;
+    }
 }
 </style>
