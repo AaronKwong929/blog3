@@ -57,11 +57,9 @@
             >
         </footer> -->
     <el-menu
-        default-active="1"
+        router
+        :default-active="$route.path"
         class="el-menu-vertical clearfix"
-        @open="handleOpen"
-        @close="handleClose"
-        @select="changeRouter"
         :collapse="isCollapse"
         active-text-color="#74b9ff"
     >
@@ -74,24 +72,28 @@
                 ><i class="el-icon-arrow-right" v-show="isCollapse"></i
             ></el-button>
         </li>
-        <el-menu-item index="1">
+        <el-menu-item index="/home">
             <i class="el-icon-s-home"></i>
             <span slot="title">首 页</span>
         </el-menu-item>
-        <el-submenu index="2">
+        <el-menu-item index="/archive">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">归 档</span>
+        </el-menu-item>
+        <el-submenu index="3">
             <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span slot="title">分 类</span>
             </template>
             <el-menu-item-group>
                 <span slot="title">文章类型</span>
-                <el-menu-item index="2-1"
+                <el-menu-item index="/type"
                     ><i class="el-icon-s-grid"></i>
                     <span slot="title">类型</span></el-menu-item
                 >
             </el-menu-item-group>
             <el-menu-item-group title="文章标签">
-                <el-menu-item index="2-2"
+                <el-menu-item index="/tag"
                     ><i class="el-icon-price-tag"></i>标签</el-menu-item
                 >
             </el-menu-item-group>
@@ -100,18 +102,46 @@
                 <el-menu-item index="1-4-1">选项1</el-menu-item>
             </el-submenu> -->
         </el-submenu>
-        <el-menu-item index="3">
+
+        <!-- <el-menu-item index="/update">
             <i class="el-icon-chat-line-square"></i>
             <span slot="title">开发日志</span>
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="/about">
             <i class="el-icon-info"></i>
             <span slot="title">关 于</span>
-        </el-menu-item>
-        <el-menu-item index="5">
+        </el-menu-item> -->
+        <el-submenu index="4">
+            <template slot="title">
+                <i class="el-icon-more-outline"></i>
+                <span slot="title">其 它</span>
+            </template>
+            <el-menu-item-group title="博客相关">
+                <el-menu-item index="/about"
+                    ><i class="el-icon-info"></i>关于</el-menu-item
+                >
+            </el-menu-item-group>
+            <el-menu-item-group>
+                <span slot="title">开发相关</span>
+                <el-menu-item index="/update"
+                    ><i class="el-icon-chat-line-square"></i>
+                    <span slot="title">日 志</span></el-menu-item
+                >
+            </el-menu-item-group>
+        </el-submenu>
+        <el-menu-item index="/login" v-if="!this.$store.state.token">
             <i class="el-icon-user"></i>
             <span slot="title">登 陆</span>
         </el-menu-item>
+        <el-menu-item index="/admin" v-else>
+            <i class="el-icon-s-tools"></i>
+            <span slot="title">管 理</span>
+        </el-menu-item>
+        <footer class="beian">
+            <a href="http://beian.miitbeian.gov.cn" target="_blank"
+                >粤ICP备19111987号-1</a
+            >
+        </footer>
     </el-menu>
 </template>
 <script>
@@ -133,37 +163,6 @@ export default {
         // toUpdate() {
         //     this.$router.push("/update");
         // }
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        changeRouter(index) {
-            console.log(index);
-            switch (index) {
-                case '1':
-                    this.$router.push('/home');
-                    break;
-                case '2-1':
-                    this.$router.push('/type');
-                    break;
-                case '2-2':
-                    this.$router.push('/tag');
-                    break;
-                case '3':
-                    this.$router.push('/update');
-                    break;
-                case '4':
-                    this.$router.push('/about');
-                    break;
-                case '5':
-                    this.$router.push('/login');
-                    break;
-                default:
-                    break;
-            }
-        }
     }
     // components: {
     //     Timer
@@ -225,14 +224,14 @@ export default {
 //     width: 3.5rem;
 //     height: 3.5rem;
 // }
-// .beian {
-//     display: flex;
-//     justify-content: center;
-//     align-items: flex-end;
-//     font-size: 0.6rem;
-// }
+.beian {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 0.6rem;
+}
 .el-menu-vertical {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
