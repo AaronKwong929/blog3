@@ -2,6 +2,14 @@
     <div id="app">
         <Sidebar></Sidebar>
         <div class="router-views">
+            <template>
+                <el-backtop
+                    target=".router-views"
+                    :bottom="80"
+                    :right="80"
+                ></el-backtop>
+                <!--  -->
+            </template>
             <keep-alive>
                 <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>
@@ -11,20 +19,20 @@
 </template>
 
 <script>
-const Sidebar = () => import("./components/Sidebar");
-import { mapActions } from "vuex";
+const Sidebar = () => import('./components/Sidebar');
+import { mapActions } from 'vuex';
 export default {
     components: {
         Sidebar
     },
     methods: {
         ...mapActions({
-            getArticles: "COMMON_GET_ARTICLES"
+            getArticles: 'COMMON_GET_ARTICLES'
         })
     },
     created() {
-        if (localStorage.getItem("token")) {
-            let token = localStorage.getItem("token");
+        if (localStorage.getItem('token')) {
+            let token = localStorage.getItem('token');
             this.$store.state.token = token;
         }
         if (!this.$store.state.articleList.length) {
@@ -37,5 +45,7 @@ export default {
 <style lang="scss" scoped>
 .router-views {
     margin-left: 10%;
+    height: 100vh;
+    overflow-x: hidden;
 }
 </style>
