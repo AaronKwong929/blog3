@@ -69,7 +69,8 @@ module.exports = {
                 lodash: '_',
                 vuex: 'Vuex',
                 'highlight.js': 'hljs',
-                marked: 'marked'
+                marked: 'marked',
+                'element-ui': 'ELEMENT'
             };
         }
     }
