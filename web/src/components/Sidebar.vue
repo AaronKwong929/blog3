@@ -1,6 +1,5 @@
 <template>
-    <nav id="sidebar">
-        <div class="routers">
+    <!-- <div class="routers">
             <router-link to="/home" tag="div" class="bar-item" title="首页"
                 ><i class="iconfont icon-cangku"></i> 首 页
             </router-link>
@@ -56,88 +55,199 @@
             <a href="http://beian.miitbeian.gov.cn" target="_blank"
                 >粤ICP备19111987号-1</a
             >
-        </footer>
-    </nav>
+        </footer> -->
+    <el-menu
+        default-active="1"
+        class="el-menu-vertical clearfix"
+        @open="handleOpen"
+        @close="handleClose"
+        @select="changeRouter"
+        :collapse="isCollapse"
+        active-text-color="#74b9ff"
+    >
+        <li class="menu-btn">
+            <el-button
+                @click="isCollapse = !isCollapse"
+                circle
+                :title="isCollapse ? '展开' : '收起'"
+                ><i class="el-icon-arrow-left" v-show="!isCollapse"></i
+                ><i class="el-icon-arrow-right" v-show="isCollapse"></i
+            ></el-button>
+        </li>
+        <el-menu-item index="1">
+            <i class="el-icon-s-home"></i>
+            <span slot="title">首 页</span>
+        </el-menu-item>
+        <el-submenu index="2">
+            <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span slot="title">分 类</span>
+            </template>
+            <el-menu-item-group>
+                <span slot="title">文章类型</span>
+                <el-menu-item index="2-1"
+                    ><i class="el-icon-s-grid"></i>
+                    <span slot="title">类型</span></el-menu-item
+                >
+            </el-menu-item-group>
+            <el-menu-item-group title="文章标签">
+                <el-menu-item index="2-2"
+                    ><i class="el-icon-price-tag"></i>标签</el-menu-item
+                >
+            </el-menu-item-group>
+            <!-- <el-submenu index="1-4">
+                <span slot="title">选项4</span>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+            </el-submenu> -->
+        </el-submenu>
+        <el-menu-item index="3">
+            <i class="el-icon-chat-line-square"></i>
+            <span slot="title">开发日志</span>
+        </el-menu-item>
+        <el-menu-item index="4">
+            <i class="el-icon-info"></i>
+            <span slot="title">关 于</span>
+        </el-menu-item>
+        <el-menu-item index="5">
+            <i class="el-icon-user"></i>
+            <span slot="title">登 陆</span>
+        </el-menu-item>
+    </el-menu>
 </template>
 <script>
-const Timer = () => import("../components/Time");
+// const Timer = () => import("../components/Time");
 export default {
-    methods: {
-        back() {
-            this.$router.go(-1);
-        },
-        top() {
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        },
-        toUpdate() {
-            this.$router.push("/update");
-        }
+    data() {
+        return {
+            isCollapse: false
+        };
     },
-    components: {
-        Timer
+    methods: {
+        // back() {
+        //     this.$router.go(-1);
+        // },
+        // top() {
+        //     document.documentElement.scrollTop = 0;
+        //     document.body.scrollTop = 0;
+        // },
+        // toUpdate() {
+        //     this.$router.push("/update");
+        // }
+        handleOpen(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        changeRouter(index) {
+            console.log(index);
+            switch (index) {
+                case '1':
+                    this.$router.push('/home');
+                    break;
+                case '2-1':
+                    this.$router.push('/type');
+                    break;
+                case '2-2':
+                    this.$router.push('/tag');
+                    break;
+                case '3':
+                    this.$router.push('/update');
+                    break;
+                case '4':
+                    this.$router.push('/about');
+                    break;
+                case '5':
+                    this.$router.push('/login');
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+    // components: {
+    //     Timer
+    // }
 };
 </script>
 <style lang="scss" scoped>
-#sidebar {
-    width: 15%;
-    position: fixed;
+// #sidebar {
+//     width: 15%;
+//     position: fixed;
+//     left: 0;
+//     top: 0;
+//     bottom: 0;
+//     box-shadow: 0.6rem 0 0.6rem -0.6rem #aaa;
+//     background-color: #ddd;
+// }
+// .router-link-active {
+//     background-color: rgba(96, 126, 121, 0.4);
+//     box-shadow: 0 0 1rem #aaa;
+//     border-radius: 9999rem;
+// }
+// .iconfont {
+//     font-size: 1.6rem;
+//     color: rgb(96, 126, 121);
+// }
+// .routers {
+//     display: flex;
+//     flex-direction: column;
+// }
+// .bar-item {
+//     margin: 1rem auto;
+//     width: 6rem;
+//     height: 2rem;
+//     cursor: pointer;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     border: none;
+//     outline: none;
+// }
+// .routers > .bar-item:first-child {
+//     margin-top: 50%;
+// }
+// .bar-item:hover,
+// .bar-item:active {
+//     background-color: rgba(96, 126, 121, 0.4);
+//     box-shadow: 0 0 1rem #aaa;
+//     border-radius: 9999rem;
+//     transition: all 0.8s;
+// }
+// .other-btn {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-top: 60%;
+//     flex-wrap: wrap;
+// }
+// .other-btn > .bar-item {
+//     width: 3.5rem;
+//     height: 3.5rem;
+// }
+// .beian {
+//     display: flex;
+//     justify-content: center;
+//     align-items: flex-end;
+//     font-size: 0.6rem;
+// }
+.el-menu-vertical {
+    position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    box-shadow: 0.6rem 0 0.6rem -0.6rem #aaa;
-    background-color: #ddd;
 }
-.router-link-active {
-    background-color: rgba(96, 126, 121, 0.4);
-    box-shadow: 0 0 1rem #aaa;
-    border-radius: 9999rem;
+
+.el-menu-vertical:not(.el-menu--collapse) {
+    width: 10%;
+    min-height: 400px;
 }
-.iconfont {
-    font-size: 1.6rem;
-    color: rgb(96, 126, 121);
+
+/deep/ .menu-btn {
+    margin: 20px auto;
+    text-align: center;
 }
-.routers {
-    display: flex;
-    flex-direction: column;
-}
-.bar-item {
-    margin: 1rem auto;
-    width: 6rem;
-    height: 2rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    outline: none;
-}
-.routers > .bar-item:first-child {
-    margin-top: 50%;
-}
-.bar-item:hover,
-.bar-item:active {
-    background-color: rgba(96, 126, 121, 0.4);
-    box-shadow: 0 0 1rem #aaa;
-    border-radius: 9999rem;
-    transition: all 0.8s;
-}
-.other-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 60%;
-    flex-wrap: wrap;
-}
-.other-btn > .bar-item {
-    width: 3.5rem;
-    height: 3.5rem;
-}
-.beian {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    font-size: 0.6rem;
+/deep/ .el-submenu .el-menu-item {
+    min-width: 0;
 }
 </style>
