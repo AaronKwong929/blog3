@@ -13,6 +13,11 @@ import router from './router';
 import store from './vuex/store';
 import hljs from 'highlight.js';
 
+import ELEMENT from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(ELEMENT);
+
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = Axios;
