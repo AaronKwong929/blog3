@@ -1,5 +1,6 @@
 <template>
     <article id="Article">
+        <el-page-header @back="goBack" content="文章详情"> </el-page-header>
         <div class="article-title">
             {{ Details.title }}
         </div>
@@ -19,17 +20,20 @@
     </article>
 </template>
 <script>
-import marked from "marked";
-import { mapActions, mapState } from "vuex";
-import CommentArea from "../components/Comment";
+import marked from 'marked';
+import { mapActions, mapState } from 'vuex';
+import CommentArea from '../components/Comment';
 export default {
     methods: {
         ...mapActions({
-            getArticles: "COMMON_GET_ARTICLES",
-            getDetailss: "FIND_ARTICLE"
+            getArticles: 'COMMON_GET_ARTICLES',
+            getDetailss: 'FIND_ARTICLE'
         }),
         changeTo(name) {
             this.to = name;
+        },
+        goBack() {
+            this.$router.go(-1);
         }
     },
     computed: {
