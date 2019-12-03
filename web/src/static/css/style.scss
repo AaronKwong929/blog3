@@ -3,8 +3,8 @@
     padding: 0;
     box-sizing: border-box;
 }
-html{
-overflow-y: overlay;
+html {
+    // overflow-y: overlay; // 会导致左右滑动
 }
 body {
     background-color: #ddd;
@@ -13,7 +13,7 @@ body {
 .clearfix::after {
     display: block;
     visibility: hidden;
-    content: ".";
+    content: '.';
     clear: both;
     height: 0;
     overflow: hidden;
@@ -24,10 +24,10 @@ body {
     height: 0;
     border-width: 0 5px 5px;
     border-style: solid;
-    border-color: transparent transparent white ;
+    border-color: transparent transparent white;
     position: relative;
     display: block;
-    content: "";
+    content: '';
     margin-top: 11px;
     margin-left: 10px;
 }
@@ -43,7 +43,6 @@ a {
     padding: 2rem 0 0 3rem;
     position: relative;
     box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
-    
 }
 .router-view-general > .iconfont {
     font-size: 3rem;
@@ -67,14 +66,14 @@ a {
 .btn-small {
     padding: 1rem;
     border-radius: 0.5rem;
-    background-color: rgba(96, 126, 121, .5);
+    background-color: rgba(96, 126, 121, 0.5);
     border: none;
     cursor: pointer;
     outline: none;
 }
 .btn-small:hover {
     background-color: rgb(96, 126, 121);
-    transition: all .3s;
+    transition: all 0.3s;
 }
 input,
 select,
@@ -102,22 +101,22 @@ textarea:focus {
     transform: translateY(-51%);
     box-shadow: 0 0.5rem 0.5rem -0.5rem #aaa;
     margin: 0 1.5rem;
-    width: .3s,margin .3s;
+    width: 0.3s, margin 0.3s;
 }
 .list {
     margin-top: 1rem;
 }
 .list > .list-item {
     display: flex;
-    margin-top: .5rem;
-    padding-bottom: .4rem;
+    margin-top: 0.5rem;
+    padding-bottom: 0.4rem;
     cursor: pointer;
     color: rgb(131, 131, 131);
     font-size: 1.2rem;
 }
 .list > .list-item:hover {
     color: rgb(96, 126, 121);
-    transition: all .3s;
+    transition: all 0.3s;
 }
 .list > .list-item > div {
     display: flex;
@@ -131,14 +130,14 @@ textarea:focus {
     cursor: pointer;
     outline: none;
     font-size: 1.1rem;
-    padding-bottom: .1rem;
+    padding-bottom: 0.1rem;
 }
 .list button:hover {
     color: rgb(96, 126, 121);
     // border-bottom: 1px solid rgb(96, 126, 121);
-    transition: all .4s;
+    transition: all 0.4s;
 }
-.list button[class="active"] {
+.list button[class='active'] {
     color: rgb(96, 126, 121);
     // border-bottom: 1px solid rgb(96, 126, 121);
 }
@@ -154,7 +153,7 @@ textarea:focus {
 }
 .pagination > span::before,
 .pagination > span::after {
-    content: "  ";
+    content: '  ';
     font-size: 1.3rem;
     font-weight: 800;
 }
@@ -163,5 +162,5 @@ textarea:focus {
     cursor: default;
 }
 .pagination .btn-small {
-    padding: .5rem;
+    padding: 0.5rem;
 }

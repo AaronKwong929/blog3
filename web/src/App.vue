@@ -1,21 +1,12 @@
 <template>
-    <div id="app">
-        <Sidebar></Sidebar>
-        <div class="router-views">
-            <template>
-                <el-backtop
-                    target=".router-views"
-                    :bottom="80"
-                    :right="80"
-                ></el-backtop>
-                <!--  -->
-            </template>
-            <keep-alive>
-                <router-view v-if="$route.meta.keepAlive"></router-view>
-            </keep-alive>
-            <router-view v-if="!$route.meta.keepAlive"></router-view>
-        </div>
-    </div>
+    <el-container style="min-height: 100vh; max-width: 100%;">
+        <el-aside width="auto">
+            <Sidebar></Sidebar>
+        </el-aside>
+        <el-main style="width: stretch; padding: 0;">
+            <router-view></router-view>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
@@ -43,9 +34,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.router-views {
-    margin-left: 10%;
-    height: 100vh;
-    overflow-x: hidden;
-}
+// .router-views {
+//     margin-left: 10%;
+//     height: 100vh;
+//     overflow-x: hidden;
+// }
 </style>

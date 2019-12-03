@@ -1,11 +1,7 @@
 <template>
     <div id="home">
         <template>
-            <el-carousel
-                :interval="5000"
-                arrow="always"
-                indicator-position="outside"
-            >
+            <el-carousel :interval="5000" arrow="always">
                 <el-carousel-item
                     v-for="item in carousalItem"
                     :key="item.index"
@@ -19,7 +15,7 @@
                 </el-carousel-item>
             </el-carousel>
         </template>
-        <el-collapse
+        <!-- <el-collapse
             v-model="activeName"
             accordion
             style="width: 80%; margin: 0 auto;"
@@ -40,7 +36,7 @@
                         :to="'/article/' + item._id"
                         tag="div"
                         class="list-item"
-                    >
+                    >   
                         <div class="article-col">
                             <span class="title item-left">{{
                                 item.title
@@ -59,12 +55,27 @@
                     </router-link>
                 </div>
             </el-collapse-item>
-        </el-collapse>
+        </el-collapse> -->
+        <el-card>
+            <div style="text-align: center;">{{ date }}</div>
+        </el-card>
+        <el-card>
+            <div style="text-align: center;">
+                {{ this.$store.state.recent.content }} by Aaron -
+                {{ this.$store.state.recent.updatedAt }}
+            </div>
+        </el-card>
+        <img
+            style="width: auto; height: 250px; margin: 0 auto; text-align: center; display: block; margin-top: 1rem;"
+            :src="coverUrl"
+        />
     </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+// const cover = '@/static/img/cover.jpg';
+const coverUrl = require('../static/img/cover.jpg');
 export default {
     data() {
         return {
@@ -86,22 +97,38 @@ export default {
                     index: `c4`,
                     title: `No Commercial Available.`
                 }
-            ]
+            ],
+            date: this.$dateFormat(
+                new Date(),
+                'yyyy 年 MM 月 dd 日   hh : mm : ss'
+            ),
+            coverUrl
         };
     },
     methods: {
         ...mapActions({
             getArticles: 'COMMON_GET_ARTICLES',
             getRecent: 'GET_RECENT'
-        })
+        }),
+
+        setTimer() {
+            this.timeId = setInterval(() => {
+                this.date = this.$dateFormat(
+                    new Date(),
+                    'yyyy 年 MM 月 dd 日 hh : mm : ss'
+                );
+            }, 1000);
+        },
+        destroyTimer() {
+            if (this.timeId) {
+                clearInterval(this.timeId);
+            }
+        }
     },
     computed: {
         ...mapState({
             List: state => {
                 return state.articleList.slice(0, 5);
-            },
-            Recent: state => {
-                return state.recent || '';
             }
         })
     },
@@ -112,6 +139,10 @@ export default {
         if (this.$store.state.recent === '') {
             this.getRecent();
         }
+        this.setTimer();
+    },
+    beforeDestroy() {
+        this.destroyTimer();
     }
 };
 </script>

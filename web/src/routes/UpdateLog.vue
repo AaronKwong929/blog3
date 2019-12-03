@@ -92,10 +92,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-#log {
-    margin-bottom: 1rem;
-}
-
 h4 {
     font: {
         weight: 400;
