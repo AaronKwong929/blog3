@@ -15,47 +15,6 @@
                 </el-carousel-item>
             </el-carousel>
         </template>
-        <!-- <el-collapse
-            v-model="activeName"
-            accordion
-            style="width: 80%; margin: 0 auto;"
-        >
-            <el-collapse-item title="最近状态" name="1">
-                <div>
-                    {{ this.$store.state.recent.content }}
-                </div>
-                <div>
-                    {{ this.$store.state.recent.updatedAt }}
-                </div>
-            </el-collapse-item>
-            <el-collapse-item title="最新文章" name="2">
-                <div>
-                    <router-link
-                        v-for="(item, index) in List"
-                        :key="index"
-                        :to="'/article/' + item._id"
-                        tag="div"
-                        class="list-item"
-                    >   
-                        <div class="article-col">
-                            <span class="title item-left">{{
-                                item.title
-                            }}</span>
-                        </div>
-                        <div class="article-col">
-                            <span class="item-left">
-                                <i class="iconfont icon-yingyongAPP"></i
-                                >{{ item.type }}
-                            </span>
-                            <span class="item-right">
-                                <i class="iconfont icon-biaoqian"></i
-                                >{{ item.tag }}
-                            </span>
-                        </div>
-                    </router-link>
-                </div>
-            </el-collapse-item>
-        </el-collapse> -->
         <el-card>
             <div style="text-align: center;">{{ date }}</div>
         </el-card>
@@ -71,11 +30,10 @@
         />
     </div>
 </template>
-
 <script>
 import { mapState, mapActions } from 'vuex';
-// const cover = '@/static/img/cover.jpg';
 const coverUrl = require('../static/img/cover.jpg');
+// const coverUrl = () => import('../static/img/cover.jpg');
 export default {
     data() {
         return {
