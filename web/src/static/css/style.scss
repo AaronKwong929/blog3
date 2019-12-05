@@ -142,25 +142,30 @@ textarea:focus {
     // border-bottom: 1px solid rgb(96, 126, 121);
 }
 /** 分页器 */
+// .pagination {
+//     text-align: center;
+//     margin-top: 2rem;
+//     color: rgb(96, 126, 121);
+// }
+// .page-input {
+//     width: 8%;
+//     padding: 0.3rem 0.6rem;
+// }
+// .pagination > span::before,
+// .pagination > span::after {
+//     content: '  ';
+//     font-size: 1.3rem;
+//     font-weight: 800;
+// }
+// .unselectable {
+//     background-color: rgb(96, 126, 121);
+//     cursor: default;
+// }
+// .pagination .btn-small {
+//     padding: 0.5rem;
+// }
 .pagination {
-    text-align: center;
-    margin-top: 2rem;
-    color: rgb(96, 126, 121);
-}
-.page-input {
-    width: 8%;
-    padding: 0.3rem 0.6rem;
-}
-.pagination > span::before,
-.pagination > span::after {
-    content: '  ';
-    font-size: 1.3rem;
-    font-weight: 800;
-}
-.unselectable {
-    background-color: rgb(96, 126, 121);
-    cursor: default;
-}
-.pagination .btn-small {
-    padding: 0.5rem;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
 }
