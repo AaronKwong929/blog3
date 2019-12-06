@@ -1,9 +1,9 @@
 <template>
-    <div id="archive" class="router-view-general">
-        <i class="iconfont icon-liebiao1"></i>
+    <div id="archive"><!--  class="router-view-general" -->
+        <!-- <i class="iconfont icon-liebiao1"></i>
         <div class="router-title">
             归档
-        </div>
+        </div> -->
         <SearchBar></SearchBar>
         <button
             @click="loadMoreArticles"
