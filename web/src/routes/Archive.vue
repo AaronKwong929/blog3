@@ -1,22 +1,26 @@
 <template>
-    <div id="archive"><!--  class="router-view-general" -->
+    <div id="archive">
+        <!--  class="router-view-general" -->
         <!-- <i class="iconfont icon-liebiao1"></i>
         <div class="router-title">
             归档
         </div> -->
-        <SearchBar></SearchBar>
-        <button
-            @click="loadMoreArticles"
-            v-show="
-                this.$store.state.currentPage <= this.$store.state.pageCount
-            "
-        >
-            加载更多
-        </button>
+        <div class="tool-bar">
+            <SearchBar></SearchBar>
+            <el-button
+                @click="loadMoreArticles"
+                :disabled="
+                    !(this.$store.state.currentPage <= this.$store.state.pageCount)
+                "
+            >
+                加载更多
+            </el-button>
+        </div>
         <el-table
             :data="currentContent"
-            height="400"
-            border
+            height="70vh"
+            :default-sort="{ prop: 'updatedAt', order: 'descending' }"
+            stripe
             tooltip-effect="dark"
         >
             <!-- 
@@ -36,12 +40,12 @@
                 align="center"
                 min-width="60"
             ></el-table-column>
-
             <el-table-column
                 prop="type"
                 label="类型"
                 align="center"
                 min-width="60"
+                sortable
             >
                 <template slot-scope="scope">
                     <span v-if="scope.row.type == 'code'">编程</span>
@@ -134,31 +138,8 @@ export default {
                 this.currentPage * this.pageCount
             );
         }
-        // currentPage() {
-        //     if (this.page > 0 && this.page <= this.pageCount) {
-        //         return this.List.slice((this.page - 1) * 10, this.page * 10);
-        //     }
-        //     return this.List.slice(0, 10);
-        // },
-        // pageCount() {
-        //     return Math.ceil(this.List.length / 10);
-        // }
     },
     methods: {
-        // prev() {
-        //     if (this.page > 1) {
-        //         this.page--;
-        //     } else {
-        //         this.page = 1;
-        //     }
-        // },
-        // next() {
-        //     if (this.page < this.pageCount) {
-        //         this.page++;
-        //     } else {
-        //         this.page = this.pageCount;
-        //     }
-        // },
         ...mapActions({
             loadMoreArticles: 'COMMON_GET_ARTICLES'
         }),
@@ -178,3 +159,7 @@ export default {
     }
 };
 </script>
+
+<style lang="scss" scoped>
+
+</style>

@@ -32,11 +32,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss" scoped>
-// .router-views {
-//     margin-left: 10%;
-//     height: 100vh;
-//     overflow-x: hidden;
-// }
-</style>
