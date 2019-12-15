@@ -30,4 +30,27 @@ commonRouter.post('/articles', async ctx => {
         articles: slicedArticles
     };
 });
+commonRouter.post(`/archieveAcquire`, async ctx => {
+    if (ctx.request.body.pageSize && ctx.request.body.pageIndex) {
+        const pageSize = ctx.request.body.pageSize;
+        const pageIndex = ctx.request.body.pageIndex;
+        const articleCount = await Article.countDocuments({ published: true });
+        let archieveList = await Article.find({ published: true })
+            .sort({ updatedAt: -1 })
+            .limit(pageSize)
+            .skip((pageIndex - 1) * pageSize);
+        ctx.response.body = {
+            totalCount: articleCount,
+            currentPageCount: archieveList.length,
+            status: 0,
+            message: `查询成功`,
+            resultList: archieveList
+        };
+    } else {
+        ctx.response.body = {
+            status: -1,
+            message: `参数错误`
+        };
+    }
+});
 module.exports = commonRouter;
