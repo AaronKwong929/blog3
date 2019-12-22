@@ -1,51 +1,58 @@
 <template>
     <div
         v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-text="加载中..."
-        element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.6)"
+        element-loading-background="rgba(0, 0, 0, 0.2)"
     >
+        <SearchBar></SearchBar>
         <div class="tool-bar">
-            <div class="tool-bar-item">
-                <el-select size="small" v-model="type" clearable placeholder="类型">
-                    <el-option
-                        v-for="(item, index) in typeOptions"
-                        :key="`type` + index"
-                        :value="item.value"
-                        :label="item.label"
-                    ></el-option>
-                </el-select>
-            </div>
-            <div class="tool-bar-item">
-                <el-select size="small" v-model="tag" clearable placeholder="标签"
-                    ><el-option
-                        v-for="(item, index) in tagOptions"
-                        :key="`tag` + index"
-                        :value="item.value"
-                        :label="item.label"
-                    ></el-option
-                ></el-select>
-            </div>
-            <div class="tool-bar-item">
-                <el-date-picker
-                    size="small"
-                    v-model="time"
-                    value-format="timestamp"
-                    type="daterange"
-                    clearable
-                    range-separator="-"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                ></el-date-picker>
-            </div>
-            <div class="tool-bar-item">
-                <el-button type="primary" size="small" @click="searchArticles"
-                    >查询</el-button
-                >
-            </div>
-            <div class="tool-bar-item">
-                <el-button size="small" @click="reset">刷新</el-button>
-            </div>
+            <el-select
+                size="small"
+                v-model="type"
+                clearable
+                placeholder="类型"
+                class="tool-bar-item"
+            >
+                <el-option
+                    v-for="(item, index) in typeOptions"
+                    :key="`type` + index"
+                    :value="item.value"
+                    :label="item.label"
+                ></el-option>
+            </el-select>
+            <el-select
+                size="small"
+                v-model="tag"
+                clearable
+                placeholder="标签"
+                class="tool-bar-item"
+                ><el-option
+                    v-for="(item, index) in tagOptions"
+                    :key="`tag` + index"
+                    :value="item.value"
+                    :label="item.label"
+                ></el-option
+            ></el-select>
+            <el-date-picker
+                class="tool-bar-item"
+                size="small"
+                v-model="time"
+                value-format="timestamp"
+                type="daterange"
+                clearable
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+            ></el-date-picker>
+            <el-button
+                type="primary"
+                size="small"
+                @click="searchArticles"
+                class="tool-bar-item"
+                >查询</el-button
+            >
+            <el-button size="small" @click="reset" class="tool-bar-item"
+                >刷新</el-button
+            >
         </div>
         <el-container style="height: 80vh;">
             <el-main>
@@ -87,11 +94,12 @@
                         sortable
                         align="center"
                     ></el-table-column>
-                    <el-table-column label="操作" min-width="15" align="center">
+                    <el-table-column label="操作" min-width="10" align="center">
                         <template slot-scope="scope">
                             <el-button
                                 size="small"
                                 @click="pushToArticle(scope.row._id)"
+                                type="text"
                                 >查看</el-button
                             >
                         </template>
@@ -124,6 +132,7 @@
 
 <script>
 const baseURL = process.env.VUE_APP_API;
+const SearchBar = () => import('../components/SearchBar');
 import Axios from '../axios';
 export default {
     data() {
@@ -165,18 +174,23 @@ export default {
     methods: {
         // // 获取文章
         async getCommonArticles() {
+            this.fullScreenLoading = true;
             await Axios.post(`${baseURL}/common/getCommonArticles`, {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize
             })
                 .then(res => {
+                    this.fullScreenLoading = false;
                     if (res.data.status !== 0) {
-                        return this.$message.error(`获取文章失败：${res.data.message}`);
+                        return this.$message.error(
+                            `获取文章失败：${res.data.message}`
+                        );
                     }
                     this.$set(this, 'articleList', res.data.resultList);
                     this.articleListCount = res.data.totalCount;
                 })
                 .catch(() => {
+                    this.fullScreenLoading = false;
                     this.$message.error(`获取文章失败：服务器错误`);
                 });
         },
@@ -196,7 +210,9 @@ export default {
                 .then(res => {
                     this.fullScreenLoading = false;
                     if (res.data.status !== 0) {
-                        return this.$message.error(`查询文章失败：${res.data.message}`);
+                        return this.$message.error(
+                            `查询文章失败：${res.data.message}`
+                        );
                     }
                     this.optionPagination = true;
                     this.normalPagination = false;
@@ -246,13 +262,16 @@ export default {
     },
     mounted() {
         this.getCommonArticles();
+    },
+    components: {
+        SearchBar
     }
 };
 </script>
 
 <style lang="scss" scoped>
-.tool-bar {
-    display: flex;
-    align-items: flex-end;
-}
+// .tool-bar {
+//     display: flex;
+//     align-items: flex-end;
+// }
 </style>

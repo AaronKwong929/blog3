@@ -27,13 +27,13 @@
             ><i class="el-icon-menu"></i
             ><span slot="title">分 类</span></el-menu-item
         >
-        <el-menu-item index="/about"
-            ><i class="el-icon-info"></i
-            ><span slot="title">关 于</span></el-menu-item
-        >
         <el-menu-item index="/update"
             ><i class="el-icon-chat-line-square"></i
             ><span slot="title">日 志</span></el-menu-item
+        >
+        <el-menu-item index="/about"
+            ><i class="el-icon-info"></i
+            ><span slot="title">关 于</span></el-menu-item
         >
         <el-menu-item index="/login" v-if="!this.$store.state.token">
             <i class="el-icon-user"></i>

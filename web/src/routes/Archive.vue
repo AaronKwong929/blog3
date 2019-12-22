@@ -1,14 +1,10 @@
 <template>
     <div
         v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-text="加载中..."
-        element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.6)"
+        element-loading-background="rgba(0, 0, 0, 0.2)"
     >
-        <div class="tool-bar">
-            <SearchBar></SearchBar>
-        </div>
-        <el-container style="height: 80vh;">
+        <SearchBar></SearchBar>
+        <el-container style="height: 85vh;">
             <el-main>
                 <el-table
                     ref="articleTable"
@@ -24,7 +20,7 @@
                     <el-table-column
                         prop="updatedAt"
                         label="日期"
-                        min-width="60"
+                        min-width="30"
                         sortable
                         align="center"
                     >
@@ -33,13 +29,13 @@
                         prop="title"
                         label="标题"
                         align="center"
-                        min-width="60"
+                        min-width="30"
                     ></el-table-column>
                     <el-table-column
                         prop="type"
                         label="类型"
                         align="center"
-                        min-width="60"
+                        min-width="15"
                         sortable
                     >
                         <template slot-scope="scope">
@@ -54,9 +50,9 @@
                         prop="tag"
                         label="标签"
                         align="center"
-                        min-width="90"
+                        min-width="15"
                     ></el-table-column>
-                    <el-table-column align="center" label="操作" min-width="30">
+                    <el-table-column align="center" label="操作" min-width="10">
                         <template slot-scope="scope">
                             <el-button
                                 size="small"
@@ -90,34 +86,20 @@ export default {
         return {
             fullScreenLoading: false,
             pageIndex: 1,
-            pageSize: 10,
+            pageSize: 20,
             archieveList: [],
             archieveListLength: 0
         };
     },
-    computed: {
-        // ...mapState({
-        //     List: state => {
-        //         return state.articleList;
-        //     }
-        // }),
-        // currentContent() {
-        //     return this.List.slice(
-        //         (this.currentPage - 1) * this.pageCount,
-        //         this.currentPage * this.pageCount
-        //     );
-        // }
-    },
     methods: {
-        // ...mapActions({
-        //     loadMoreArticles: 'COMMON_GET_ARTICLES'
-        // }),
-        async getArchieveListByPage() {
+        async getCommonArticles() {
+            this.fullScreenLoading = true;
             await Axios.post(`${baseURL}/common/getCommonArticles`, {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize
             })
                 .then(res => {
+                    this.fullScreenLoading = false;
                     if (res.data.status !== 0) {
                         return this.$message.error(
                             `获取文章列表失败：参数错误`
@@ -127,6 +109,7 @@ export default {
                     this.archieveListLength = res.data.totalCount;
                 })
                 .catch(() => {
+                    this.fullScreenLoading = false;
                     return this.$message.error(`获取文章列表失败：服务器错误`);
                 });
         },
@@ -135,16 +118,15 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val;
-            this.getArchieveListByPage();
+            this.getCommonArticles();
         },
         handleCurrentChange(val) {
             this.pageIndex = val;
-            this.getArchieveListByPage();
+            this.getCommonArticles();
         }
     },
-    watch: {},
     mounted() {
-        this.getArchieveListByPage();
+        this.getCommonArticles();
     },
     components: {
         SearchBar
