@@ -23,32 +23,18 @@
             <i class="el-icon-notebook-2"></i>
             <span slot="title">归 档</span>
         </el-menu-item>
-        <el-submenu index="3">
-            <template slot="title">
-                <i class="el-icon-menu"></i>
-                <span slot="title">分 类</span>
-            </template>
-            <el-menu-item index="/type"
-                ><i class="el-icon-s-grid"></i>
-                <span slot="title">类型</span></el-menu-item
-            >
-            <el-menu-item index="/tag"
-                ><i class="el-icon-price-tag"></i>标签</el-menu-item
-            >
-        </el-submenu>
-        <el-submenu index="4">
-            <template slot="title">
-                <i class="el-icon-more-outline"></i>
-                <span slot="title">其 它</span>
-            </template>
-            <el-menu-item index="/about"
-                ><i class="el-icon-info"></i>关于</el-menu-item
-            >
-            <el-menu-item index="/update"
-                ><i class="el-icon-chat-line-square"></i>
-                <span slot="title">日 志</span></el-menu-item
-            >
-        </el-submenu>
+        <el-menu-item index="/classification"
+            ><i class="el-icon-menu"></i
+            ><span slot="title">分 类</span></el-menu-item
+        >
+        <el-menu-item index="/about"
+            ><i class="el-icon-info"></i
+            ><span slot="title">关 于</span></el-menu-item
+        >
+        <el-menu-item index="/update"
+            ><i class="el-icon-chat-line-square"></i
+            ><span slot="title">日 志</span></el-menu-item
+        >
         <el-menu-item index="/login" v-if="!this.$store.state.token">
             <i class="el-icon-user"></i>
             <span slot="title">登 陆</span>

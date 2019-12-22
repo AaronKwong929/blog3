@@ -27,13 +27,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-// #search-bar {
-//     margin-top: 1rem
-// }
-// .btn-small {
-//     margin-left: 0.5rem;
-//     padding: 0.5rem 1rem;
-// }
 #search-bar {
     display: flex;
     /deep/ .el-input,

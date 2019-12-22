@@ -40,7 +40,7 @@
             </div>
             <div class="tool-bar-item">
                 <el-button type="primary" size="small" @click="searchArticles"
-                    >搜索</el-button
+                    >查询</el-button
                 >
             </div>
             <div class="tool-bar-item">
@@ -53,17 +53,19 @@
                     ref="articleTable"
                     :data="articleList"
                     border
-                    row-key="id"
+                    row-key="_id"
                     tooltip-effect="dark"
                     style="width: 99%;"
                     height="100%"
                     :default-sort="{ prop: 'updatedAt', order: 'ascending' }"
+                    stripe
                 >
                     <el-table-column
                         prop="updatedAt"
                         label="发布日期"
                         min-width="20"
                         align="center"
+                        sortable
                     ></el-table-column>
                     <el-table-column
                         prop="title"
@@ -128,7 +130,7 @@ export default {
         return {
             // 全屏遮罩
             fullScreenLoading: false,
-            // 搜索项
+            // 查询项
             type: '',
             tag: '',
             time: '',
@@ -169,7 +171,7 @@ export default {
             })
                 .then(res => {
                     if (res.data.status !== 0) {
-                        return this.$message.error(`获取文章失败`);
+                        return this.$message.error(`获取文章失败：${res.data.message}`);
                     }
                     this.$set(this, 'articleList', res.data.resultList);
                     this.articleListCount = res.data.totalCount;
@@ -178,10 +180,10 @@ export default {
                     this.$message.error(`获取文章失败：服务器错误`);
                 });
         },
-        // 搜索文章
+        // 查询文章
         async searchArticles() {
             if (!this.tag && !this.type) {
-                return this.$message.warning(`请先输入搜索条件`);
+                return this.$message.warning(`请先输入查询条件`);
             }
             this.fullScreenLoading = true;
             await Axios.post(`${baseURL}/common/searchCommonArticles`, {
@@ -194,7 +196,7 @@ export default {
                 .then(res => {
                     this.fullScreenLoading = false;
                     if (res.data.status !== 0) {
-                        return this.$message.error(`搜索文章失败`);
+                        return this.$message.error(`查询文章失败：${res.data.message}`);
                     }
                     this.optionPagination = true;
                     this.normalPagination = false;
@@ -203,7 +205,7 @@ export default {
                 })
                 .catch(() => {
                     this.fullScreenLoading = false;
-                    this.$message.error(`搜索文章失败：服务器错误`);
+                    this.$message.error(`查询文章失败：服务器错误`);
                 });
         },
         // 查看文章

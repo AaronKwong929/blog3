@@ -1,14 +1,9 @@
 <template>
-    <div
-        id="type"
-        class="router-view-general"
-        v-if="this.$store.state.articleList.length"
-    >
-        <i class="iconfont icon-yingyongAPP root-icon"></i>
-        <div class="router-title">
-            分类
+    <div id="type">
+        <div class="tool-bar">
+            <SearchBar></SearchBar>
         </div>
-        <SearchBar></SearchBar>
+
         <div class="list">
             <button
                 v-for="(item, index) in buttonList"
@@ -20,14 +15,14 @@
                 {{ item.desc }}-{{ item.count }}
             </button>
             <button @click="showMore">{{ showOption }}</button>
-            <button
+            <!-- <button
                 @click="loadMore"
                 v-show="
                     this.$store.state.currentPage <= this.$store.state.pageCount
                 "
             >
                 加载更多
-            </button>
+            </button> -->
             <router-link
                 v-for="(item, index) in currentPage"
                 :key="'link' + index"
@@ -40,7 +35,7 @@
                 <div class="title">{{ item.title }}</div>
             </router-link>
         </div>
-        <div class="pagination" v-if="this.pageCount && this.pageCount > 1">
+        <!-- <div class="pagination" v-if="this.pageCount && this.pageCount > 1">
             <button
                 class="btn-small"
                 @click="prev"
@@ -60,31 +55,31 @@
             </button>
             ， 共<span>{{ this.pageCount }}</span
             >页
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
-const SearchBar = () => import("../components/SearchBar");
-import { mapActions } from "vuex";
+const SearchBar = () => import('../components/SearchBar');
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
             list: {
                 code: this.$store.state.articleList.filter(item => {
-                    return item.type === "code";
+                    return item.type === 'code';
                 }),
                 game: this.$store.state.articleList.filter(item => {
-                    return item.type === "game";
+                    return item.type === 'game';
                 }),
                 life: this.$store.state.articleList.filter(item => {
-                    return item.type === "life";
+                    return item.type === 'life';
                 })
             },
-            currentType: "",
+            currentType: '',
             page: 1,
             showAll: false,
             showNum: 1,
-            showOption: "显示全部"
+            showOption: '显示全部'
         };
     },
     computed: {
@@ -106,18 +101,18 @@ export default {
         buttonList() {
             return [
                 {
-                    desc: "编程",
-                    name: "code",
+                    desc: '编程',
+                    name: 'code',
                     count: this.list.code.length
                 },
                 {
-                    desc: "生活",
-                    name: "life",
+                    desc: '生活',
+                    name: 'life',
                     count: this.list.life.length
                 },
                 {
-                    desc: "游戏",
-                    name: "game",
+                    desc: '游戏',
+                    name: 'game',
                     count: this.list.game.length
                 }
             ].sort((a, b) => {
@@ -152,13 +147,13 @@ export default {
         showMore() {
             this.showAll = !this.showAll;
             this.showNum = this.showAll ? this.buttonList.length : 1;
-            this.showOption = this.showAll ? "收起" : "显示全部";
+            this.showOption = this.showAll ? '收起' : '显示全部';
         },
         loadMore() {
             return this.loadMoreArticles();
         },
         ...mapActions({
-            loadMoreArticles: "COMMON_GET_ARTICLES"
+            loadMoreArticles: 'COMMON_GET_ARTICLES'
         })
     },
     mounted() {
@@ -170,13 +165,13 @@ export default {
     watch: {
         stateArticleListLength: function() {
             this.list.code = this.$store.state.articleList.filter(item => {
-                return item.type === "code";
+                return item.type === 'code';
             });
             this.list.game = this.$store.state.articleList.filter(item => {
-                return item.type === "game";
+                return item.type === 'game';
             });
             this.list.life = this.$store.state.articleList.filter(item => {
-                return item.type === "life";
+                return item.type === 'life';
             });
         }
     }
