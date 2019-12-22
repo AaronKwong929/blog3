@@ -1,9 +1,9 @@
 <template>
-    <div id="about" class="router-view-general">
-        <i class="iconfont icon-guanyu"></i>
-        <div class="router-title">
-            关于
-        </div>
+    <div
+        v-loading.fullscreen.lock="fullScreenLoading"
+        element-loading-background="rgba(0, 0, 0, 0.2)"
+        style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;"
+    >
         <div class="card-warpper">
             <el-card class="box-card">
                 <div slot="header">
@@ -74,7 +74,7 @@
     flex-direction: row;
 }
 /deep/ .el-card {
-    width: 45%;
+    width: 40vw;
     display: inline-block;
     vertical-align: top;
     height: 60vh;

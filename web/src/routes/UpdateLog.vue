@@ -1,31 +1,32 @@
 <template>
-    <div id="log" class="router-view-general">
-        <i class="iconfont icon-custom-update"></i>
-        <div class="router-title">
-            开发日志
-        </div>
-        <div class="timeline">
-            <el-timeline :reverse="true">
-                <el-timeline-item
-                    v-for="(item, index) in log"
-                    :key="index"
-                    :timestamp="item.timestamp"
-                    placement="top"
-                    color="#74b9ff"
-                    size="large"
-                >
-                    <el-card>
-                        <h4>{{ item.title }}</h4>
-                        <p
-                            v-for="(content, index) in item.contents"
-                            :key="index"
-                        >
-                            {{ index + 1 }} {{ content }}
-                        </p>
-                    </el-card>
-                </el-timeline-item>
-            </el-timeline>
-        </div>
+    <div
+        v-loading.fullscreen.lock="fullScreenLoading"
+        element-loading-background="rgba(0, 0, 0, 0.2)"
+    >
+        <el-container style="height: 90vh; margin: 3rem 3rem 0 3rem">
+            <el-main>
+                <el-timeline :reverse="true">
+                    <el-timeline-item
+                        v-for="(item, index) in log"
+                        :key="index"
+                        :timestamp="item.timestamp"
+                        placement="top"
+                        color="#74b9ff"
+                        size="large"
+                    >
+                        <el-card>
+                            <h4>{{ item.title }}</h4>
+                            <p
+                                v-for="(content, index) in item.contents"
+                                :key="index"
+                            >
+                                {{ index + 1 }} {{ content }}
+                            </p>
+                        </el-card>
+                    </el-timeline-item>
+                </el-timeline>
+            </el-main>
+        </el-container>
     </div>
 </template>
 
