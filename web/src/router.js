@@ -49,7 +49,12 @@ const routes = [
         component: () => import('./routes/UpdateLog.vue'),
         meta: { keepAlive: true }
     },
-    { path: '/search', component: () => import('./routes/SearchResult.vue') }
+    { path: '/search', component: () => import('./routes/SearchResult.vue') },
+    {
+        path: '/classification',
+        name: 'classification',
+        component: () => import('./routes/Classification.vue')
+    }
 ];
 
 const router = new VueRouter({

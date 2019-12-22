@@ -30,7 +30,7 @@ commonRouter.post('/articles', async ctx => {
         articles: slicedArticles
     };
 });
-commonRouter.post(`/archieveAcquire`, async ctx => {
+commonRouter.post(`/getCommonArticles`, async ctx => {
     if (ctx.request.body.pageSize && ctx.request.body.pageIndex) {
         const pageSize = ctx.request.body.pageSize;
         const pageIndex = ctx.request.body.pageIndex;
@@ -52,5 +52,47 @@ commonRouter.post(`/archieveAcquire`, async ctx => {
             message: `参数错误`
         };
     }
+});
+commonRouter.post(`/searchCommonArticles`, async ctx => {
+    // 重做文章写入后加入时间段筛选
+    const published = true;
+    let { time, tag, type, pageIndex, pageSize } = ctx.request.body;
+    let query = {};
+    if (!tag && type) {
+        query = {
+            type,
+            published
+        };
+    } else if (!type && tag) {
+        query = {
+            tag,
+            published
+        };
+    } else if (type && tag) {
+        query = {
+            type,
+            tag,
+            published
+        };
+    } else {
+        return (ctx.response.body = {
+            status: -1,
+            message: `参数错误`
+        });
+    }
+    const totalCount = await Article.countDocuments(query);
+    const resultList = await Article.find(query)
+        .select(['_id', 'updatedAt', 'title', 'type', 'tag'])
+        // .where('updatedAt')
+        // .in(time)
+        .sort({ updatedAt: -1 })
+        .limit(pageSize)
+        .skip((pageIndex - 1) * pageSize);
+    ctx.response.body = {
+        totalCount,
+        resultList,
+        status: 0,
+        message: `查询成功`
+    };
 });
 module.exports = commonRouter;
