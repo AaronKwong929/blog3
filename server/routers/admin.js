@@ -187,7 +187,7 @@ adminRouter.post('/changeArticleStatus', verifyToken, async ctx => {
 });
 // 条件搜索文章
 adminRouter.post(`/searchArticles`, async ctx => {
-    let { type, tag, time, published, pageIndex, pageSize } = ctx.request.body;
+    let { type, tag, published, pageIndex, pageSize } = ctx.request.body;
     let query = {};
     if (!pageIndex && !pageSize) {
         return (ctx.response.body = {
@@ -213,8 +213,6 @@ adminRouter.post(`/searchArticles`, async ctx => {
     const totalCount = await Article.countDocuments(query);
     const resultList = await Article.find(query)
         .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
-        // .where('updatedAt')
-        // .in(time)
         .sort({ updatedAt: -1 })
         .limit(pageSize)
         .skip((pageIndex - 1) * pageSize);

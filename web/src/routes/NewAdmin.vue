@@ -44,17 +44,6 @@
                     :label="item.label"
                 ></el-option
             ></el-select>
-            <el-date-picker
-                class="tool-bar-item"
-                size="small"
-                v-model="time"
-                value-format="timestamp"
-                type="daterange"
-                clearable
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-            ></el-date-picker>
             <el-button
                 type="success"
                 size="small"
@@ -99,6 +88,7 @@
                         min-width="20"
                         align="center"
                         sortable
+                        :formatter="dateFormatter"
                     ></el-table-column>
                     <el-table-column
                         prop="title"
@@ -146,12 +136,14 @@
                                 size="small"
                                 @click="pushToDraft(scope.row._id)"
                                 type="text"
+                                :disabled="scope.row.published"
                                 >编辑</el-button
                             >
                             <el-button
                                 size="small"
                                 @click="deleteArticle(scope.row)"
                                 type="text"
+                                :disabled="scope.row.published"
                                 >删除</el-button
                             >
                         </template>
@@ -194,7 +186,6 @@ export default {
             // 查询项
             type: '',
             tag: '',
-            time: '',
             published: '',
             // 分页器
             normalPagination: true,
@@ -233,6 +224,15 @@ export default {
         ...mapMutations({
             logout: 'LOG_OUT'
         }),
+        // 格式化时间
+        dateFormatter(row, column) {
+            console.log(row[column.property]);
+            let date = parseInt(row[column.property]);
+            return this.$dateFormat(
+                new Date(date),
+                'yyyy-MM-dd hh:mm:ss'
+            );
+        },
         // // 获取文章
         async getArticles() {
             this.fullScreenLoading = true;
@@ -257,12 +257,7 @@ export default {
         },
         // 查询文章
         async searchArticles() {
-            if (
-                !this.tag &&
-                !this.type &&
-                this.published === '' &&
-                !this.time
-            ) {
+            if (!this.tag && !this.type && this.published === '') {
                 return this.$message.warning(`请先输入查询条件`);
             }
             this.fullScreenLoading = true;
@@ -271,7 +266,6 @@ export default {
                 pageSize: this.optionPageSize,
                 type: this.type,
                 tag: this.tag,
-                time: this.time,
                 published: this.published + ''
             })
                 .then(res => {
@@ -409,7 +403,6 @@ export default {
             this.optionPageIndex = 1;
             this.optionArticleListCount = 0;
             this.type = '';
-            this.time = '';
             this.tag = '';
             this.getArticles();
         }
