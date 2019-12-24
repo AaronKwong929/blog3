@@ -34,35 +34,35 @@ body {
 li {
     list-style: none;
 }
-a {
-    color: black;
-    text-decoration: none;
-}
-.router-view-general {
-    margin: 6rem 6rem 0 6rem;
-    padding: 2rem 0 0 3rem;
-    position: relative;
-    box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
-}
-.router-view-general > .iconfont {
-    font-size: 3rem;
-    position: absolute;
-    top: -2rem;
-    left: -1rem;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(96, 126, 121);
-}
-.router-title {
-    font-family: Georgia;
-    font-weight: 400;
-    font-size: 2rem;
-    color: rgb(96, 126, 121);
-}
+// a {
+//     color: black;
+//     text-decoration: none;
+// }
+// .router-view-general {
+//     margin: 6rem 6rem 0 6rem;
+//     padding: 2rem 0 0 3rem;
+//     position: relative;
+//     box-shadow: -0.5rem 0 0.5rem -0.5rem #aaa;
+// }
+// .router-view-general > .iconfont {
+//     font-size: 3rem;
+//     position: absolute;
+//     top: -2rem;
+//     left: -1rem;
+//     width: 2rem;
+//     height: 2rem;
+//     border-radius: 50%;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     color: rgb(96, 126, 121);
+// }
+// .router-title {
+//     font-family: Georgia;
+//     font-weight: 400;
+//     font-size: 2rem;
+//     color: rgb(96, 126, 121);
+// }
 .btn-small {
     padding: 1rem;
     border-radius: 0.5rem;
@@ -80,67 +80,68 @@ select,
 textarea {
     outline: none;
 }
-input {
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-}
-input:focus {
-    border: 1px solid rgb(96, 126, 121);
-    box-shadow: 0 0 15px rgb(96, 126, 121);
-    text-shadow: none;
-}
-textarea:focus {
-    border: 1px solid rgb(96, 126, 121);
-    box-shadow: 0 0 15px rgb(96, 126, 121);
-    text-shadow: none;
-}
-.line {
-    width: 30%;
-    transform: translateY(-51%);
-    box-shadow: 0 0.5rem 0.5rem -0.5rem #aaa;
-    margin: 0 1.5rem;
-    width: 0.3s, margin 0.3s;
-}
-.list {
-    margin-top: 1rem;
-}
-.list > .list-item {
-    display: flex;
-    margin-top: 0.5rem;
-    padding-bottom: 0.4rem;
-    cursor: pointer;
-    color: rgb(131, 131, 131);
-    font-size: 1.2rem;
-}
-.list > .list-item:hover {
-    color: rgb(96, 126, 121);
-    transition: all 0.3s;
-}
-.list > .list-item > div {
-    display: flex;
-}
-.list button {
-    text-decoration: none;
-    margin: 1rem;
-    font-size: 0.7em;
-    color: #838383;
-    border-style: none;
-    cursor: pointer;
-    outline: none;
-    font-size: 1.1rem;
-    padding-bottom: 0.1rem;
-}
-.list button:hover {
-    color: rgb(96, 126, 121);
-    // border-bottom: 1px solid rgb(96, 126, 121);
-    transition: all 0.4s;
-}
-.list button[class='active'] {
-    color: rgb(96, 126, 121);
-    // border-bottom: 1px solid rgb(96, 126, 121);
-}
+// input {
+//     border: none;
+//     border-radius: 0.5rem;
+//     padding: 0.5rem 1rem;
+//     border: 1px solid #ddd;
+// }
+// input:focus {
+//     border: 1px solid rgb(96, 126, 121);
+//     box-shadow: 0 0 15px rgb(96, 126, 121);
+//     text-shadow: none;
+// }
+// textarea:focus {
+//     border: 1px solid rgb(96, 126, 121);
+//     box-shadow: 0 0 15px rgb(96, 126, 121);
+//     text-shadow: none;
+// }
+// .line {
+//     width: 30%;
+//     transform: translateY(-51%);
+//     box-shadow: 0 0.5rem 0.5rem -0.5rem #aaa;
+//     margin: 0 1.5rem;
+//     width: 0.3s, margin 0.3s;
+// }
+// .list {
+//     margin-top: 1rem;
+// }
+// .list > .list-item {
+//     display: flex;
+//     margin-top: 0.5rem;
+//     padding-bottom: 0.4rem;
+//     cursor: pointer;
+//     color: rgb(131, 131, 131);
+//     font-size: 1.2rem;
+// }
+// .list > .list-item:hover {
+//     color: rgb(96, 126, 121);
+//     transition: all 0.3s;
+// }
+// .list > .list-item > div {
+//     display: flex;
+// }
+// .list button {
+//     text-decoration: none;
+//     margin: 1rem;
+//     font-size: 0.7em;
+//     color: #838383;
+//     border-style: none;
+//     cursor: pointer;
+//     outline: none;
+//     font-size: 1.1rem;
+//     padding-bottom: 0.1rem;
+// }
+// .list button:hover {
+//     color: rgb(96, 126, 121);
+//     // border-bottom: 1px solid rgb(96, 126, 121);
+//     transition: all 0.4s;
+// }
+// .list button[class='active'] {
+//     color: rgb(96, 126, 121);
+//     // border-bottom: 1px solid rgb(96, 126, 121);
+// }
+/** 分页器 */
 .pagination {
     position: fixed;
     bottom: 40px;

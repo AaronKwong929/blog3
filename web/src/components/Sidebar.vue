@@ -44,8 +44,11 @@
             <span slot="title">管 理</span>
         </el-menu-item>
         <footer class="beian" v-show="!isCollapse">
-            <a href="http://beian.miitbeian.gov.cn" target="_blank"
-                >粤ICP备19111987号-1</a
+            <el-link
+                href="http://beian.miitbeian.gov.cn"
+                target="_blank"
+                class="link"
+                >粤ICP备19111987号-1</el-link
             >
         </footer>
     </el-menu>
@@ -64,8 +67,10 @@ export default {
 .beian {
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    font-size: 0.6rem;
+    align-items: center;
+}
+.el-link {
+    font-size: 0.4rem;
 }
 
 .el-menu-vertical {

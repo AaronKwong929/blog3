@@ -24,11 +24,6 @@ const routes = [
     { path: '/article/:id', component: () => import('./routes/Article.vue') },
     { path: '/login', component: () => import('./routes/Login.vue') },
     {
-        path: '/admin',
-        component: () => import('./routes/Admin.vue'),
-        meta: { requireAuth: true }
-    },
-    {
         path: '/draft/:id',
         component: () => import('./routes/Draft.vue'),
         meta: { requireAuth: true }
@@ -54,6 +49,12 @@ const routes = [
         path: '/classification',
         name: 'classification',
         component: () => import('./routes/Classification.vue')
+    },
+    {
+        path: '/admin',
+        name: 'admin',
+        component: () => import('./routes/NewAdmin.vue'),
+        meta: { requireAuth: true }
     }
 ];
 

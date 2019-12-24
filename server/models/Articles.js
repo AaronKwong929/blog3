@@ -41,7 +41,7 @@ const articleSchema = new mongoose.Schema({
 articleSchema.pre('save', async function(next) {
     const article = this;
     if (!article.isModified('comments')) {
-        article.updatedAt = dateFormat(new Date(), 'yyyy-MM-dd hh:mm');
+        article.updatedAt = new Date().getTime();
     }
     next();
 });

@@ -72,12 +72,6 @@ adminRouter.put('/draft', verifyToken, async ctx => {
         code: 1
     };
 });
-adminRouter.post('/delete', verifyToken, async ctx => {
-    await Article.findByIdAndDelete(ctx.request.body.id);
-    ctx.response.body = {
-        code: 1
-    };
-});
 adminRouter.put('/publish', verifyToken, async ctx => {
     let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
@@ -120,5 +114,131 @@ adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
         filename: `http://localhost:3000/${ctx.request.file.filename}`
         // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
     };
+});
+
+// blog_next api
+// 获取管理页文章
+adminRouter.post(`/getArticles`, verifyToken, async ctx => {
+    const { pageIndex, pageSize } = ctx.request.body;
+    if (!pageIndex && !pageSize) {
+        return (ctx.response.body = {
+            status: -1,
+            message: `参数错误`
+        });
+    }
+    const totalCount = await Article.countDocuments();
+    let resultList = await Article.find()
+        .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
+        .sort({ updatedAt: -1 })
+        .limit(pageSize)
+        .skip((pageIndex - 1) * pageSize);
+    ctx.response.body = {
+        totalCount,
+        status: 0,
+        message: `查询成功`,
+        resultList
+    };
+});
+// 删除文章
+adminRouter.post('/deleteArticle', verifyToken, async ctx => {
+    const { id } = ctx.request.body;
+    if (!id) {
+        return (ctx.response.body = {
+            status: -1,
+            message: `参数错误`
+        });
+    }
+    try {
+        await Article.findByIdAndDelete(id);
+        ctx.response.body = {
+            status: 0,
+            message: `删除成功`
+        };
+    } catch {
+        return (ctx.response.body = {
+            status: -1,
+            message: `删除失败`
+        });
+    }
+});
+// 更改文章状态
+adminRouter.post('/changeArticleStatus', verifyToken, async ctx => {
+    const { id } = ctx.request.body;
+    if (!id) {
+        return (ctx.response.body = {
+            status: -1,
+            message: `参数错误`
+        });
+    }
+    try {
+        let article = await Article.findById(ctx.request.body.id);
+        article.published = !article.published;
+        await article.save();
+        ctx.response.body = {
+            status: 0,
+            message: `${article.published === true ? '发布' : '撤下'}文章成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `删除失败`
+        };
+    }
+});
+// 条件搜索文章
+adminRouter.post(`/searchArticles`, async ctx => {
+    let { type, tag, time, published, pageIndex, pageSize } = ctx.request.body;
+    let query = {};
+    if (!pageIndex && !pageSize) {
+        return (ctx.response.body = {
+            status: -1,
+            message: '参数错误'
+        });
+    }
+    if (!type && !tag && published) {
+        query = { published };
+    } else if (!type && published === '' && tag) {
+        query = { tag };
+    } else if (published === '' && !tag && type) {
+        query = { type };
+    } else if (!type && tag && published !== '') {
+        query = { tag, published };
+    } else if (!tag && type && published !== '') {
+        query = { type, published };
+    } else if (published === '' && tag && type) {
+        query = { type, tag };
+    } else {
+        query = { type, tag, published };
+    }
+    const totalCount = await Article.countDocuments(query);
+    const resultList = await Article.find(query)
+        .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
+        // .where('updatedAt')
+        // .in(time)
+        .sort({ updatedAt: -1 })
+        .limit(pageSize)
+        .skip((pageIndex - 1) * pageSize);
+    ctx.response.body = {
+        totalCount,
+        resultList,
+        status: 0,
+        message: '查询成功'
+    };
+});
+adminRouter.post('/newArticle', verifyToken, async ctx => {
+    try {
+        let article = new Article();
+        await article.save();
+        ctx.response.body = {
+            status: 0,
+            message: `新建成功`,
+            id: article._id
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `删除失败`
+        };
+    }
 });
 module.exports = adminRouter;

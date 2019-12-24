@@ -34,17 +34,17 @@ commonRouter.post(`/getCommonArticles`, async ctx => {
     if (ctx.request.body.pageSize && ctx.request.body.pageIndex) {
         const pageSize = ctx.request.body.pageSize;
         const pageIndex = ctx.request.body.pageIndex;
-        const articleCount = await Article.countDocuments({ published: true });
-        let archieveList = await Article.find({ published: true })
+        const totalCount = await Article.countDocuments({ published: true });
+        let resultList = await Article.find({ published: true })
+            .select(['_id', 'updatedAt', 'title', 'type', 'tag'])
             .sort({ updatedAt: -1 })
             .limit(pageSize)
             .skip((pageIndex - 1) * pageSize);
         ctx.response.body = {
-            totalCount: articleCount,
-            currentPageCount: archieveList.length,
+            totalCount,
             status: 0,
             message: `查询成功`,
-            resultList: archieveList
+            resultList
         };
     } else {
         ctx.response.body = {
