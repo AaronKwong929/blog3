@@ -30,6 +30,8 @@ commonRouter.post('/articles', async ctx => {
         articles: slicedArticles
     };
 });
+/** blog_next api */
+// 获取文章列表
 commonRouter.post(`/getCommonArticles`, async ctx => {
     if (ctx.request.body.pageSize && ctx.request.body.pageIndex) {
         const pageSize = ctx.request.body.pageSize;
@@ -54,9 +56,8 @@ commonRouter.post(`/getCommonArticles`, async ctx => {
     }
 });
 commonRouter.post(`/searchCommonArticles`, async ctx => {
-    // 重做文章写入后加入时间段筛选
     const published = true;
-    let { time, tag, type, pageIndex, pageSize } = ctx.request.body;
+    let { tag, type, pageIndex, pageSize } = ctx.request.body;
     let query = {};
     if (!tag && type) {
         query = {
@@ -83,8 +84,6 @@ commonRouter.post(`/searchCommonArticles`, async ctx => {
     const totalCount = await Article.countDocuments(query);
     const resultList = await Article.find(query)
         .select(['_id', 'updatedAt', 'title', 'type', 'tag'])
-        // .where('updatedAt')
-        // .in(time)
         .sort({ updatedAt: -1 })
         .limit(pageSize)
         .skip((pageIndex - 1) * pageSize);
@@ -94,5 +93,28 @@ commonRouter.post(`/searchCommonArticles`, async ctx => {
         status: 0,
         message: `查询成功`
     };
+});
+// 获取文章详情
+commonRouter.post(`/getArticleDetails`, async ctx => {
+    const { id } = ctx.request.body;
+    if (!id) {
+        return (ctx.response.body = {
+            status: -1,
+            message: `参数错误`
+        });
+    }
+    try {
+        const article = await Article.findById(id);
+        ctx.response.body = {
+            status: 0,
+            message: `查询成功`,
+            article
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `查无此文章`
+        };
+    }
 });
 module.exports = commonRouter;

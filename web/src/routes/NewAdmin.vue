@@ -226,10 +226,8 @@ export default {
         }),
         // 格式化时间
         dateFormatter(row, column) {
-            console.log(row[column.property]);
-            let date = parseInt(row[column.property]);
             return this.$dateFormat(
-                new Date(date),
+                new Date(parseInt(row[column.property])),
                 'yyyy-MM-dd hh:mm:ss'
             );
         },
