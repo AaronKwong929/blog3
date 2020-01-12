@@ -1,102 +1,102 @@
 <template>
-    <div id="Login" class="router-view-general">
-        <i class="iconfont icon-login"></i>
-        <div class="router-title">
-            管理员登陆
-        </div>
-        <div>
-            <div class="input user">
-                <i class="iconfont icon-guanyu"></i>
-                <input
-                    v-model="name"
-                    type="text"
-                    placeholder="管理员账号"
-                    v-focus
-                />
-            </div>
-            <div class="input password">
-                <i class="iconfont icon-suoding"> </i>
-                <input
-                    v-model="password"
-                    type="password"
+    <div id="login">
+        <div class="login-section-wrapper">
+            <img
+                style="width: auto; height: 200px; margin: 1rem auto; text-align: center; display: block;"
+                :src="coverUrl"
+            />
+            <div class="login-section-input-wrapper">
+                <el-input
+                    size="small"
+                    placeholder="账号"
+                    v-model="account"
+                ></el-input>
+                <el-input
+                    size="small"
                     placeholder="密码"
-                    @keyup.enter="Login()"
-                />
+                    type="password"
+                    v-model="password"
+                    @keyup.enter="login"
+                ></el-input>
             </div>
-            <div class="alert" v-show="this.fail">
-                登陆失败<br />账号或密码错误
+            <div class="login-section-button-wrapper">
+                <el-button @click="login" size="small" type="primary"
+                    >登陆</el-button
+                >
+                <el-button @click="reset" size="small">重置</el-button>
             </div>
-            <button class="btn-small" @click="Login">登陆</button>
-            <button class="btn-small" @click="reset">重置</button>
         </div>
     </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+const coverUrl = require('../static/img/cover.jpg');
+const baseURL = process.env.VUE_APP_API;
+import Axios from '../axios';
 export default {
     data() {
         return {
-            name: "",
-            password: ""
+            account: '',
+            password: '',
+            coverUrl
         };
     },
-    computed: {
-        ...mapState({
-            fail: state => {
-                return state.loginFail;
-            }
-        })
-    },
     methods: {
-        ...mapActions({ LOGIN: "LOGIN" }),
-        Login() {
-            return this.LOGIN({ name: this.name, password: this.password });
+        async login() {
+            await Axios.post(`${baseURL}/admin/login`, {
+                account: this.account,
+                password: this.password
+            })
+                .then(res => {
+                    if (res.data.status !== 0) {
+                        return this.$message.error(`${res.data.message}`);
+                    }
+                    this.$store.commit('LOGIN_SUCCESS', res.data.adminToken);
+                })
+                .catch(() => {
+                    this.$message.error(`登陆失败：服务器错误`);
+                });
         },
         reset() {
-            this.name = ``;
+            this.account = ``;
             this.password = ``;
         }
     },
     mounted() {
         if (this.$store.state.token) {
-            this.$router.push("/admin");
+            this.$router.push('/admin');
         }
     }
 };
 </script>
 <style lang="scss" scoped>
-.input {
-    margin-top: 1rem;
+#login {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
     align-items: center;
-}
-.input > .iconfont {
-    font-size: 2rem;
-    color: rgb(96, 126, 121);
-}
-input {
-    margin-left: 0.5rem;
-}
-.btn-small {
-    margin: 1rem 1rem;
-    padding: 0.5rem 1.3rem;
-}
-.login-fail .iconfont {
-    display: block;
-    font-size: 5rem;
-    padding-left: 5.5rem;
-    color: red;
-}
-.fail-msg {
-    padding-left: 6rem;
-}
-.alert {
-    border-radius: 1rem;
-    border: 1px solid rgba(96, 126, 121, 0.6);
-    padding: 1rem 0.5rem;
-    width: 10rem;
-    margin: 1rem 3rem;
-    background: rgb(96, 126, 121);
-    text-align: center;
+    height: 100vh;
+    .login-section-wrapper {
+        width: 50vw;
+        height: 60vh;
+        background-color: white;
+        border-radius: 16px;
+    }
+    .login-section-button-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    .login-section-input-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /deep/ .el-input {
+            margin: 0.5rem 0;
+            width: 15rem;
+        }
+    }
 }
 </style>

@@ -4,7 +4,7 @@ import App from './App.vue';
 import Axios from './axios';
 import dateFormat from './dateFormat';
 
-import './static/css/index.scss'
+import './static/css/index.scss';
 // import './static/css/style.scss';
 // import './static/css/v-html.scss';
 import './static/icon/iconfont.css';
@@ -15,7 +15,8 @@ import store from './vuex/store';
 import hljs from 'highlight.js';
 
 import ELEMENT from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+// import 'element-ui/lib/theme-chalk/index.css';
+import './static/css/index.css';
 
 Vue.use(ELEMENT);
 

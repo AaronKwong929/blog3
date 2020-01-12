@@ -13,6 +13,11 @@ const mutations = {
             return item.content.includes(state.searchTerm);
         });
         router.push('/search');
+    },
+    LOGIN_SUCCESS(state, token) {
+        state.token = token;
+        localStorage.setItem('token', token)
+        router.push('/admin');
     }
 };
 

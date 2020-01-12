@@ -16,28 +16,7 @@ let adminRouter = new Router();
 //             msg: 1
 //     }
 // });
-// 管理员登陆、发放token
-adminRouter.post('/login', async ctx => {
-    const name = ctx.request.body.name,
-        password = ctx.request.body.password;
-    try {
-        const admin = await Admin.findOne({ name }),
-            isMatch = await bcrypt.compare(password, admin.password);
-        if (!admin || !isMatch) {
-            throw new Error();
-        }
-        const adminToken = addToken(admin.name);
-        ctx.response.body = {
-            adminToken,
-            code: 0
-        };
-    } catch (e) {
-        ctx.response.body = {
-            code: 1,
-            msg: '账号或密码错误'
-        };
-    }
-});
+
 adminRouter.get('/', verifyToken, async ctx => {
     let articleList = await Article.find();
     articleList = articleList.sort((a, b) => {
@@ -236,6 +215,28 @@ adminRouter.post('/newArticle', verifyToken, async ctx => {
         ctx.response.body = {
             status: -1,
             message: `删除失败`
+        };
+    }
+});
+// 管理员登陆
+adminRouter.post('/login', async ctx => {
+    const account = ctx.request.body.account,
+        password = ctx.request.body.password;
+    try {
+        const admin = await Admin.findOne({ name: account }),
+            isMatch = await bcrypt.compare(password, admin.password);
+        if (!admin || !isMatch) {
+            throw new Error();
+        }
+        const adminToken = addToken(admin.name);
+        ctx.response.body = {
+            adminToken,
+            status: 0
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `账号或密码错误`
         };
     }
 });

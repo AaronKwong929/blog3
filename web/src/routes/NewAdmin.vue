@@ -42,21 +42,21 @@
                     :key="`published` + index"
                     :value="item.value"
                     :label="item.label"
-                ></el-option
-            ></el-select>
-            <el-button
-                type="success"
-                size="small"
-                @click="newArticle"
-                class="tool-bar-item"
-                >新建</el-button
-            >
+                ></el-option>
+            </el-select>
             <el-button
                 type="primary"
                 size="small"
                 @click="searchArticles"
                 class="tool-bar-item"
                 >查询</el-button
+            >
+            <el-button
+                type="success"
+                size="small"
+                @click="newArticle"
+                class="tool-bar-item"
+                >新建</el-button
             >
             <el-button size="small" @click="reset" class="tool-bar-item"
                 >刷新</el-button
@@ -125,6 +125,8 @@
                     <el-table-column label="操作" min-width="20" align="center">
                         <template slot-scope="scope">
                             <el-button
+                                icon="el-icon-s-promotion
+"
                                 size="small"
                                 @click="changeArticleStatus(scope.row)"
                                 type="text"
@@ -133,6 +135,7 @@
                                 }}</el-button
                             >
                             <el-button
+                                icon="el-icon-edit"
                                 size="small"
                                 @click="pushToDraft(scope.row._id)"
                                 type="text"
@@ -140,6 +143,8 @@
                                 >编辑</el-button
                             >
                             <el-button
+                                icon="el-icon-delete
+"
                                 size="small"
                                 @click="deleteArticle(scope.row)"
                                 type="text"
@@ -364,7 +369,7 @@ export default {
                         });
                 })
                 .catch(() => {
-                    this.$message.warning(`已取消删除文章操作`);
+                    this.$message.warning(`已取消删除文章：${row.title}操作`);
                 });
         },
         // 区分底色
