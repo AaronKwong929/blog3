@@ -117,4 +117,22 @@ commonRouter.post(`/getArticleDetails`, async ctx => {
         };
     }
 });
+/* 搜索标题或者文章关键词 */
+commonRouter.post(`/searchKeywords`, async ctx => {
+    const { keyword, pageIndex, pageSize } = ctx.request.body;
+    const reg = new RegExp(keyword, 'i');
+    const resultList = await Article.find({
+        published: true,
+        title: { $regex: reg }
+    })
+        .sort({ updatedAt: -1 })
+        .limit(pageSize)
+        .skip((pageIndex - 1) * pageSize);
+    ctx.response.body = {
+        status: 0,
+        message: `查询成功`,
+        resultList,
+        totalCount: resultList.length
+    };
+});
 module.exports = commonRouter;

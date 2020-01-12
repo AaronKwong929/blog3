@@ -21,7 +21,10 @@ const routes = [
         component: () => import('./routes/About.vue'),
         meta: { keepAlive: true }
     },
-    { path: '/article/:id', component: () => import('./routes/NewArticleDetails.vue') },
+    {
+        path: '/article/:id',
+        component: () => import('./routes/NewArticleDetails.vue')
+    },
     { path: '/login', component: () => import('./routes/Login.vue') },
     {
         path: '/draft/:id',
@@ -44,7 +47,11 @@ const routes = [
         component: () => import('./routes/UpdateLog.vue'),
         meta: { keepAlive: true }
     },
-    { path: '/search', component: () => import('./routes/SearchResult.vue') },
+    {
+        path: '/result',
+        name: 'result',
+        component: () => import('./routes/SearchResult.vue')
+    },
     {
         path: '/classification',
         name: 'classification',
