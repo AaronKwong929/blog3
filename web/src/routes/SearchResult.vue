@@ -1,164 +1,91 @@
 <template>
-    <div id="search-result" class="router-view-general">
-        <i class="iconfont icon-sousuo1"></i>
-        <div class="router-title">
-            搜索结果
-        </div>
-        <div class="has-result" v-if="!this.$store.state.searchTerm">
-            没有搜索内容
-        </div>
-        <div v-else>
-            <div class="list">
-                <button
-                    :class="{ active: currentType === 'title' }"
-                    @click="changeType('title')"
-                >
-                    标题搜索
-                </button>
-                <button
-                    :class="{ active: currentType === 'content' }"
-                    @click="changeType('content')"
-                >
-                    全文搜索
-                </button>
-                <div class="has-result">
-                    搜索内容：<span class="result-key">{{
-                        this.$store.state.searchTerm
-                    }}</span
-                    ><br />
-                    <span class="result-count">
-                        共有<span class="result-num">
-                            {{ this.list[this.currentType].length }} </span
-                        >个搜索结果
-                    </span>
-                </div>
+    <el-container
+        v-loading.fullscreen.lock="fullScreenLoading"
+        element-loading-background="rgba(0, 0, 0, 0.2)"
+    >
+        <el-main>
+            <div class="content-wrapper">
+                <div v-if="type === 1">搜索标题</div>
+                <div v-else>搜索内容</div>
             </div>
-            <router-link
-                v-for="(item, index) in articleLists"
-                :key="index"
-                :to="'/article/' + item._id"
-                tag="div"
-                class="list-item"
-            >
-                <div class="title" v-html="replaceHighlight(item.title)"></div>
-                <time>{{ item.updatedAt }}</time>
-                <div class="item-info-details">
-                    <span
-                        ><i class="iconfont icon-biaoqian"></i
-                        >{{ item.tag }}</span
-                    >
-                    <span
-                        ><i class="iconfont icon-yingyongAPP"></i
-                        >{{ item.type }}</span
-                    >
-                </div>
-                <div
-                    class="content-short"
-                    v-show="isContentSearch"
-                    v-html="shorterDetails(item.content)"
-                ></div>
-            </router-link>
-        </div>
-    </div>
+            <el-pagination
+                class="pagination"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="articleListCount"
+                :page-sizes="[20, 50, 100]"
+                :page-size="20"
+                @current-change="handlePageChange"
+                @size-change="handleSizeChange"
+            ></el-pagination>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
-import { mapState } from "vuex";
+const baseURL = process.env.VUE_APP_API;
+import Axios from '../axios';
 export default {
     data() {
         return {
-            list: {
-                title: this.$store.state.searchResults.titleResults,
-                content: this.$store.state.searchResults.contentResults
-            },
-            currentType: "title"
+            fullScreenLoading: false,
+            keyword: '',
+            type: '',
+            pageSize: 5,
+            pageIndex: 1,
+            resultList: [],
+            totalCount: 0
         };
     },
-    computed: {
-        ...mapState({
-            searchTerm: state => {
-                return state.searchTerm;
+    methods: {
+        /* 获取搜索内容给和类型 */
+        async getKeyword() {
+            if (!this.$route.params.keyword || !this.$route.params.type) {
+                return this.$message.warning(`请先输入搜索内容`);
             }
-        }),
-        articleLists() {
-            return this.list[this.currentType];
+            this.keyword = this.$route.params.keyword;
+            this.type = this.$route.params.type;
+            await this.getResult();
         },
-        isContentSearch() {
-            return this.currentType === "content";
+        /* 获取搜素结果 */
+        async getResult() {
+            await await Axios.post(`${baseURL}/common/searchKeywords`, {
+                type: this.type,
+                keyword: this.keyword,
+                pageSize: this.pageSize,
+                pageIndex: this.pageIndex
+            })
+                .then(res => {
+                    if (res.data.status !== 0) {
+                        return this.$message.error(
+                            `查询失败：${res.data.message}`
+                        );
+                    }
+                    if (res.data.totalCount === 0) {
+                        return this.$message.warning(`没有相关结果`);
+                    }
+                    this.resultList = res.data.resultList;
+                    this.totalCount = res.data.totalCount;
+                })
+                .catch(() => {
+                    this.$message.error(`查询失败：服务器错误`);
+                });
+        },
+        /* 分页器 */
+        handleSizeChange(newSize) {
+            this.pageSize = newSize;
+            this.getResult();
+        },
+        handlePageChange(newPage) {
+            this.pageIndex = newPage;
+            this.getResult();
         }
     },
-    methods: {
-        changeType(type) {
-            this.currentType = type;
-        },
-        replaceHighlight(keyword) {
-            return keyword.replace(
-                this.$store.state.searchTerm,
-                `<span class="highlight">${this.$store.state.searchTerm}</span>`
-            );
-        },
-        shorterDetails(content) {
-            let index = content.indexOf(this.$store.state.searchTerm);
-            let shorter = `...${content.substring(index - 20, index + 20)}...`;
-            return shorter.replace(
-                this.$store.state.searchTerm,
-                `<span class="highlight">${this.$store.state.searchTerm}</span>`
-            );
-        }
+    mounted() {
+        this.getKeyword();
     }
 };
 </script>
 
 <style lang="scss" scoped>
-/deep/.highlight {
-    background-color: rgba(96, 126, 121, 0.4);
-}
-.has-result {
-    margin: 1rem 0;
-    padding: 1rem;
-    border-radius: 9999rem;
-    text-align: center;
-    color: rgb(96, 126, 121);
-    background-color: rgba(96, 126, 121, 0.4);
-}
-.result-count {
-    margin-top: 1rem;
-    color: rgb(96, 126, 121);
-}
-.result-key,
-.result-num {
-    font-size: 1.3rem;
-    font-family: "Times New Roman", Times, serif;
-    font-weight: 800;
-}
-.list-item {
-    cursor: pointer;
-    display: block;
-    padding: 1rem;
-    margin-top: 1rem;
-    border-radius: 1rem;
-    text-align: center;
-    box-shadow: 0 0 1rem -0.3rem #aaa;
-    background-color: rgba(96, 126, 121, 0.4);
-}
-.list-item:hover {
-    box-shadow: 0 0 1rem 0.3rem #aaa;
-    transition: all 0.3s;
-}
-.list-item:first-child {
-    margin-top: 0;
-}
-.list-item:last-child {
-    margin-bottom: 3rem;
-}
-.title {
-    margin-bottom: 0.3rem;
-}
-.item-info-details {
-    padding: 0.3rem;
-    padding-left: 0;
-}
-.item-info-details > span:first-child {
-    padding-right: 0.3rem;
-}
+// /
 </style>

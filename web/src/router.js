@@ -48,8 +48,8 @@ const routes = [
         meta: { keepAlive: true }
     },
     {
-        path: '/result',
-        name: 'result',
+        path: '/searchResult',
+        name: 'searchResult',
         component: () => import('./routes/SearchResult.vue')
     },
     {

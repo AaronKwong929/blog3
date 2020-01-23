@@ -136,16 +136,23 @@ commonRouter.post(`/searchKeywords`, async ctx => {
         content: { $regex: reg }
     };
     const query = type === 1 ? titleQuery : contentQuery;
-    const resultList = await Article.find(query)
-        .sort({ updatedAt: -1 })
-        .limit(pageSize)
-        .skip((pageIndex - 1) * pageSize);
-    ctx.response.body = {
-        status: 0,
-        message: `查询成功`,
-        resultList,
-        totalCount: resultList.length
-    };
+    try {
+        const resultList = await Article.find(query)
+            .sort({ updatedAt: -1 })
+            .limit(pageSize)
+            .skip((pageIndex - 1) * pageSize);
+        ctx.response.body = {
+            status: 0,
+            message: `查询成功`,
+            resultList,
+            totalCount: resultList.length
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `查询失败`
+        };
+    }
 });
 
 module.exports = commonRouter;
