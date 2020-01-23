@@ -117,14 +117,26 @@ commonRouter.post(`/getArticleDetails`, async ctx => {
         };
     }
 });
-/* 搜索标题或者文章关键词 */
+
+/**
+ *  搜索标题或内容
+ *  1标题，2内容
+ */
 commonRouter.post(`/searchKeywords`, async ctx => {
-    const { keyword, pageIndex, pageSize } = ctx.request.body;
+    let { keyword, pageIndex, pageSize, type } = ctx.request.body;
+    pageIndex = pageIndex === '' ? 1 : pageIndex;
+    pageSize = pageSize === '' ? 10 : pageSize;
     const reg = new RegExp(keyword, 'i');
-    const resultList = await Article.find({
+    const titleQuery = {
         published: true,
         title: { $regex: reg }
-    })
+    };
+    const contentQuery = {
+        published: true,
+        content: { $regex: reg }
+    };
+    const query = type === 1 ? titleQuery : contentQuery;
+    const resultList = await Article.find(query)
         .sort({ updatedAt: -1 })
         .limit(pageSize)
         .skip((pageIndex - 1) * pageSize);
@@ -135,4 +147,5 @@ commonRouter.post(`/searchKeywords`, async ctx => {
         totalCount: resultList.length
     };
 });
+
 module.exports = commonRouter;
