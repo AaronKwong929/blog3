@@ -39,18 +39,18 @@ adminRouter.post('/draft', verifyToken, async ctx => {
         code: 1
     };
 });
-adminRouter.put('/draft', verifyToken, async ctx => {
-    const update = ctx.request.body.article;
-    const article = await Article.findById(update._id);
-    article.title = update.title;
-    article.type = update.type;
-    article.tag = update.tag;
-    article.content = update.content;
-    await article.save();
-    ctx.response.body = {
-        code: 1
-    };
-});
+// adminRouter.put('/draft', verifyToken, async ctx => {
+//     const update = ctx.request.body.article;
+//     const article = await Article.findById(update._id);
+//     article.title = update.title;
+//     article.type = update.type;
+//     article.tag = update.tag;
+//     article.content = update.content;
+//     await article.save();
+//     ctx.response.body = {
+//         code: 1
+//     };
+// });
 adminRouter.put('/publish', verifyToken, async ctx => {
     let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
@@ -95,8 +95,8 @@ adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
     };
 });
 
-// blog_next api
-// 获取管理页文章
+/* blog_next api */
+/* 获取管理页文章 */
 adminRouter.post(`/getArticles`, verifyToken, async ctx => {
     const { pageIndex, pageSize } = ctx.request.body;
     if (!pageIndex && !pageSize) {
@@ -118,7 +118,7 @@ adminRouter.post(`/getArticles`, verifyToken, async ctx => {
         resultList
     };
 });
-// 删除文章
+/* 删除文章 */
 adminRouter.post('/deleteArticle', verifyToken, async ctx => {
     const { id } = ctx.request.body;
     if (!id) {
@@ -140,7 +140,7 @@ adminRouter.post('/deleteArticle', verifyToken, async ctx => {
         });
     }
 });
-// 更改文章状态
+/* 更改文章状态 */
 adminRouter.post('/changeArticleStatus', verifyToken, async ctx => {
     const { id } = ctx.request.body;
     if (!id) {
@@ -164,7 +164,7 @@ adminRouter.post('/changeArticleStatus', verifyToken, async ctx => {
         };
     }
 });
-// 条件搜索文章
+/* 条件搜索文章 */
 adminRouter.post(`/searchArticles`, async ctx => {
     let { type, tag, published, pageIndex, pageSize } = ctx.request.body;
     let query = {};
@@ -202,23 +202,25 @@ adminRouter.post(`/searchArticles`, async ctx => {
         message: '查询成功'
     };
 });
+
+/* 新建文章 */
 adminRouter.post('/newArticle', verifyToken, async ctx => {
     try {
         let article = new Article();
         await article.save();
         ctx.response.body = {
             status: 0,
-            message: `新建成功`,
-            id: article._id
+            message: `新建成功`
+            // id: article._id
         };
     } catch {
         ctx.response.body = {
             status: -1,
-            message: `删除失败`
+            message: `新建失败`
         };
     }
 });
-// 管理员登陆
+/* 管理员登陆 */
 adminRouter.post('/login', async ctx => {
     const account = ctx.request.body.account,
         password = ctx.request.body.password;
@@ -240,4 +242,38 @@ adminRouter.post('/login', async ctx => {
         };
     }
 });
+/* 打开文章草稿 */
+adminRouter.get(`/draft`, verifyToken, async ctx => {
+    const articleId = ctx.request.query.id;
+    try {
+        const article = await Article.findById(articleId);
+        ctx.response.body = {
+            status: 0,
+            message: `查询成功`,
+            article
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `该文章不存在`
+        };
+    }
+});
+/* 保存文章 */
+adminRouter.put(`/draft`, verifyToken, async ctx => {
+    const { article } = ctx.request.body;
+    console.log(article);
+    try {
+        ctx.response.body = {
+            status: 0,
+            message: `保存成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `保存失败`
+        };
+    }
+});
+
 module.exports = adminRouter;

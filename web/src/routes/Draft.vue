@@ -1,6 +1,12 @@
 <template>
     <div id="draft" class="clearfix">
-        <div class="write clearfix">
+        <div v-if="articleDetails._id">
+            {{ articleDetails }}
+        </div>
+        <el-button @click="saveDraft">
+            保存
+        </el-button>
+        <!-- <div class="write clearfix">
             <div class="write-info">
                 <input
                     type="text"
@@ -26,7 +32,13 @@
                     hidden
                 />
                 <ul class="imgurl-box" v-if="this.imgUrls.length">
-                    <li class="imgurl" v-for="(item, index) in this.imgUrls" :key="index">{{ index }} - {{ item }}</li>
+                    <li
+                        class="imgurl"
+                        v-for="(item, index) in this.imgUrls"
+                        :key="index"
+                    >
+                        {{ index }} - {{ item }}
+                    </li>
                 </ul>
             </div>
             <div class="button_bar">
@@ -78,129 +90,162 @@
                     删除
                 </button>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
-import lodash from "lodash";
-import marked from "marked";
-import { mapActions, mapState } from "vuex";
+// import lodash from 'lodash';
+// import marked from 'marked';
+// import { mapActions, mapState } from 'vuex';
+import Axios from '../axios';
+const baseUrl = process.env.VUE_APP_API;
 export default {
     data() {
         return {
-            title: "",
-            tag: "",
-            type: "",
-            content: "",
-            comments: "",
-            now: this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm"),
-            // urls: ""
+            fullScreenLoading: false,
+            articleDetails: {
+                title: ``,
+                type: ``,
+                tag: ``,
+                content: ``,
+                published: ``,
+                updatedAt: ``,
+                _id: ``
+            }
+            // title: '',
+            // tag: '',
+            // type: '',
+            // content: '',
+            // comments: '',
+            // now: this.$dateFormat(new Date(), 'yyyy-MM-dd hh:mm')
         };
     },
-    computed: {
-        compiledMarkdown: function() {
-            return marked(this.content);
-        },
-        ...mapState(["imgUrls"]),
-        // imgUrlsLen() {
-        //     return this.$store.state.imgUrls.length;
-        // }
-    },
-    methods: {
-        // init() {
-        //     this.urls = this.$store.state.imgUrls;
-        // },
-        getDetails() {
-            const details = this.$store.state.adminArticleList.find(item => {
-                return item._id === this.$route.params.id;
-            });
-            this.$store.state.articleDetails = details;
-            this.title = details.title;
-            this.type = details.type;
-            this.tag = details.tag;
-            this.content = details.content;
-            this.comments = details.comments;
-        },
-        save: lodash.debounce(function() {
-            this.$store.state.articleDetails.title = this.title;
-            this.$store.state.articleDetails.tag = this.tag;
-            this.$store.state.articleDetails.type = this.type;
-            this.$store.state.articleDetails.content = this.content;
-            this.$store.dispatch("SAVE_ARTICLE");
-            this.$store.dispatch("COMMON_GET_ARTICLES");
-        }, 3000),
-        deleteComment(id) {
-            this.$store.dispatch("DELETE_COMMENT", {
-                articleID: this.$route.params.id,
-                commentID: id
-            });
-            setTimeout(() => {
-                this.getDetails();
-            }, 1000);
-        },
-        addBold() {
-            this.changeSelectedText("**", "**");
-        },
-        addItalic() {
-            this.changeSelectedText("*", "*");
-        },
-        addUnderline() {
-            this.changeSelectedText("<u>", "</u>");
-        },
-        addH(i) {
-            let prefix = ``;
-            for (let k = 0; k < i; k++) {
-                prefix += `#`;
-            }
-            if (!this.content) {
-                this.content = `${prefix} `;
-            } else {
-                this.content = this.content += `\n\n${prefix} `;
-            }
-            this.$refs.md_area.focus();
-        },
-        changeSelectedText(startString, endString) {
-            let t = this.$refs.md_area;
-            if (window.getSelection) {
-                if (
-                    t.selectionStart != undefined &&
-                    t.selectionEnd != undefined
-                ) {
-                    let str1 = t.value.substring(0, t.selectionStart);
-                    let str2 = t.value.substring(
-                        t.selectionStart,
-                        t.selectionEnd
-                    );
-                    let str3 = t.value.substring(t.selectionEnd);
-                    let result = str1 + startString + str2 + endString + str3;
-                    t.value = result;
-                    this.content = t.value;
-                }
-            }
-        },
-        update(e) {
-            let event = {
-                file: e.target.files[0]
-            };
-            // console.log(event);
-            this.updateImg(event);
-        },
-        ...mapActions({
-            updateImg: "UPDATE_IMAGE"
-        })
-    },
-    updated() {
-        this.now = this.$dateFormat(new Date(), "yyyy-MM-dd hh:mm");
-    },
-    mounted() {
-        this.getDetails();
-        // this.init();
-    },
-    // watch: {
-    //     imgUrlsLen() {
-    //         this.init();
-    //     }
+    // computed: {
+    //     compiledMarkdown: function() {
+    //         return marked(this.content);
+    //     },
+    //     ...mapState(['imgUrls'])
     // },
+    methods: {
+        // getDetails() {
+        //     const details = this.$store.state.adminArticleList.find(item => {
+        //         return item._id === this.$route.params.id;
+        //     });
+        //     this.$store.state.articleDetails = details;
+        //     this.title = details.title;
+        //     this.type = details.type;
+        //     this.tag = details.tag;
+        //     this.content = details.content;
+        //     this.comments = details.comments;
+        // },
+        // save: lodash.debounce(function() {
+        //     this.$store.state.articleDetails.title = this.title;
+        //     this.$store.state.articleDetails.tag = this.tag;
+        //     this.$store.state.articleDetails.type = this.type;
+        //     this.$store.state.articleDetails.content = this.content;
+        //     this.$store.dispatch('SAVE_ARTICLE');
+        //     this.$store.dispatch('COMMON_GET_ARTICLES');
+        // }, 3000),
+        // deleteComment(id) {
+        //     this.$store.dispatch('DELETE_COMMENT', {
+        //         articleID: this.$route.params.id,
+        //         commentID: id
+        //     });
+        //     setTimeout(() => {
+        //         this.getDetails();
+        //     }, 1000);
+        // },
+        // addBold() {
+        //     this.changeSelectedText('**', '**');
+        // },
+        // addItalic() {
+        //     this.changeSelectedText('*', '*');
+        // },
+        // addUnderline() {
+        //     this.changeSelectedText('<u>', '</u>');
+        // },
+        // addH(i) {
+        //     let prefix = ``;
+        //     for (let k = 0; k < i; k++) {
+        //         prefix += `#`;
+        //     }
+        //     if (!this.content) {
+        //         this.content = `${prefix} `;
+        //     } else {
+        //         this.content = this.content += `\n\n${prefix} `;
+        //     }
+        //     this.$refs.md_area.focus();
+        // },
+        // changeSelectedText(startString, endString) {
+        //     let t = this.$refs.md_area;
+        //     if (window.getSelection) {
+        //         if (
+        //             t.selectionStart != undefined &&
+        //             t.selectionEnd != undefined
+        //         ) {
+        //             let str1 = t.value.substring(0, t.selectionStart);
+        //             let str2 = t.value.substring(
+        //                 t.selectionStart,
+        //                 t.selectionEnd
+        //             );
+        //             let str3 = t.value.substring(t.selectionEnd);
+        //             let result = str1 + startString + str2 + endString + str3;
+        //             t.value = result;
+        //             this.content = t.value;
+        //         }
+        //     }
+        // },
+        // update(e) {
+        //     let event = {
+        //         file: e.target.files[0]
+        //     };
+        //     // console.log(event);
+        //     this.updateImg(event);
+        // },
+        // ...mapActions({
+        //     updateImg: 'UPDATE_IMAGE'
+        // }),
+        /* 获取文章 */
+        async initDraft() {
+            const id = this.$route.params.id;
+            await Axios.get(`${baseUrl}/admin/draft?id=${id}`)
+                .then(res => {
+                    if (res.data.status !== 0) {
+                        return this.$message.error(
+                            `查询失败：${res.data.message}`
+                        );
+                    }
+                    Object.assign(this.articleDetails, res.data.article);
+                })
+                .catch(() => {
+                    this.$message.error(`查询失败：服务器错误`);
+                });
+        },
+        /* 保存文章 */
+        async saveDraft() {
+            await Axios.put(`${baseUrl}/admin/draft`, {
+                article: this.articleDetails
+            })
+                .then(res => {
+                    if (res.status !== 0) {
+                        return this.$message.error(
+                            `保存失败：${res.data.message}`
+                        );
+                    }
+                    this.$message.success(`已保存`);
+                })
+                .catch(() => {
+                    this.$message.error(`保存失败：服务器错误`);
+                });
+        }
+    },
+    // updated() {
+    //     this.now = this.$dateFormat(new Date(), 'yyyy-MM-dd hh:mm');
+    // },
+    mounted() {
+        // this.getDetails();
+        this.initDraft();
+    }
 };
 </script>
 <style lang="scss" scoped>

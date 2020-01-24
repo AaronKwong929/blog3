@@ -86,6 +86,10 @@ export default {
                     title: '开发版本3.9 上线版本1.9',
                     contents: ['Element-UI 重写侧栏/静态页'],
                     timestamp: '2019-12-1'
+                },
+                {
+                    title: `开发版本3.9.1 上线版本1.9.1`,
+                    content: ['Element-UI搭载基本完成']
                 }
             ]
         };
