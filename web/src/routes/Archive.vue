@@ -23,6 +23,7 @@
                         min-width="30"
                         sortable
                         align="center"
+                        :formatter="dateFormatter"
                     >
                     </el-table-column>
                     <el-table-column
@@ -123,7 +124,14 @@ export default {
         handleCurrentChange(val) {
             this.pageIndex = val;
             this.getCommonArticles();
-        }
+        },
+        // 格式化时间
+        dateFormatter(row, column) {
+            return this.$dateFormat(
+                new Date(parseInt(row[column.property])),
+                'yyyy-MM-dd hh:mm:ss'
+            );
+        },
     },
     mounted() {
         this.getCommonArticles();

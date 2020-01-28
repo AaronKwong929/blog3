@@ -18,6 +18,10 @@ import ELEMENT from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 import './static/css/index.css';
 
+import VueEditor from 'vue-md-editor';
+
+Vue.use(VueEditor);
+
 Vue.use(ELEMENT);
 
 Vue.config.productionTip = false;
@@ -32,11 +36,11 @@ Vue.directive('highlight', function(el) {
     });
 });
 
-Vue.directive('focus', {
-    inserted: function(el) {
-        el.focus();
-    }
-});
+// Vue.directive('focus', {
+//     inserted: function(el) {
+//         el.focus();
+//     }
+// });
 
 new Vue({
     render: h => h(App),

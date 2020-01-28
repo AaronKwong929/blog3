@@ -4,16 +4,32 @@
         element-loading-background="rgba(0, 0, 0, 0.2)"
     >
         <el-main>
-            <div class="content-wrapper">
-                <div v-if="type === 1">搜索标题</div>
-                <div v-else>搜索内容</div>
+            <el-page-header
+                @back="goBack"
+                :content="type === 1 ? '搜索标题' : '搜索内容'"
+                title="返回"
+            >
+            </el-page-header>
+            <div class="content-wrapper" v-if="type === 1">
+                <el-card
+                    v-for="(item, index) in resultList"
+                    :key="index"
+                    class="card"
+                >
+                    <div slot="header">
+                        <router-link :to="'/article/' + item._id">{{
+                            item.title
+                        }}</router-link>
+                    </div>
+                </el-card>
             </div>
+
             <el-pagination
                 class="pagination"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="articleListCount"
-                :page-sizes="[20, 50, 100]"
-                :page-size="20"
+                :total="totalCount"
+                :page-sizes="[5, 10]"
+                :page-size="5"
                 @current-change="handlePageChange"
                 @size-change="handleSizeChange"
             ></el-pagination>
@@ -78,6 +94,9 @@ export default {
         handlePageChange(newPage) {
             this.pageIndex = newPage;
             this.getResult();
+        },
+        goBack() {
+            this.$router.go(-1);
         }
     },
     mounted() {
@@ -87,5 +106,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// /
+.content-wrapper {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 3rem;
+}
+
+.card {
+    margin: 0.5rem 0;
+}
 </style>

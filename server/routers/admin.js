@@ -261,9 +261,15 @@ adminRouter.get(`/draft`, verifyToken, async ctx => {
 });
 /* 保存文章 */
 adminRouter.put(`/draft`, verifyToken, async ctx => {
-    const { article } = ctx.request.body;
-    console.log(article);
+    const { article: articleDetails } = ctx.request.body;
+    console.log(articleDetails);
     try {
+        const article = await Article.findById(articleDetails._id);
+        article.title = articleDetails.title;
+        article.tag = articleDetails.tag;
+        article.type = articleDetails.type;
+        article.content = articleDetails.content;
+        await article.save();
         ctx.response.body = {
             status: 0,
             message: `保存成功`

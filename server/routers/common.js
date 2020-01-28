@@ -137,6 +137,7 @@ commonRouter.post(`/searchKeywords`, async ctx => {
     };
     const query = type === 1 ? titleQuery : contentQuery;
     try {
+        const totalCount = await Article.countDocuments(query);
         const resultList = await Article.find(query)
             .sort({ updatedAt: -1 })
             .limit(pageSize)
@@ -145,7 +146,7 @@ commonRouter.post(`/searchKeywords`, async ctx => {
             status: 0,
             message: `查询成功`,
             resultList,
-            totalCount: resultList.length
+            totalCount
         };
     } catch {
         ctx.response.body = {

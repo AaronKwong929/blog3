@@ -14,8 +14,6 @@ const routes = [
     { path: '/', redirect: 'home' },
     { path: '/home', component: () => import('./routes/Home.vue') },
     { path: '/archive', component: () => import('./routes/Archive.vue') },
-    { path: '/type', component: () => import('./routes/Type.vue') },
-    { path: '/tag', component: () => import('./routes/Tag.vue') },
     {
         path: '/about',
         component: () => import('./routes/About.vue'),
