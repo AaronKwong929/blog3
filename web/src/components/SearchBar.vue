@@ -5,7 +5,6 @@
             type="text"
             v-model="keyword"
             @keyup.enter="search"
-            v-focus
             clearable
             placeholder="输入标题或内容"
             size="small"
