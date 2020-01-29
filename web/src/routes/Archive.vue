@@ -14,7 +14,7 @@
                     tooltip-effect="dark"
                     style="width: 99%;"
                     height="100%"
-                    :default-sort="{ prop: 'updatedAt', order: 'ascending' }"
+                    :default-sort="{ prop: 'updatedAt', order: 'descending' }"
                     stripe
                 >
                     <el-table-column
@@ -52,7 +52,22 @@
                         label="标签"
                         align="center"
                         min-width="15"
-                    ></el-table-column>
+                    >
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.tag == 'vue'">Vue.JS</span>
+                            <span v-else-if="scope.row.tag === 'css'">CSS</span>
+                            <span v-else-if="scope.row.tag === 'html'"
+                                >HTML</span
+                            >
+                            <span v-else-if="scope.row.tag === 'js'"
+                                >JavaScript</span
+                            >
+                            <span v-else-if="scope.row.type === 'algo'"
+                                >算法</span
+                            >
+                            <span v-else>服务器</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" label="操作" min-width="10">
                         <template slot-scope="scope">
                             <el-button
@@ -131,7 +146,7 @@ export default {
                 new Date(parseInt(row[column.property])),
                 'yyyy-MM-dd hh:mm:ss'
             );
-        },
+        }
     },
     mounted() {
         this.getCommonArticles();

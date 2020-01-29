@@ -32,17 +32,6 @@
                     :label="item.label"
                 ></el-option
             ></el-select>
-            <el-date-picker
-                class="tool-bar-item"
-                size="small"
-                v-model="time"
-                value-format="timestamp"
-                type="daterange"
-                clearable
-                range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-            ></el-date-picker>
             <el-button
                 type="primary"
                 size="small"
@@ -70,7 +59,7 @@
                     <el-table-column
                         prop="updatedAt"
                         label="发布日期"
-                        min-width="20"
+                        min-width="30"
                         align="center"
                         sortable
                         :formatter="dateFormatter"
@@ -84,18 +73,41 @@
                     <el-table-column
                         prop="type"
                         label="类型"
-                        min-width="30"
+                        min-width="20"
                         sortable
                         align="center"
-                    ></el-table-column>
+                    >
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.type == 'code'">编程</span>
+                            <span v-else-if="scope.row.type === 'game'"
+                                >游戏</span
+                            >
+                            <span v-else>生活</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         prop="tag"
                         label="标签"
-                        min-width="30"
+                        min-width="20"
                         sortable
                         align="center"
-                    ></el-table-column>
-                    <el-table-column label="操作" min-width="10" align="center">
+                    >
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.tag == 'vue'">Vue.JS</span>
+                            <span v-else-if="scope.row.tag === 'css'">CSS</span>
+                            <span v-else-if="scope.row.tag === 'html'"
+                                >HTML</span
+                            >
+                            <span v-else-if="scope.row.tag === 'js'"
+                                >JavaScript</span
+                            >
+                            <span v-else-if="scope.row.type === 'algo'"
+                                >算法</span
+                            >
+                            <span v-else>服务器</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" min-width="20" align="center">
                         <template slot-scope="scope">
                             <el-button
                                 size="small"

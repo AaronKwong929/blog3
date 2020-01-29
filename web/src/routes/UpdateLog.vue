@@ -1,8 +1,5 @@
 <template>
-    <div
-        v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-background="rgba(0, 0, 0, 0.2)"
-    >
+    <div>
         <el-container style="height: 90vh; margin: 3rem 3rem 0 3rem">
             <el-main>
                 <el-timeline :reverse="true">
@@ -89,7 +86,11 @@ export default {
                 },
                 {
                     title: `开发版本3.9.1 上线版本1.9.1`,
-                    content: ['Element-UI搭载基本完成']
+                    contents: [
+                        'Element-UI搭载基本完成',
+                        '前台展示重构减少公式化'
+                    ],
+                    timestamp: '2020-1-29'
                 }
             ]
         };

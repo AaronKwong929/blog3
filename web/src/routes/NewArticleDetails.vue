@@ -26,6 +26,7 @@
                 </div>
                 <div class="article-content-wrapper">
                     <div
+                        v-if="articleDetails.content"
                         class="article-content"
                         v-highlight
                         v-html="compiledMarkdown"
@@ -82,22 +83,16 @@ export default {
             switch (this.articleDetails.tag) {
                 case 'html':
                     return 'HTML';
-
                 case 'css':
                     return 'CSS';
-
                 case 'js':
                     return 'JavaScript';
-
                 case 'algo':
                     return '算法';
-
                 case 'vue':
                     return 'Vue.JS';
-
                 case 'server':
                     return '服务器';
-
                 default:
                     break;
             }
@@ -107,13 +102,10 @@ export default {
             switch (this.articleDetails.type) {
                 case 'code':
                     return '编程';
-
                 case 'life':
                     return '生活';
-
                 case 'game':
                     return '游戏';
-
                 default:
                     break;
             }
