@@ -2,38 +2,44 @@
     <el-container
         v-loading.fullscreen.lock="fullScreenLoading"
         element-loading-background="rgba(0, 0, 0, 0.2)"
+        style="height: 97vh;"
     >
-        <el-main>
+        <el-header
+        style="display: flex; flex-direction: row; align-items: center;"
+        >
             <el-page-header
                 @back="goBack"
                 :content="type === 1 ? '搜索标题' : '搜索内容'"
                 title="返回"
             >
             </el-page-header>
-            <div class="content-wrapper" v-if="type === 1">
-                <router-link
-                    v-for="(item, index) in resultList"
-                    :key="index"
-                    class="card"
-                    :to="'/article/' + item._id"
-                >
-                    <div class="row">
-                        <div class="title">{{ item.title }}</div>
-                        <div class="time">{{ item.updatedAt }}</div>
+        </el-header>
+        <el-main v-infinite-scroll="loadMore">
+            <div
+                class="article-card"
+                v-for="(item, index) in resultList"
+                :key="'resultList - ' + index"
+                @click="pushToArticle(item._id)"
+            >
+                <div class="article-title">
+                    {{ item.title }}
+                </div>
+
+                <div class="article-attributes">
+                    <div class="article-attributes-type" v-if="item.type">
+                        <i class="el-icon-menu"></i>
+                        {{ item.type | typeFormatter }}
                     </div>
-                    <div class="row">
-                        <div class="type">{{ item.type }}</div>
-                        <div class="tag">{{ item.tag }}</div>
+                    <div class="article-attributes-tag" v-if="item.tag">
+                        <i class="el-icon-collection-tag"></i>
+                        {{ item.tag | tagFormatter }}
                     </div>
-                </router-link>
+                </div>
+                <div class="article-time">
+                    <i class="el-icon-date"></i>
+                    {{ item.updatedAt | dateFormatter }}
+                </div>
             </div>
-            <el-pagination
-                class="pagination"
-                layout="total, prev, pager, next"
-                :total="totalCount"
-                :page-size="5"
-                @current-change="handlePageChange"
-            ></el-pagination>
         </el-main>
     </el-container>
 </template>
@@ -47,7 +53,7 @@ export default {
             fullScreenLoading: false,
             keyword: '',
             type: '',
-            pageSize: 5,
+            pageSize: 10,
             pageIndex: 1,
             resultList: [],
             totalCount: 0
@@ -81,20 +87,23 @@ export default {
                     if (res.data.totalCount === 0) {
                         return this.$message.warning(`没有相关结果`);
                     }
-                    this.resultList = res.data.resultList;
+                    this.resultList = this.resultList.concat(
+                        res.data.resultList
+                    );
                     this.totalCount = res.data.totalCount;
                 })
                 .catch(() => {
                     this.$message.error(`查询失败：服务器错误`);
                 });
         },
-        /* 分页器 */
-        handlePageChange(newPage) {
-            this.pageIndex = newPage;
-            this.getResult();
-        },
         goBack() {
             this.$router.go(-1);
+        },
+        loadMore() {
+            if (this.totalCount > this.resultList.length) {
+                this.pageIndex++;
+                this.getResult();
+            }
         }
     },
     mounted() {
@@ -104,37 +113,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content-wrapper {
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 3rem;
-}
-.card {
-    margin: 0.5rem 0;
-    width: 80%;
-    padding: 20px;
-    height: 5rem;
-    background: lightblue;
-    display: block;
+.article-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    overflow: auto;
+    box-shadow: -7px 0 8px -8px rgb(143, 140, 140),
+        7px 0 8px -8px rgb(143, 140, 140), 0 7px 8px -8px rgb(143, 140, 140),
+        0 -7px 8px -8px rgb(143, 140, 140);
+    margin: 1rem auto;
+    height: 130px;
+    width: 60%;
+    padding: 1rem;
     cursor: pointer;
-    .row {
+    .article-title {
+        font: {
+            weight: 300;
+            size: 2rem;
+        }
+    }
+    .article-time {
+        font: {
+            weight: 300;
+            size: 1.2rem;
+        }
+    }
+    .article-attributes {
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
-        align-self: center;
-        margin-bottom: 0.6rem;
-        .time {
-            justify-content: flex-end;
-            align-items: center;
-            display: flex;
-            flex: 1;
+        justify-content: flex-end;
+        &-type {
+            margin-right: 1rem;
+            margin-right: 1rem;
+            padding-right: 1rem;
         }
     }
 }
-a {
-    text-decoration: none;
-}
-a:visited {
-    color: transparent;
+.article-card:hover {
+    box-shadow: -7px 0 5px -5px rgb(143, 140, 140),
+        7px 0 5px -5px rgb(143, 140, 140), 0 7px 5px -5px rgb(143, 140, 140),
+        0 -7px 5px -5px rgb(143, 140, 140);
+    transition: all 0.3s;
 }
 </style>

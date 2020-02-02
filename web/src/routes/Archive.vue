@@ -178,8 +178,8 @@ export default {
         justify-content: flex-end;
         &-type {
             margin-right: 1rem;
-        }
-        &-tag {
+            padding-right: 1rem;
+            box-shadow: 5px 0 5px -5px rgb(143, 140, 140);
         }
     }
 }

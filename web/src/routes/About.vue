@@ -1,7 +1,5 @@
 <template>
     <div
-        v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-background="rgba(0, 0, 0, 0.2)"
         style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;"
     >
         <div class="card-warpper">
