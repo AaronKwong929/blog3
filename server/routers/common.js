@@ -1,13 +1,7 @@
 const Router = require('koa-router');
 const Article = require('../models/Articles');
-const Recent = require('../models/Recent');
 let commonRouter = new Router();
-commonRouter.get('/recent', async ctx => {
-    let recent = await Recent.find();
-    ctx.response.body = {
-        recent
-    };
-});
+
 commonRouter.post('/articles', async ctx => {
     const currentPage = ctx.request.body.currentPage;
     const articleCount = await Article.countDocuments({ published: true });

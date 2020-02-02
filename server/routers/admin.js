@@ -2,7 +2,6 @@ const Router = require('koa-router');
 const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin');
 const Article = require('../models/Articles');
-const Recent = require('../models/Recent');
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
 const multer = require('@koa/multer');
@@ -39,39 +38,12 @@ adminRouter.post('/draft', verifyToken, async ctx => {
         code: 1
     };
 });
-// adminRouter.put('/draft', verifyToken, async ctx => {
-//     const update = ctx.request.body.article;
-//     const article = await Article.findById(update._id);
-//     article.title = update.title;
-//     article.type = update.type;
-//     article.tag = update.tag;
-//     article.content = update.content;
-//     await article.save();
-//     ctx.response.body = {
-//         code: 1
-//     };
-// });
 adminRouter.put('/publish', verifyToken, async ctx => {
     let article = await Article.findById(ctx.request.body.id);
     article.published = !article.published;
     await article.save();
     ctx.response.body = {
         code: 1
-    };
-});
-adminRouter.post('/recent', verifyToken, async ctx => {
-    let list = await Recent.find();
-    if (list.length > 0) {
-        let first = list[0];
-        first.content = ctx.request.body.content;
-        await first.save();
-    } else {
-        const recent = new Recent(ctx.request.body);
-        await recent.save();
-    }
-    ctx.response.body = {
-        code: 1,
-        msg: `recent updated`
     };
 });
 
@@ -86,14 +58,14 @@ var storage = multer.diskStorage({
         cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
     }
 });
-// 加载配置
-var upload = multer({ storage });
-adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
-    ctx.body = {
-        filename: `http://localhost:3000/${ctx.request.file.filename}`
-        // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
-    };
-});
+// // 加载配置
+// var upload = multer({ storage });
+// adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
+//     ctx.body = {
+//         filename: `http://localhost:3000/${ctx.request.file.filename}`
+//         // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
+//     };
+// });
 
 /* blog_next api */
 /* 获取管理页文章 */
@@ -262,7 +234,6 @@ adminRouter.get(`/draft`, verifyToken, async ctx => {
 /* 保存文章 */
 adminRouter.put(`/draft`, verifyToken, async ctx => {
     const { article: articleDetails } = ctx.request.body;
-    console.log(articleDetails);
     try {
         const article = await Article.findById(articleDetails._id);
         article.title = articleDetails.title;

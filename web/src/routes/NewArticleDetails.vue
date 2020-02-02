@@ -41,6 +41,7 @@
 const baseURL = process.env.VUE_APP_API;
 import Axios from '../axios';
 import marked from 'marked';
+import dateFormat from '../dateFormat';
 export default {
     data() {
         return {
@@ -74,7 +75,7 @@ export default {
     },
     computed: {
         updatedAt() {
-            return this.$dateFormat(
+            return dateFormat(
                 new Date(parseInt(this.articleDetails.updatedAt)),
                 'yyyy-MM-dd hh:mm:ss'
             );

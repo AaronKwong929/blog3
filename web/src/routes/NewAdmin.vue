@@ -182,6 +182,7 @@
 <script>
 const baseURL = process.env.VUE_APP_API;
 import { mapMutations } from 'vuex';
+import dateFormat from '../dateFormat';
 import Axios from '../axios';
 export default {
     data() {
@@ -197,6 +198,7 @@ export default {
             pageSize: 20,
             pageIndex: 1,
             articleListCount: 0,
+            articleList: [],
             optionPagination: false,
             optionPageSize: 20,
             optionPageIndex: 1,
@@ -221,8 +223,7 @@ export default {
                 { value: false, label: `未发布` },
                 { value: true, label: `已发布` }
             ],
-            // 文章
-            articleList: []
+            
         };
     },
     methods: {
@@ -231,7 +232,7 @@ export default {
         }),
         // 格式化时间
         dateFormatter(row, column) {
-            return this.$dateFormat(
+            return dateFormat(
                 new Date(parseInt(row[column.property])),
                 'yyyy-MM-dd hh:mm:ss'
             );
@@ -382,11 +383,11 @@ export default {
         // 分页器
         handleSizeChange(newSize) {
             this.pageSize = newSize;
-            this.getCommonArticles();
+            this.getArticles();
         },
         handlePageChange(newPage) {
             this.pageIndex = newPage;
-            this.getCommonArticles();
+            this.getArticles();
         },
         optionHandleSizeChange(newSize) {
             this.optionPageSize = newSize;

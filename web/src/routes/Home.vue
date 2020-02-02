@@ -18,12 +18,6 @@
         <el-card>
             <div style="text-align: center;">{{ date }}</div>
         </el-card>
-        <el-card>
-            <div style="text-align: center;">
-                {{ this.$store.state.recent.content }} by Aaron -
-                {{ this.$store.state.recent.updatedAt }}
-            </div>
-        </el-card>
         <img
             style="width: auto; height: 250px; margin: 0 auto; text-align: center; display: block; margin-top: 1rem;"
             :src="coverUrl"
@@ -31,9 +25,8 @@
     </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
 const coverUrl = require('../static/img/cover.jpg');
-// const coverUrl = () => import('../static/img/cover.jpg');
+import dateFormat from '../dateFormat';
 export default {
     data() {
         return {
@@ -56,22 +49,17 @@ export default {
                     title: `No Commercial Available.`
                 }
             ],
-            date: this.$dateFormat(
+            date: dateFormat(
                 new Date(),
-                'yyyy 年 MM 月 dd 日   hh : mm : ss'
+                'yyyy 年 MM 月 dd 日 hh : mm : ss'
             ),
             coverUrl
         };
     },
     methods: {
-        ...mapActions({
-            getArticles: 'COMMON_GET_ARTICLES',
-            getRecent: 'GET_RECENT'
-        }),
-
         setTimer() {
             this.timeId = setInterval(() => {
-                this.date = this.$dateFormat(
+                this.date = dateFormat(
                     new Date(),
                     'yyyy 年 MM 月 dd 日 hh : mm : ss'
                 );
@@ -83,20 +71,8 @@ export default {
             }
         }
     },
-    computed: {
-        ...mapState({
-            List: state => {
-                return state.articleList.slice(0, 5);
-            }
-        })
-    },
+    
     mounted() {
-        if (this.$store.state.articleList.length === 0) {
-            this.getArticles();
-        }
-        if (this.$store.state.recent === '') {
-            this.getRecent();
-        }
         this.setTimer();
     },
     beforeDestroy() {
