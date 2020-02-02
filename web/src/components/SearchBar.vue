@@ -1,5 +1,5 @@
 <template>
-    <div class="tool-bar">
+    <div class="tool-bar" style="margin: 1rem 1rem;">
         <el-input
             class="tool-bar-item"
             type="text"

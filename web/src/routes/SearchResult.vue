@@ -11,27 +11,28 @@
             >
             </el-page-header>
             <div class="content-wrapper" v-if="type === 1">
-                <el-card
+                <router-link
                     v-for="(item, index) in resultList"
                     :key="index"
                     class="card"
+                    :to="'/article/' + item._id"
                 >
-                    <div slot="header">
-                        <router-link :to="'/article/' + item._id">{{
-                            item.title
-                        }}</router-link>
+                    <div class="row">
+                        <div class="title">{{ item.title }}</div>
+                        <div class="time">{{ item.updatedAt }}</div>
                     </div>
-                </el-card>
+                    <div class="row">
+                        <div class="type">{{ item.type }}</div>
+                        <div class="tag">{{ item.tag }}</div>
+                    </div>
+                </router-link>
             </div>
-
             <el-pagination
                 class="pagination"
-                layout="total, sizes, prev, pager, next, jumper"
+                layout="total, prev, pager, next"
                 :total="totalCount"
-                :page-sizes="[5, 10]"
                 :page-size="5"
                 @current-change="handlePageChange"
-                @size-change="handleSizeChange"
             ></el-pagination>
         </el-main>
     </el-container>
@@ -56,7 +57,8 @@ export default {
         /* 获取搜索内容给和类型 */
         async getKeyword() {
             if (!this.$route.params.keyword || !this.$route.params.type) {
-                return this.$message.warning(`请先输入搜索内容`);
+                this.$message.warning(`请先输入搜索内容`);
+                return this.$router.go(-1);
             }
             this.keyword = this.$route.params.keyword;
             this.type = this.$route.params.type;
@@ -87,10 +89,6 @@ export default {
                 });
         },
         /* 分页器 */
-        handleSizeChange(newSize) {
-            this.pageSize = newSize;
-            this.getResult();
-        },
         handlePageChange(newPage) {
             this.pageIndex = newPage;
             this.getResult();
@@ -111,8 +109,32 @@ export default {
     margin: 0 auto;
     margin-top: 3rem;
 }
-
 .card {
     margin: 0.5rem 0;
+    width: 80%;
+    padding: 20px;
+    height: 5rem;
+    background: lightblue;
+    display: block;
+    cursor: pointer;
+    .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-self: center;
+        margin-bottom: 0.6rem;
+        .time {
+            justify-content: flex-end;
+            align-items: center;
+            display: flex;
+            flex: 1;
+        }
+    }
+}
+a {
+    text-decoration: none;
+}
+a:visited {
+    color: transparent;
 }
 </style>
