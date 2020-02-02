@@ -5,7 +5,7 @@
         style="height: 97vh;"
     >
         <el-header
-        style="display: flex; flex-direction: row; align-items: center;"
+            style="display: flex; flex-direction: row; align-items: center;"
         >
             <el-page-header
                 @back="goBack"
@@ -47,6 +47,7 @@
 <script>
 const baseURL = process.env.VUE_APP_API;
 import Axios from '../axios';
+import dateFormat from '../dateFormat';
 export default {
     data() {
         return {
@@ -106,6 +107,58 @@ export default {
             }
         }
     },
+    filters: {
+        dateFormatter(value) {
+            return dateFormat(new Date(parseInt(value)), 'yyyy-MM-dd hh:mm:ss');
+        },
+        tagFormatter(value) {
+            if (!value) {
+                return '';
+            }
+            switch (value) {
+                case 'html':
+                    value = `HTML`;
+                    break;
+                case 'css':
+                    value = `CSS`;
+                    break;
+                case 'js':
+                    value = `JavaScript`;
+                    break;
+                case 'algo':
+                    value = `算法`;
+                    break;
+                case 'vue':
+                    value = `Vue.JS`;
+                    break;
+                case 'server':
+                    value = `服务器`;
+                    break;
+                default:
+                    break;
+            }
+            return value;
+        },
+        typeFormatter(value) {
+            if (!value) {
+                return '';
+            }
+            switch (value) {
+                case `code`:
+                    value = `编程`;
+                    break;
+                case `game`:
+                    value = `游戏`;
+                    break;
+                case `life`:
+                    value = `生活`;
+                    break;
+                default:
+                    break;
+            }
+            return value;
+        }
+    },
     mounted() {
         this.getKeyword();
     }
@@ -146,6 +199,7 @@ export default {
             margin-right: 1rem;
             margin-right: 1rem;
             padding-right: 1rem;
+            box-shadow: 5px 0 5px -5px rgb(143, 140, 140);
         }
     }
 }

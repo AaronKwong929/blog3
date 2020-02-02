@@ -118,6 +118,8 @@
                         </template>
                     </el-table-column>
                 </el-table>
+            </el-main>
+            <el-footer>
                 <el-pagination
                     v-show="normalPagination"
                     class="pagination"
@@ -138,7 +140,7 @@
                     @current-change="optionHandlePageChange"
                     @size-change="optionHandleSizeChange"
                 ></el-pagination>
-            </el-main>
+            </el-footer>
         </el-container>
     </div>
 </template>

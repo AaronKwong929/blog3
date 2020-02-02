@@ -176,6 +176,10 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
+        font: {
+            weight: 300;
+            size: 1.1rem;
+        }
         &-type {
             margin-right: 1rem;
             padding-right: 1rem;
