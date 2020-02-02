@@ -2,11 +2,9 @@
     <el-container
         v-loading.fullscreen.lock="fullScreenLoading"
         element-loading-background="rgba(0, 0, 0, 0.2)"
-        style="height: 97vh;"
+        style="height: 100vh;"
     >
-        <el-header
-            style="display: flex; flex-direction: row; align-items: center;"
-        >
+        <el-header class="header">
             <el-page-header
                 @back="goBack"
                 :content="type === 1 ? '搜索标题' : '搜索内容'"
@@ -14,7 +12,7 @@
             >
             </el-page-header>
         </el-header>
-        <el-main v-infinite-scroll="loadMore">
+        <el-main v-infinite-scroll="loadMore" class="main">
             <div
                 class="article-card"
                 v-for="(item, index) in resultList"
@@ -166,6 +164,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header {
+    justify-content: flex-start;
+}
+.main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 .article-card {
     display: flex;
     flex-direction: column;
@@ -176,7 +182,7 @@ export default {
         0 -7px 8px -8px rgb(143, 140, 140);
     margin: 1rem auto;
     height: 130px;
-    width: 60%;
+    width: 45%;
     padding: 1rem;
     cursor: pointer;
     .article-title {

@@ -1,10 +1,10 @@
 <template>
-    <div
+    <el-container
+        style="height: 100vh;"
         v-loading.fullscreen.lock="fullScreenLoading"
         element-loading-background="rgba(0, 0, 0, 0.2)"
     >
-        <SearchBar></SearchBar>
-        <div class="tool-bar">
+        <el-header class="header">
             <el-select
                 size="small"
                 v-model="type"
@@ -42,112 +42,62 @@
             <el-button size="small" @click="reset" class="tool-bar-item"
                 >刷新</el-button
             >
-        </div>
-        <el-container style="height: 80vh;">
-            <el-main>
-                <el-table
-                    ref="articleTable"
-                    :data="articleList"
-                    border
-                    row-key="_id"
-                    tooltip-effect="dark"
-                    style="width: 99%;"
-                    height="100%"
-                    :default-sort="{ prop: 'updatedAt', order: 'ascending' }"
-                    stripe
-                >
-                    <el-table-column
-                        prop="updatedAt"
-                        label="发布日期"
-                        min-width="30"
-                        align="center"
-                        sortable
-                        :formatter="dateFormatter"
-                    ></el-table-column>
-                    <el-table-column
-                        prop="title"
-                        label="标题"
-                        min-width="30"
-                        align="center"
-                    ></el-table-column>
-                    <el-table-column
-                        prop="type"
-                        label="类型"
-                        min-width="20"
-                        sortable
-                        align="center"
-                    >
-                        <template slot-scope="scope">
-                            <span v-if="scope.row.type == 'code'">编程</span>
-                            <span v-else-if="scope.row.type === 'game'"
-                                >游戏</span
-                            >
-                            <span v-else>生活</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="tag"
-                        label="标签"
-                        min-width="20"
-                        sortable
-                        align="center"
-                    >
-                        <template slot-scope="scope">
-                            <span v-if="scope.row.tag == 'vue'">Vue.JS</span>
-                            <span v-else-if="scope.row.tag === 'css'">CSS</span>
-                            <span v-else-if="scope.row.tag === 'html'"
-                                >HTML</span
-                            >
-                            <span v-else-if="scope.row.tag === 'js'"
-                                >JavaScript</span
-                            >
-                            <span v-else-if="scope.row.type === 'algo'"
-                                >算法</span
-                            >
-                            <span v-else>服务器</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作" min-width="20" align="center">
-                        <template slot-scope="scope">
-                            <el-button
-                                size="small"
-                                @click="pushToArticle(scope.row._id)"
-                                type="text"
-                                >查看</el-button
-                            >
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </el-main>
-            <el-footer>
-                <el-pagination
-                    v-show="normalPagination"
-                    class="pagination"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="articleListCount"
-                    :page-sizes="[20, 50, 100]"
-                    :page-size="20"
-                    @current-change="handlePageChange"
-                    @size-change="handleSizeChange"
-                ></el-pagination>
-                <el-pagination
-                    v-show="optionPagination"
-                    class="pagination"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="optionArticleListCount"
-                    :page-sizes="[20, 50, 100]"
-                    :page-size="20"
-                    @current-change="optionHandlePageChange"
-                    @size-change="optionHandleSizeChange"
-                ></el-pagination>
-            </el-footer>
-        </el-container>
-    </div>
+            <SearchBar></SearchBar>
+        </el-header>
+        <el-main class="main">
+            <div
+                class="article-card"
+                v-for="(item, index) in articleList"
+                :key="'articleList - ' + index"
+                @click="pushToArticle(item._id)"
+            >
+                <div class="article-title">
+                    {{ item.title }}
+                </div>
+
+                <div class="article-attributes">
+                    <div class="article-attributes-type" v-if="item.type">
+                        <i class="el-icon-menu"></i>
+                        {{ item.type | typeFormatter }}
+                    </div>
+                    <div class="article-attributes-tag" v-if="item.tag">
+                        <i class="el-icon-collection-tag"></i>
+                        {{ item.tag | tagFormatter }}
+                    </div>
+                </div>
+                <div class="article-time">
+                    <i class="el-icon-date"></i>
+                    {{ item.updatedAt | dateFormatter }}
+                </div>
+            </div>
+        </el-main>
+        <el-footer class="footer">
+            <el-pagination
+                v-show="normalPagination"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="articleListCount"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="10"
+                @current-change="handlePageChange"
+                @size-change="handleSizeChange"
+            ></el-pagination>
+            <el-pagination
+                v-show="optionPagination"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="optionArticleListCount"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="10"
+                @current-change="optionHandlePageChange"
+                @size-change="optionHandleSizeChange"
+            ></el-pagination>
+        </el-footer>
+    </el-container>
 </template>
 
 <script>
 const baseURL = process.env.VUE_APP_API;
 const SearchBar = () => import('../components/SearchBar');
+import dateFormat from '../dateFormat';
 import Axios from '../axios';
 export default {
     data() {
@@ -160,11 +110,11 @@ export default {
             time: '',
             // 分页器
             normalPagination: true,
-            pageSize: 20,
+            pageSize: 10,
             pageIndex: 1,
             articleListCount: 0,
             optionPagination: false,
-            optionPageSize: 20,
+            optionPageSize: 10,
             optionPageIndex: 1,
             optionArticleListCount: 0,
             // 分类
@@ -282,6 +232,58 @@ export default {
             );
         }
     },
+    filters: {
+        dateFormatter(value) {
+            return dateFormat(new Date(parseInt(value)), 'yyyy-MM-dd hh:mm:ss');
+        },
+        tagFormatter(value) {
+            if (!value) {
+                return '';
+            }
+            switch (value) {
+                case 'html':
+                    value = `HTML`;
+                    break;
+                case 'css':
+                    value = `CSS`;
+                    break;
+                case 'js':
+                    value = `JavaScript`;
+                    break;
+                case 'algo':
+                    value = `算法`;
+                    break;
+                case 'vue':
+                    value = `Vue.JS`;
+                    break;
+                case 'server':
+                    value = `服务器`;
+                    break;
+                default:
+                    break;
+            }
+            return value;
+        },
+        typeFormatter(value) {
+            if (!value) {
+                return '';
+            }
+            switch (value) {
+                case `code`:
+                    value = `编程`;
+                    break;
+                case `game`:
+                    value = `游戏`;
+                    break;
+                case `life`:
+                    value = `生活`;
+                    break;
+                default:
+                    break;
+            }
+            return value;
+        }
+    },
     mounted() {
         this.getCommonArticles();
     },
@@ -292,8 +294,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .tool-bar {
-//     display: flex;
-//     align-items: flex-end;
-// }
+.main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.article-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    overflow: auto;
+    box-shadow: -7px 0 8px -8px rgb(143, 140, 140),
+        7px 0 8px -8px rgb(143, 140, 140), 0 7px 8px -8px rgb(143, 140, 140),
+        0 -7px 8px -8px rgb(143, 140, 140);
+    margin: 1rem auto;
+    height: 130px;
+    width: 45%;
+    padding: 1rem;
+    cursor: pointer;
+    .article-title {
+        font: {
+            weight: 300;
+            size: 2rem;
+        }
+    }
+    .article-time {
+        font: {
+            weight: 300;
+            size: 1.2rem;
+        }
+    }
+    .article-attributes {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        font: {
+            weight: 300;
+            size: 1.1rem;
+        }
+        &-type {
+            margin-right: 1rem;
+            padding-right: 1rem;
+            box-shadow: 5px 0 5px -5px rgb(143, 140, 140);
+        }
+    }
+}
+.article-card:hover {
+    box-shadow: -7px 0 5px -5px rgb(143, 140, 140),
+        7px 0 5px -5px rgb(143, 140, 140), 0 7px 5px -5px rgb(143, 140, 140),
+        0 -7px 5px -5px rgb(143, 140, 140);
+    transition: all 0.3s;
+}
 </style>

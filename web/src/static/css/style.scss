@@ -162,3 +162,23 @@ textarea {
         margin-right: 0;
     }
 }
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0 7px 8px -8px rgb(143, 140, 140);
+}
+.main {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    box-shadow: 0 -7px 8px -8px rgb(143, 140, 140);
+}
