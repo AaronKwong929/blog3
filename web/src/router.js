@@ -29,17 +29,7 @@ const routes = [
         component: () => import('./routes/Draft.vue'),
         meta: { requireAuth: true }
     },
-    { path: '*', redirect: '404' },
-    {
-        path: '/404',
-        component: () => import('./routes/404.vue'),
-        meta: { keepAlive: true }
-    },
-    {
-        path: '/401',
-        component: () => import('./routes/401.vue'),
-        meta: { keepAlive: true }
-    },
+    { path: '*', redirect: 'error' },
     {
         path: '/update',
         component: () => import('./routes/UpdateLog.vue'),
@@ -60,6 +50,12 @@ const routes = [
         name: 'admin',
         component: () => import('./routes/NewAdmin.vue'),
         meta: { requireAuth: true }
+    },
+    {
+        path: '/error',
+        name: 'error',
+        component: () => import('./routes/Error.vue'),
+        meta: { requireAuth: false }
     }
 ];
 

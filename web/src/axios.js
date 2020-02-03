@@ -18,7 +18,12 @@ Axios.interceptors.response.use(
     },
     error => {
         if (error.response.status === 401) {
-            router.push('/401');
+            router.push({
+                name: 'error',
+                params: {
+                    statusCode: 401
+                }
+            });
         }
     }
 );

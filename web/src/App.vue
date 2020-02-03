@@ -11,23 +11,14 @@
 
 <script>
 const Sidebar = () => import('./components/Sidebar');
-import { mapActions } from 'vuex';
 export default {
     components: {
         Sidebar
-    },
-    methods: {
-        ...mapActions({
-            getArticles: 'COMMON_GET_ARTICLES'
-        })
     },
     created() {
         if (localStorage.getItem('token')) {
             let token = localStorage.getItem('token');
             this.$store.state.token = token;
-        }
-        if (!this.$store.state.articleList.length) {
-            this.getArticles();
         }
     }
 };
