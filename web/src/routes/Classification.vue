@@ -183,17 +183,18 @@ export default {
                     this.normalPagination = false;
                     this.optionArticleListCount = res.data.totalCount;
                     this.$set(this, 'articleList', res.data.resultList);
+                    if (res.data.totalCount === 0) {
+                        this.$message.warning(`搜索记录为空`);
+                    }
                 })
                 .catch(() => {
                     this.fullScreenLoading = false;
                     this.$message.error(`查询文章失败：服务器错误`);
                 });
         },
-        // 查看文章
         pushToArticle(id) {
             this.$router.push(`article/${id}`);
         },
-        // 分页器
         handleSizeChange(newSize) {
             this.pageSize = newSize;
             this.getCommonArticles();
@@ -224,7 +225,6 @@ export default {
             this.tag = '';
             this.getCommonArticles();
         },
-        // 格式化时间
         dateFormatter(row, column) {
             return this.$dateFormat(
                 new Date(parseInt(row[column.property])),
@@ -300,49 +300,8 @@ export default {
     flex-wrap: wrap;
 }
 .article-card {
-    display: flex;
     flex-direction: column;
-    border-radius: 15px;
-    overflow: auto;
-    box-shadow: -7px 0 8px -8px rgb(143, 140, 140),
-        7px 0 8px -8px rgb(143, 140, 140), 0 7px 8px -8px rgb(143, 140, 140),
-        0 -7px 8px -8px rgb(143, 140, 140);
-    margin: 1rem auto;
     height: 130px;
     width: 45%;
-    padding: 1rem;
-    cursor: pointer;
-    .article-title {
-        font: {
-            weight: 300;
-            size: 2rem;
-        }
-    }
-    .article-time {
-        font: {
-            weight: 300;
-            size: 1.2rem;
-        }
-    }
-    .article-attributes {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        font: {
-            weight: 300;
-            size: 1.1rem;
-        }
-        &-type {
-            margin-right: 1rem;
-            padding-right: 1rem;
-            box-shadow: 5px 0 5px -5px rgb(143, 140, 140);
-        }
-    }
-}
-.article-card:hover {
-    box-shadow: -7px 0 5px -5px rgb(143, 140, 140),
-        7px 0 5px -5px rgb(143, 140, 140), 0 7px 5px -5px rgb(143, 140, 140),
-        0 -7px 5px -5px rgb(143, 140, 140);
-    transition: all 0.3s;
 }
 </style>

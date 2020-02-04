@@ -18,7 +18,7 @@
                 </div>
                 <div class="item">
                     <el-link
-                        type="info"
+                        type="success"
                         href="http://aaronkwong.xyz"
                         target="_blank"
                         title="个人主页"
@@ -83,5 +83,10 @@
 .item {
     margin-bottom: 18px;
     font-size: 14px;
+}
+
+.box-card:hover {
+    transition: 0.3s;
+    transform: scale(1.05)
 }
 </style>

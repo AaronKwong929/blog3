@@ -173,46 +173,8 @@ export default {
     flex-wrap: wrap;
 }
 .article-card {
-    display: flex;
     flex-direction: column;
-    border-radius: 15px;
-    overflow: auto;
-    box-shadow: -7px 0 8px -8px rgb(143, 140, 140),
-        7px 0 8px -8px rgb(143, 140, 140), 0 7px 8px -8px rgb(143, 140, 140),
-        0 -7px 8px -8px rgb(143, 140, 140);
-    margin: 1rem auto;
     height: 130px;
     width: 45%;
-    padding: 1rem;
-    cursor: pointer;
-    .article-title {
-        font: {
-            weight: 300;
-            size: 2rem;
-        }
-    }
-    .article-time {
-        font: {
-            weight: 300;
-            size: 1.2rem;
-        }
-    }
-    .article-attributes {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        &-type {
-            margin-right: 1rem;
-            margin-right: 1rem;
-            padding-right: 1rem;
-            box-shadow: 5px 0 5px -5px rgb(143, 140, 140);
-        }
-    }
-}
-.article-card:hover {
-    box-shadow: -7px 0 5px -5px rgb(143, 140, 140),
-        7px 0 5px -5px rgb(143, 140, 140), 0 7px 5px -5px rgb(143, 140, 140),
-        0 -7px 5px -5px rgb(143, 140, 140);
-    transition: all 0.3s;
 }
 </style>

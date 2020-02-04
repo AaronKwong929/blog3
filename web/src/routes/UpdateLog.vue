@@ -11,7 +11,7 @@
                         color="#74b9ff"
                         size="large"
                     >
-                        <el-card>
+                        <el-card class="card">
                             <h4>{{ item.title }}</h4>
                             <p
                                 v-for="(content, index) in item.contents"
@@ -111,5 +111,16 @@ h4 {
         weight: 400;
         size: 1.3rem;
     }
+}
+
+.card {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.card:hover {
+    transition: 0.5s;
+    transform: scale(1.02);
+    cursor: pointer;
 }
 </style>
