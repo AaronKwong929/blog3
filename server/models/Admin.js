@@ -11,6 +11,10 @@ const adminSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true
+    },
+    createdAt: {
+        type: String,
+        default: new Date().getTime()
     }
 });
 

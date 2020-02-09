@@ -5,48 +5,66 @@ const Article = require('../models/Articles');
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
 const multer = require('@koa/multer');
+const dateFormat = require('../utils/dateFormat')
 let adminRouter = new Router();
 
-// 添加管理员账号用（一次性
-// adminRouter.post('/add', async ctx => {
-//     const admin = new Admin(ctx.request.body);
-//         await admin.save();
-//         ctx.response.body = {
-//             msg: 1
-//     }
-// });
-
-adminRouter.get('/', verifyToken, async ctx => {
-    let articleList = await Article.find();
-    articleList = articleList.sort((a, b) => {
-        let aTimeString = a.updatedAt;
-        let bTimeString = b.updatedAt;
-        aTimeString = aTimeString.replace(/-/g, '/');
-        bTimeString = bTimeString.replace(/-/g, '/');
-        let aTime = new Date(aTimeString).getTime();
-        let bTime = new Date(bTimeString).getTime();
-        return bTime - aTime;
-    });
+/* 添加管理员账号 */
+adminRouter.post('/add', async ctx => {
+    const { name, password } = ctx.request.body;
+    const admin = new Admin({ name, password });
+    await admin.save();
     ctx.response.body = {
-        articleList
-    };
-});
-adminRouter.post('/draft', verifyToken, async ctx => {
-    let article = new Article();
-    await article.save();
-    ctx.response.body = {
-        code: 1
-    };
-});
-adminRouter.put('/publish', verifyToken, async ctx => {
-    let article = await Article.findById(ctx.request.body.id);
-    article.published = !article.published;
-    await article.save();
-    ctx.response.body = {
-        code: 1
+        message: `创建成功`,
+        status: 0
     };
 });
 
+/* 管理员登陆 */
+adminRouter.post('/login', async ctx => {
+    const { account: name, password } = ctx.request.body;
+    try {
+        const admin = await Admin.findOne({ name });
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if (!isMatch) throw new Error();
+        const adminToken = addToken(admin.name);
+        ctx.response.body = {
+            adminToken,
+            name,
+            status: 0,
+            message: `登陆成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `账号或密码错误`
+        };
+    }
+});
+
+/* 修改密码 */
+adminRouter.put(`/password`, verifyToken, async ctx => {
+    const { name, newPassword, oldPassword } = ctx.request.body;
+    try {
+        const admin = await Admin.findOne({ name });
+        const isMatch = await bcrypt.compare(oldPassword, admin.password);
+        if (!isMatch) {
+            throw new Error();
+        }
+        admin.password = newPassword;
+        await admin.save();
+        ctx.response.body = {
+            status: 0,
+            message: `修改成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `修改失败`
+        };
+    }
+});
+
+/* 上传图片 */
 var storage = multer.diskStorage({
     // 文件保存路径
     destination: function(req, file, cb) {
@@ -58,14 +76,14 @@ var storage = multer.diskStorage({
         cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
     }
 });
-// // 加载配置
-// var upload = multer({ storage });
-// adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
-//     ctx.body = {
-//         filename: `http://localhost:3000/${ctx.request.file.filename}`
-//         // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
-//     };
-// });
+// 加载配置
+var upload = multer({ storage });
+adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
+    ctx.body = {
+        filename: `http://localhost:3000/${ctx.request.file.filename}`
+        // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
+    };
+});
 
 /* blog_next api */
 /* 获取管理页文章 */
@@ -183,7 +201,6 @@ adminRouter.post('/newArticle', verifyToken, async ctx => {
         ctx.response.body = {
             status: 0,
             message: `新建成功`
-            // id: article._id
         };
     } catch {
         ctx.response.body = {
@@ -192,28 +209,7 @@ adminRouter.post('/newArticle', verifyToken, async ctx => {
         };
     }
 });
-/* 管理员登陆 */
-adminRouter.post('/login', async ctx => {
-    const account = ctx.request.body.account,
-        password = ctx.request.body.password;
-    try {
-        const admin = await Admin.findOne({ name: account }),
-            isMatch = await bcrypt.compare(password, admin.password);
-        if (!admin || !isMatch) {
-            throw new Error();
-        }
-        const adminToken = addToken(admin.name);
-        ctx.response.body = {
-            adminToken,
-            status: 0
-        };
-    } catch {
-        ctx.response.body = {
-            status: -1,
-            message: `账号或密码错误`
-        };
-    }
-});
+
 /* 打开文章草稿 */
 adminRouter.get(`/draft`, verifyToken, async ctx => {
     const articleId = ctx.request.query.id;
@@ -243,7 +239,7 @@ adminRouter.put(`/draft`, verifyToken, async ctx => {
         await article.save();
         ctx.response.body = {
             status: 0,
-            message: `保存成功`
+            message: `保存成功于 ${dateFormat(new Date().getTime(), "yyyy-MM-dd hh:mm:ss")}`
         };
     } catch {
         ctx.response.body = {

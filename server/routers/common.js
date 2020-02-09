@@ -1,29 +1,30 @@
 const Router = require('koa-router');
 const Article = require('../models/Articles');
+const Comment = require(`../models/Comment`);
 let commonRouter = new Router();
 
-commonRouter.post('/articles', async ctx => {
-    const currentPage = ctx.request.body.currentPage;
-    const articleCount = await Article.countDocuments({ published: true });
-    let start = (currentPage - 1) * 10;
-    let end = currentPage * 10;
-    let articles = await Article.find({ published: true });
-    articles = articles.sort((a, b) => {
-        let aTimeString = a.updatedAt;
-        let bTimeString = b.updatedAt;
-        aTimeString = aTimeString.replace(/-/g, '/');
-        bTimeString = bTimeString.replace(/-/g, '/');
-        let aTime = new Date(aTimeString).getTime();
-        let bTime = new Date(bTimeString).getTime();
-        return bTime - aTime;
-    });
-    slicedArticles = articles.slice(start, end);
-    const pageCount = Math.ceil(articleCount / 10);
-    ctx.response.body = {
-        pageCount,
-        articles: slicedArticles
-    };
-});
+// commonRouter.post('/articles', async ctx => {
+//     const currentPage = ctx.request.body.currentPage;
+//     const articleCount = await Article.countDocuments({ published: true });
+//     let start = (currentPage - 1) * 10;
+//     let end = currentPage * 10;
+//     let articles = await Article.find({ published: true });
+//     articles = articles.sort((a, b) => {
+//         let aTimeString = a.updatedAt;
+//         let bTimeString = b.updatedAt;
+//         aTimeString = aTimeString.replace(/-/g, '/');
+//         bTimeString = bTimeString.replace(/-/g, '/');
+//         let aTime = new Date(aTimeString).getTime();
+//         let bTime = new Date(bTimeString).getTime();
+//         return bTime - aTime;
+//     });
+//     slicedArticles = articles.slice(start, end);
+//     const pageCount = Math.ceil(articleCount / 10);
+//     ctx.response.body = {
+//         pageCount,
+//         articles: slicedArticles
+//     };
+// });
 /** blog_next api */
 // 获取文章列表
 commonRouter.post(`/getCommonArticles`, async ctx => {
@@ -146,6 +147,57 @@ commonRouter.post(`/searchKeywords`, async ctx => {
         ctx.response.body = {
             status: -1,
             message: `查询失败`
+        };
+    }
+});
+
+/* 获取文章可见评论 */
+commonRouter.get('/comment', async ctx => {
+    const articleId = ctx.request.query.id;
+    const pageSize = 5;
+    const query = {
+        published: true,
+        articleId
+    };
+    try {
+        const totalCount = await Comment.countDocuments(query);
+        const resultList = await Comment.find(query)
+            .select(['user', 'updatedAt', 'content'])
+            .sort({ updatedAt: -1 })
+            .limit(pageSize)
+            .skip((pageSize - 1) * pageSize);
+        ctx.response.body = {
+            totalCount,
+            status: 0,
+            message: `查询评论成功`,
+            resultList
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `不存在该篇文章`
+        };
+    }
+});
+
+/* 发布评论 */
+commonRouter.post(`/comment`, async ctx => {
+    const { user, content, articleId } = ctx.request.body;
+    try {
+        await Article.findById(articleId);
+        await Comment.create({
+            user,
+            content,
+            articleId
+        });
+        ctx.response.body = {
+            status: 0,
+            message: `发送评论成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `发送评论失败`
         };
     }
 });

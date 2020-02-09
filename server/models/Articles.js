@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const dateFormat = require('../utils/dateFormat');
 const articleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -24,25 +23,17 @@ const articleSchema = new mongoose.Schema({
     },
     updatedAt: {
         type: String,
-        default: dateFormat(new Date(), 'yyyy-MM-dd hh:mm')
+        default: new Date().getTime()
     },
-    comments: [
-        {
-            from: { type: String, default: '' },
-            to: { type: String, default: '' },
-            content: { type: String, default: '' },
-            time: {
-                type: String
-            }
-        }
-    ]
+    createdAt: {
+        type: String,
+        default: new Date().getTime()
+    }
 });
 
-articleSchema.pre('save', async function(next) {
+articleSchema.pre('save', async function (next) {
     const article = this;
-    if (!article.isModified('comments')) {
-        article.updatedAt = new Date().getTime();
-    }
+    article.updatedAt = new Date().getTime();
     next();
 });
 
