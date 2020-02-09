@@ -2,10 +2,11 @@ const Router = require('koa-router');
 const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin');
 const Article = require('../models/Articles');
+const Comment = require('../models/Comment');
 const addToken = require('../tokens/addToken');
 const verifyToken = require('../tokens/verifyToken');
 const multer = require('@koa/multer');
-const dateFormat = require('../utils/dateFormat')
+const dateFormat = require('../utils/dateFormat');
 let adminRouter = new Router();
 
 /* 添加管理员账号 */
@@ -239,12 +240,51 @@ adminRouter.put(`/draft`, verifyToken, async ctx => {
         await article.save();
         ctx.response.body = {
             status: 0,
-            message: `保存成功于 ${dateFormat(new Date().getTime(), "yyyy-MM-dd hh:mm:ss")}`
+            message: `保存成功于 ${dateFormat(
+                new Date().getTime(),
+                'yyyy-MM-dd hh:mm:ss'
+            )}`
         };
     } catch {
         ctx.response.body = {
             status: -1,
             message: `保存失败`
+        };
+    }
+});
+
+/* 隐藏/展示评论 */
+adminRouter.put(`/comment`, verifyToken, async ctx => {
+    const { commentId } = ctx.request.body;
+    try {
+        let comment = await Comment.findById(commentId);
+        comment.published = !comment.published;
+        await comment.save();
+        ctx.response.body = {
+            status: 0,
+            message: `隐藏/显示评论成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `没有该评论`
+        };
+    }
+});
+
+/* 删除评论 */
+adminRouter.delete(`/comment`, verifyToken, async ctx => {
+    const { commentId } = ctx.request.query.id;
+    try {
+        await Comment.findByIdAndDelete(commentId);
+        ctx.response.body = {
+            status: 0,
+            message: `删除成功`
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `删除失败`
         };
     }
 });

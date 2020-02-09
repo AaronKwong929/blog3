@@ -3,7 +3,6 @@ const mutations = {
     LOG_OUT(state) {
         state.token = '';
         localStorage.removeItem('token');
-        router.push('login');
     },
     LOGIN_SUCCESS(state, token) {
         state.token = token;
