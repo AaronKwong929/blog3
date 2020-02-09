@@ -18,7 +18,9 @@ export default {
     created() {
         if (localStorage.getItem('token')) {
             let token = localStorage.getItem('token');
+            let name = localStorage.getItem('name');
             this.$store.state.token = token;
+            this.$store.state.name = name;
         }
     }
 };

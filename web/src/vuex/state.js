@@ -1,6 +1,7 @@
 let state = {
     token: '',
-    imgUrls: [],
+    name: ''
+    // imgUrls: [],
 };
 
 export default state;

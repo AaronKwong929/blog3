@@ -50,7 +50,7 @@ export default {
                     if (res.data.status !== 0) {
                         return this.$message.error(`${res.data.message}`);
                     }
-                    this.$store.commit('LOGIN_SUCCESS', res.data.adminToken);
+                    this.$store.commit('LOGIN_SUCCESS', {token: res.data.adminToken, name: res.data.name});
                 })
                 .catch(() => {
                     this.$message.error(`登陆失败：服务器错误`);

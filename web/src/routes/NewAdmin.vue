@@ -62,8 +62,15 @@
                 >刷新</el-button
             >
             <el-button
-                @click="logout"
+                size="small"
+                @click="modifyPassworDialog = true"
+                class="tool-bar-item"
                 type="warning"
+                >修改密码</el-button
+            >
+            <el-button
+                @click="logout"
+                type="danger"
                 size="small"
                 class="tool-bar-item"
                 >退出</el-button
@@ -143,6 +150,12 @@
                                 >编辑</el-button
                             >
                             <el-button
+                                @click="getComment(scope.row._id)"
+                                size="small"
+                                type="text"
+                                >评价管理</el-button
+                            >
+                            <el-button
                                 icon="el-icon-delete
 "
                                 size="small"
@@ -176,6 +189,66 @@
                 ></el-pagination>
             </el-main>
         </el-container>
+        <el-dialog
+            title="修改密码"
+            :visible.sync="modifyPassworDialog"
+            :append-to-body="true"
+            :lock-scroll="true"
+            :close-on-click-modal="false"
+            width="40%"
+        >
+            <el-form
+                ref="modifyPasswordForm"
+                :model="modifyPasswordForm"
+                label-width="100px"
+                :rules="modifyPasswordFormRules"
+            >
+                <el-row>
+                    <el-col :span="18" :push="2">
+                        <el-form-item label="旧密码" prop="oldPassword">
+                            <el-input
+                                size="small"
+                                type="password"
+                                v-model="modifyPasswordForm.oldPassword"
+                            >
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="18" :push="2">
+                        <el-form-item label="新密码" prop="newPassword">
+                            <el-input
+                                size="small"
+                                type="password"
+                                v-model="modifyPasswordForm.newPassword"
+                            >
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="18" :push="2">
+                        <el-form-item label="重复新密码" prop="newPassword2">
+                            <el-input
+                                size="small"
+                                type="password"
+                                v-model="modifyPasswordForm.newPassword2"
+                            >
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer">
+                <el-button @click="modifyPasswordDialog = false"
+                    >取 消</el-button
+                >
+                <el-button @click="modifyPassword" type="primary"
+                    >修 改</el-button
+                >
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -186,6 +259,12 @@ import dateFormat from '../dateFormat';
 import Axios from '../axios';
 export default {
     data() {
+        const checkPasswordSame = (rule, value, callback) => {
+            if (value !== this.modifyPasswordForm.newPassword) {
+                return callback(new Error(`两次输入密码不一致`));
+            }
+            callback();
+        };
         return {
             // 全屏遮罩
             fullScreenLoading: false,
@@ -223,7 +302,40 @@ export default {
                 { value: false, label: `未发布` },
                 { value: true, label: `已发布` }
             ],
-            
+            /* 修改密码 */
+            modifyPassworDialog: false,
+            modifyPasswordForm: {
+                oldPassword: '',
+                newPassword: '',
+                newPassword2: ''
+            },
+            modifyPasswordFormRules: {
+                oldPassword: [
+                    {
+                        required: true,
+                        trigger: true,
+                        message: `旧密码不能为空`
+                    }
+                ],
+                newPassword: [
+                    {
+                        required: true,
+                        trigger: true,
+                        message: `新密码不能为空`
+                    }
+                ],
+                newPassword2: [
+                    {
+                        required: true,
+                        trigger: true,
+                        message: `新密码不能为空`
+                    },
+                    {
+                        trigger: `change`,
+                        validator: checkPasswordSame
+                    }
+                ]
+            }
         };
     },
     methods: {
@@ -409,6 +521,32 @@ export default {
             this.type = '';
             this.tag = '';
             this.getArticles();
+        },
+        /* 修改密码 */
+        modifyPassword() {
+            Axios.put(`${baseURL}/admin/password`, {
+                name: this.$store.state.name,
+                oldPassword: this.modifyPasswordForm.oldPassword,
+                newPassword: this.modifyPasswordForm.newPassword
+            })
+                .then(res => {
+                    if (res.data.status !== 0) {
+                        return this.$message.error(
+                            `修改密码失败：${res.data.message}`
+                        );
+                    }
+                    this.$message.success(`修改密码成功，请重新登录`);
+                    setTimeout(() => {
+                        this.$store.commit('LOG_OUT');
+                    }, 2000);
+                })
+                .catch(() => {
+                    this.$message.error(`修改密码失败：服务器错误`);
+                });
+        },
+        /* 获取评价 */
+        getComment(id) {
+            
         }
     },
     mounted() {
