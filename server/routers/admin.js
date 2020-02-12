@@ -264,17 +264,18 @@ adminRouter.put(`/comment`, verifyToken, async ctx => {
             status: 0,
             message: `隐藏/显示评论成功`
         };
-    } catch {
+    } catch (e) {
         ctx.response.body = {
             status: -1,
-            message: `没有该评论`
+            message: `没有该评论`,
+            e
         };
     }
 });
 
 /* 删除评论 */
 adminRouter.delete(`/comment`, verifyToken, async ctx => {
-    const { commentId } = ctx.request.query.id;
+    const { commentId } = ctx.request.query;
     try {
         await Comment.findByIdAndDelete(commentId);
         ctx.response.body = {
@@ -285,6 +286,30 @@ adminRouter.delete(`/comment`, verifyToken, async ctx => {
         ctx.response.body = {
             status: -1,
             message: `删除失败`
+        };
+    }
+});
+
+adminRouter.get(`/comment`, verifyToken, async ctx => {
+    const { articleId, pageIndex } = ctx.request.query,
+        pageSize = 10;
+    try {
+        const totalCount = await Comment.countDocuments({ articleId });
+        const resultList = await Comment.find({ articleId })
+            .select([`user`, `createdAt`, `content`, `published`, `_id`, `articleId`])
+            .limit(pageSize)
+            .skip((pageIndex - 1) * pageSize)
+            .sort({ updatedAt: -1 });
+        ctx.response.body = {
+            status: 0,
+            message: `查询成功`,
+            totalCount,
+            resultList
+        };
+    } catch {
+        ctx.response.body = {
+            message: `查询失败`,
+            status: -1
         };
     }
 });

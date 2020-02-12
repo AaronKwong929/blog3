@@ -63,7 +63,7 @@
             >
             <el-button
                 size="small"
-                @click="modifyPassworDialog = true"
+                @click="modifyPasswordDialog = true"
                 class="tool-bar-item"
                 type="warning"
                 >修改密码</el-button
@@ -106,14 +106,14 @@
                     <el-table-column
                         prop="type"
                         label="类型"
-                        min-width="15"
+                        min-width="10"
                         sortable
                         align="center"
                     ></el-table-column>
                     <el-table-column
                         prop="tag"
                         label="标签"
-                        min-width="15"
+                        min-width="10"
                         sortable
                         align="center"
                     ></el-table-column>
@@ -129,7 +129,7 @@
                             <span v-else>未发布</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" min-width="20" align="center">
+                    <el-table-column label="操作" min-width="25" align="center">
                         <template slot-scope="scope">
                             <el-button
                                 icon="el-icon-s-promotion
@@ -191,7 +191,7 @@
         </el-container>
         <el-dialog
             title="修改密码"
-            :visible.sync="modifyPassworDialog"
+            :visible.sync="modifyPasswordDialog"
             :append-to-body="true"
             :lock-scroll="true"
             :close-on-click-modal="false"
@@ -249,6 +249,75 @@
                 >
             </div>
         </el-dialog>
+        <el-dialog
+            title="评论管理"
+            :visible.sync="commentDialog"
+            :append-to-body="true"
+            :lock-scroll="true"
+            :close-on-click-modal="false"
+            width="80%"
+        >
+            <el-table
+                ref="commentTable"
+                :data="commentList"
+                border
+                row-key="_id"
+                tooltip-effect="dark"
+                style="width: 99%;"
+                height="55vh"
+                :default-sort="{ prop: 'createdeAt', order: 'descending' }"
+                :row-class-name="tableRowClassName"
+            >
+                <el-table-column
+                    prop="createdAt"
+                    label="发布时间"
+                    min-width="10"
+                    sortable
+                    align="center"
+                    :formatter="dateFormatter"
+                ></el-table-column>
+                <el-table-column
+                    prop="user"
+                    label="作者ID"
+                    min-width="10"
+                    align="center"
+                ></el-table-column>
+                <el-table-column
+                    prop="content"
+                    label="内容"
+                    min-width="20"
+                    align="center"
+                >
+                </el-table-column>
+                <el-table-column label="操作" min-width="10" align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                            @click="changeCommentState(scope.row)"
+                            type="text"
+                            size="small"
+                        >
+                            {{ scope.row.published ? `隐藏` : `展示` }}
+                        </el-button>
+                        <el-button
+                            @click="deleteComment(scope.row)"
+                            type="text"
+                            size="small"
+                            >删除</el-button
+                        >
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-row style="text-align: right; margin: 1rem 0;">
+                <el-pagination
+                    class="comment-pagination"
+                    layout="total, prev, pager, next, jumper"
+                    :total="commentListCount"
+                    :page-sizes="[10, 20, 50]"
+                    :page-size="10"
+                    @current-change="handleCommentPageChange"
+                ></el-pagination>
+            </el-row>
+        </el-dialog>
     </div>
 </template>
 
@@ -303,7 +372,7 @@ export default {
                 { value: true, label: `已发布` }
             ],
             /* 修改密码 */
-            modifyPassworDialog: false,
+            modifyPasswordDialog: false,
             modifyPasswordForm: {
                 oldPassword: '',
                 newPassword: '',
@@ -335,7 +404,13 @@ export default {
                         validator: checkPasswordSame
                     }
                 ]
-            }
+            },
+            /* 评论管理 */
+            commentDialog: false,
+            commentList: [],
+            commentPageIndex: 1,
+            commentListCount: 0,
+            articleId: ``
         };
     },
     methods: {
@@ -448,8 +523,7 @@ export default {
         pushToDraft(id) {
             this.$router.push(`draft/${id}`);
         },
-        // 删除文章
-        async deleteArticle(row) {
+        deleteArticle(row) {
             this.$confirm(`将删除文章: ${row.title}, 是否继续?`, `提示`, {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -536,6 +610,7 @@ export default {
                         );
                     }
                     this.$message.success(`修改密码成功，请重新登录`);
+                    this.modifyPassworDialog = false;
                     setTimeout(() => {
                         this.$store.commit('LOG_OUT');
                     }, 2000);
@@ -545,12 +620,100 @@ export default {
                 });
         },
         /* 获取评价 */
-        getComment(id) {
-            
+        async getComment(id) {
+            this.articleId = id;
+            await Axios.get(
+                `${baseURL}/admin/comment?pageIndex=${this.commentPageIndex}&articleId=${id}`
+            )
+                .then(res => {
+                    if (res.data.status !== 0) {
+                        return this.$message.error(
+                            `查询评论失败：${res.data.message}`
+                        );
+                    }
+                    if (res.data.totalCount === 0) {
+                        return this.$message.warning(`当前文章没有评论`);
+                    }
+                    this.commentList = res.data.resultList;
+                    this.commentListCount = res.data.totalCount;
+                    this.commentDialog = true;
+                })
+                .catch(() => {
+                    this.$message.error(`查询评论失败：服务器错误`);
+                });
+        },
+        /* 隐藏/展示评价 */
+        async changeCommentState(row) {
+            await Axios.put(`${baseURL}/admin/comment`, {
+                commentId: row._id
+            })
+                .then(res => {
+                    if (res.data.status !== 0) {
+                        return this.$message.error(
+                            `${row.published ? `隐藏` : `展示`}失败：${
+                                res.data.message
+                            }`
+                        );
+                    }
+                    this.$message.success(
+                        `${row.published ? `隐藏` : `展示`}成功`
+                    );
+                    this.getComment(row.articleId);
+                })
+                .catch(() => {
+                    this.$message.error(
+                        `${row.published ? `隐藏` : `展示`}失败：服务器错误`
+                    );
+                });
+        },
+        handleCommentPageChange(val) {
+            this.commentPageIndex = val;
+            this.getComment(this.articleId);
+        },
+        deleteComment(row) {
+            this.$confirm(`删除这条评论，是否继续？`, `提示`, {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    Axios.delete(
+                        `${baseURL}/admin/comment?commentId=${row._id}`
+                    )
+                        .then(res => {
+                            if (res.data.status !== 0) {
+                                return this.$message.error(
+                                    `删除失败：${res.data.message}`
+                                );
+                            }
+                            this.$message.success(`删除成功`);
+                            this.getComment(this.articleId);
+                        })
+                        .catch(() => {
+                            this.$message.error(`删除失败：服务器错误`);
+                        });
+                })
+                .catch(() => {
+                    this.$message.info(`已取消删除评论操作`);
+                });
         }
     },
     mounted() {
         this.getArticles();
+    },
+    watch: {
+        modifyPasswordDialog(newv) {
+            if (newv === false) {
+                this.modifyPasswordForm.oldPassword = ``;
+                this.modifyPasswordForm.newPassword = ``;
+                this.modifyPasswordForm.newPassword2 = ``;
+            }
+        },
+        commentDialog(newv) {
+            if (newv === false) {
+                this.commentPageIndex = 1;
+            }
+        }
     }
 };
 </script>
@@ -561,5 +724,8 @@ export default {
 }
 /deep/ .el-table .on-row {
     background: #f0f9eb;
+}
+/deep/ .el-dialog__body {
+    height: 70vh;
 }
 </style>

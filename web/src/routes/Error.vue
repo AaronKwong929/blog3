@@ -16,8 +16,8 @@
                 @click="option"
                 type="success"
                 size="small"
-            >
-                {{ statusCode === 401 ? `返回登录页` : `返回上一级` }}
+                v-if="statusCode !== 401"
+                >返回上一级
             </el-button>
         </div>
     </div>
