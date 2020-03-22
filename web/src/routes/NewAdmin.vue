@@ -4,6 +4,22 @@
         element-loading-background="rgba(0, 0, 0, 0.2)"
     >
         <div class="tool-bar">
+            <el-button
+                size="small"
+                @click="modifyPasswordDialog = true"
+                class="tool-bar-item"
+                type="warning"
+                >修改密码</el-button
+            >
+            <el-button
+                @click="logout"
+                type="danger"
+                size="small"
+                class="tool-bar-item"
+                >退出</el-button
+            >
+        </div>
+        <div class="tool-bar">
             <el-select
                 size="small"
                 v-model="type"
@@ -61,22 +77,8 @@
             <el-button size="small" @click="reset" class="tool-bar-item"
                 >刷新</el-button
             >
-            <el-button
-                size="small"
-                @click="modifyPasswordDialog = true"
-                class="tool-bar-item"
-                type="warning"
-                >修改密码</el-button
-            >
-            <el-button
-                @click="logout"
-                type="danger"
-                size="small"
-                class="tool-bar-item"
-                >退出</el-button
-            >
         </div>
-        <el-container style="height: 85vh;">
+        <el-container style="height: 65vh;">
             <el-main>
                 <el-table
                     ref="articleTable"
@@ -86,7 +88,6 @@
                     tooltip-effect="dark"
                     style="width: 99%;"
                     height="100%"
-                    :default-sort="{ prop: 'updatedAt', order: 'descending' }"
                     :row-class-name="tableRowClassName"
                 >
                     <el-table-column
@@ -94,7 +95,6 @@
                         label="发布日期"
                         min-width="20"
                         align="center"
-                        sortable
                         :formatter="dateFormatter"
                     ></el-table-column>
                     <el-table-column
@@ -114,14 +114,12 @@
                         prop="tag"
                         label="标签"
                         min-width="10"
-                        sortable
                         align="center"
                     ></el-table-column>
                     <el-table-column
                         prop="published"
                         label="状态"
                         min-width="10"
-                        sortable
                         align="center"
                     >
                         <template slot-scope="scope">
@@ -132,8 +130,7 @@
                     <el-table-column label="操作" min-width="25" align="center">
                         <template slot-scope="scope">
                             <el-button
-                                icon="el-icon-s-promotion
-"
+                                icon="el-icon-s-promotion"
                                 size="small"
                                 @click="changeArticleStatus(scope.row)"
                                 type="text"
@@ -156,8 +153,7 @@
                                 >评价管理</el-button
                             >
                             <el-button
-                                icon="el-icon-delete
-"
+                                icon="el-icon-delete"
                                 size="small"
                                 @click="deleteArticle(scope.row)"
                                 type="text"
@@ -184,7 +180,6 @@
             :append-to-body="true"
             :lock-scroll="true"
             :close-on-click-modal="false"
-            width="40%"
         >
             <el-form
                 ref="modifyPasswordForm"
@@ -488,9 +483,7 @@ export default {
             })
                 .then(() => {
                     this.fullScreenLoading = true;
-                    Axios.delete(
-                        `${baseUrl}/admin/article?id=${row._id}`
-                    )
+                    Axios.delete(`${baseUrl}/admin/article?id=${row._id}`)
                         .then(res => {
                             this.fullScreenLoading = false;
                             if (res.data.status !== 0) {
