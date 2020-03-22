@@ -3,7 +3,7 @@
         v-loading.fullscreen.lock="fullScreenLoading"
         element-loading-background="rgba(0, 0, 0, 0.2)"
     >
-        <el-container>
+        <el-container v-if="articleDetails.title">
             <el-main style="padding: 0;">
                 <div class="header-background">
                     <el-page-header
@@ -130,44 +130,44 @@ export default {
         rgba($color: #00d090, $alpha: 1)
     );
     width: 100%;
-    height: 30vh;
+    height: 250px;
     display: flex;
     flex-direction: column;
     .header-title {
         color: rgba(255, 255, 255, 0.801);
-        letter-spacing: 0.5rem;
+        letter-spacing: 6px;
         font: {
-            size: 4rem;
+            size: 64px;
             weight: bold;
         }
-        margin: 2rem;
+        margin: 32px;
     }
     .header-other {
         display: flex;
         flex-direction: row;
         .header-time {
             color: rgba(255, 255, 255, 0.801);
-            margin: 0 2rem;
-            font-size: 1.3rem;
+            margin: 0 32px;
+            font-size: 22px;
             font-weight: 300;
         }
         .header-type {
             color: rgba(255, 255, 255, 0.801);
-            margin: 0 1rem;
-            font-size: 1.3rem;
+            margin: 0 16px;
+            font-size: 22px;
             font-weight: 300;
         }
         .header-tag {
             color: rgba(255, 255, 255, 0.801);
-            margin: 0 1rem;
-            font-size: 1.3rem;
+            margin: 0 16px;
+            font-size: 22px;
             font-weight: 300;
         }
     }
 }
 
 .page-header {
-    padding: 1rem 0 0 1rem;
+    padding: 16px 0 0 16px;
     color: rgba(255, 255, 255, 0.801);
 }
 /deep/ .el-page-header__content {
@@ -177,10 +177,9 @@ export default {
 .article-content-wrapper {
     width: 70%;
     margin: 0 auto;
-    min-height: 70vh;
-    background: rgba($color: #00d090, $alpha: 0.1);
+    min-height: 500px;
     .article-content {
-        padding: 3rem;
+        padding: 48px;
     }
 }
 </style>
