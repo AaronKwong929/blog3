@@ -87,31 +87,34 @@ adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
 });
 
 /* blog_next api */
-/* 获取管理页文章 */
-adminRouter.post(`/getArticles`, verifyToken, async ctx => {
-    const { pageIndex, pageSize } = ctx.request.body;
-    if (!pageIndex && !pageSize) {
-        return (ctx.response.body = {
-            status: -1,
-            message: `参数错误`
-        });
-    }
-    const totalCount = await Article.countDocuments();
-    let resultList = await Article.find()
-        .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
-        .sort({ updatedAt: -1 })
-        .limit(pageSize)
-        .skip((pageIndex - 1) * pageSize);
+/* 整合查询和搜索的接口 */
+adminRouter.post(`/articles`, verifyToken, async ctx => {
+    const { pageSize, pageIndex, type, tag, published } = ctx.request.body,
+        conditions = { type, tag, published },
+        query = {};
+    /* 断路运算符 */
+    // 如果 && 左边不为falsy，走右边的，否则走左边的
+    // 如果 || 左边不为falsy，走左边的，否则走右边的
+    // 获取conditions里面的所有key值组成的数组
+    Reflect.ownKeys(conditions).map(item => {
+        conditions[item] && (query[item] = conditions[item]);
+    });
+    const totalCount = await Article.countDocuments(query),
+        resultList = await Article.find(query)
+            .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
+            .sort({ updatedAt: -1 })
+            .limit(pageSize)
+            .skip((pageIndex - 1) * pageSize);
     ctx.response.body = {
         totalCount,
+        resultList,
         status: 0,
-        message: `查询成功`,
-        resultList
+        message: `查询成功`
     };
 });
 /* 删除文章 */
-adminRouter.post('/deleteArticle', verifyToken, async ctx => {
-    const { id } = ctx.request.body;
+adminRouter.delete('/article', verifyToken, async ctx => {
+    const { id } = ctx.request.query;
     if (!id) {
         return (ctx.response.body = {
             status: -1,
@@ -132,7 +135,7 @@ adminRouter.post('/deleteArticle', verifyToken, async ctx => {
     }
 });
 /* 更改文章状态 */
-adminRouter.post('/changeArticleStatus', verifyToken, async ctx => {
+adminRouter.put('/article', verifyToken, async ctx => {
     const { id } = ctx.request.body;
     if (!id) {
         return (ctx.response.body = {
@@ -155,47 +158,9 @@ adminRouter.post('/changeArticleStatus', verifyToken, async ctx => {
         };
     }
 });
-/* 条件搜索文章 */
-adminRouter.post(`/searchArticles`, async ctx => {
-    let { type, tag, published, pageIndex, pageSize } = ctx.request.body;
-    let query = {};
-    if (!pageIndex && !pageSize) {
-        return (ctx.response.body = {
-            status: -1,
-            message: '参数错误'
-        });
-    }
-    if (!type && !tag && published) {
-        query = { published };
-    } else if (!type && published === '' && tag) {
-        query = { tag };
-    } else if (published === '' && !tag && type) {
-        query = { type };
-    } else if (!type && tag && published !== '') {
-        query = { tag, published };
-    } else if (!tag && type && published !== '') {
-        query = { type, published };
-    } else if (published === '' && tag && type) {
-        query = { type, tag };
-    } else {
-        query = { type, tag, published };
-    }
-    const totalCount = await Article.countDocuments(query);
-    const resultList = await Article.find(query)
-        .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
-        .sort({ updatedAt: -1 })
-        .limit(pageSize)
-        .skip((pageIndex - 1) * pageSize);
-    ctx.response.body = {
-        totalCount,
-        resultList,
-        status: 0,
-        message: '查询成功'
-    };
-});
 
 /* 新建文章 */
-adminRouter.post('/newArticle', verifyToken, async ctx => {
+adminRouter.post('/draft', verifyToken, async ctx => {
     try {
         let article = new Article();
         await article.save();
@@ -241,14 +206,15 @@ adminRouter.put(`/draft`, verifyToken, async ctx => {
         ctx.response.body = {
             status: 0,
             message: `保存成功于 ${dateFormat(
-                new Date().getTime(),
+                new Date(),
                 'yyyy-MM-dd hh:mm:ss'
             )}`
         };
-    } catch {
+    } catch  {
         ctx.response.body = {
             status: -1,
-            message: `保存失败`
+            message: `保存失败`,
+            e
         };
     }
 });
@@ -264,11 +230,10 @@ adminRouter.put(`/comment`, verifyToken, async ctx => {
             status: 0,
             message: `隐藏/显示评论成功`
         };
-    } catch (e) {
+    } catch {
         ctx.response.body = {
             status: -1,
-            message: `没有该评论`,
-            e
+            message: `没有该评论`
         };
     }
 });
@@ -289,14 +254,21 @@ adminRouter.delete(`/comment`, verifyToken, async ctx => {
         };
     }
 });
-
+/* 获取评论 */
 adminRouter.get(`/comment`, verifyToken, async ctx => {
     const { articleId, pageIndex } = ctx.request.query,
         pageSize = 10;
     try {
         const totalCount = await Comment.countDocuments({ articleId });
         const resultList = await Comment.find({ articleId })
-            .select([`user`, `createdAt`, `content`, `published`, `_id`, `articleId`])
+            .select([
+                `user`,
+                `createdAt`,
+                `content`,
+                `published`,
+                `_id`,
+                `articleId`
+            ])
             .limit(pageSize)
             .skip((pageIndex - 1) * pageSize)
             .sort({ updatedAt: -1 });

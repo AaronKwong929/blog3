@@ -47,7 +47,7 @@
             <el-button
                 type="primary"
                 size="small"
-                @click="searchArticles"
+                @click="getArticles"
                 class="tool-bar-item"
                 >查询</el-button
             >
@@ -138,7 +138,7 @@
                                 @click="changeArticleStatus(scope.row)"
                                 type="text"
                                 >{{
-                                    scope.row.published ? '撤下' : '发布'
+                                    scope.row.published ? '撤回' : '发布'
                                 }}</el-button
                             >
                             <el-button
@@ -168,7 +168,6 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
-                    v-show="normalPagination"
                     class="pagination"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="articleListCount"
@@ -176,16 +175,6 @@
                     :page-size="20"
                     @current-change="handlePageChange"
                     @size-change="handleSizeChange"
-                ></el-pagination>
-                <el-pagination
-                    v-show="optionPagination"
-                    class="pagination"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="optionArticleListCount"
-                    :page-sizes="[20, 50, 100]"
-                    :page-size="20"
-                    @current-change="optionHandlePageChange"
-                    @size-change="optionHandleSizeChange"
                 ></el-pagination>
             </el-main>
         </el-container>
@@ -322,7 +311,7 @@
 </template>
 
 <script>
-const baseURL = process.env.VUE_APP_API;
+const baseUrl = process.env.VUE_APP_API;
 import { mapMutations } from 'vuex';
 import dateFormat from '../dateFormat';
 import Axios from '../axios';
@@ -338,19 +327,14 @@ export default {
             // 全屏遮罩
             fullScreenLoading: false,
             // 查询项
-            type: '',
-            tag: '',
-            published: '',
+            type: null,
+            tag: null,
+            published: null,
             // 分页器
-            normalPagination: true,
             pageSize: 20,
             pageIndex: 1,
             articleListCount: 0,
             articleList: [],
-            optionPagination: false,
-            optionPageSize: 20,
-            optionPageIndex: 1,
-            optionArticleListCount: 0,
             // 分类
             typeOptions: [
                 { value: `code`, label: `编程` },
@@ -424,12 +408,15 @@ export default {
                 'yyyy-MM-dd hh:mm:ss'
             );
         },
-        // // 获取文章
-        async getArticles() {
+        /* 获取文章 */
+        getArticles() {
             this.fullScreenLoading = true;
-            await Axios.post(`${baseURL}/admin/getArticles`, {
+            Axios.post(`${baseUrl}/admin/articles`, {
                 pageIndex: this.pageIndex,
-                pageSize: this.pageSize
+                pageSize: this.pageSize,
+                published: this.published,
+                tag: this.tag,
+                type: this.type
             })
                 .then(res => {
                     this.fullScreenLoading = false;
@@ -446,39 +433,9 @@ export default {
                     this.$message.error(`获取文章失败：服务器错误`);
                 });
         },
-        // 查询文章
-        async searchArticles() {
-            if (!this.tag && !this.type && this.published === '') {
-                return this.$message.warning(`请先输入查询条件`);
-            }
-            this.fullScreenLoading = true;
-            await Axios.post(`${baseURL}/admin/searchArticles`, {
-                pageIndex: this.optionPageIndex,
-                pageSize: this.optionPageSize,
-                type: this.type,
-                tag: this.tag,
-                published: this.published + ''
-            })
-                .then(res => {
-                    this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `查询文章失败：${res.data.message}`
-                        );
-                    }
-                    this.optionPagination = true;
-                    this.normalPagination = false;
-                    this.optionArticleListCount = res.data.totalCount;
-                    this.$set(this, 'articleList', res.data.resultList);
-                })
-                .catch(() => {
-                    this.fullScreenLoading = false;
-                    this.$message.error(`查询文章失败：服务器错误`);
-                });
-        },
-        // 新建文章
-        async newArticle() {
-            await await Axios.post(`${baseURL}/admin/newArticle`)
+        /* 新建文章 */
+        newArticle() {
+            Axios.post(`${baseUrl}/admin/draft`)
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
@@ -492,10 +449,10 @@ export default {
                     this.$message.error(`新建文章失败：服务器错误`);
                 });
         },
-        // 发布/撤回文章
-        async changeArticleStatus(row) {
+        /* 发布/撤回文章 */
+        changeArticleStatus(row) {
             this.fullScreenLoading = true;
-            await Axios.post(`${baseURL}/admin/changeArticleStatus`, {
+            Axios.put(`${baseUrl}/admin/article`, {
                 id: row._id
             })
                 .then(res => {
@@ -503,37 +460,37 @@ export default {
                     if (res.data.status !== 0) {
                         return this.$message.error(
                             `${
-                                row.published === true ? '撤下' : '发布'
+                                row.published === true ? '撤回' : '发布'
                             }文章失败：${res.data.message}`
                         );
                     }
-                    this.$message.success(`${res.data.message}`);
                     this.getArticles();
                 })
                 .catch(() => {
                     this.fullScreenLoading = false;
                     return this.$message.error(
                         `${
-                            row.published === true ? '撤下' : '发布'
+                            row.published === true ? '撤回' : '发布'
                         }文章失败：服务器错误`
                     );
                 });
         },
-        // 编辑文章
+        /* 编辑文章 */
         pushToDraft(id) {
             this.$router.push(`draft/${id}`);
         },
+        /* 删除文章 */
         deleteArticle(row) {
             this.$confirm(`将删除文章: ${row.title}, 是否继续?`, `提示`, {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             })
-                .then(async () => {
+                .then(() => {
                     this.fullScreenLoading = true;
-                    await Axios.post(`${baseURL}/admin/deleteArticle`, {
-                        id: row._id
-                    })
+                    Axios.delete(
+                        `${baseUrl}/admin/article?id=${row._id}`
+                    )
                         .then(res => {
                             this.fullScreenLoading = false;
                             if (res.data.status !== 0) {
@@ -542,11 +499,7 @@ export default {
                                 );
                             }
                             this.$message.success(`已删除文章: ${row.title}`);
-                            if (this.normalPagination) {
-                                this.getArticles();
-                            } else {
-                                this.searchArticles();
-                            }
+                            this.getArticles();
                         })
                         .catch(() => {
                             this.fullScreenLoading = false;
@@ -556,17 +509,15 @@ export default {
                         });
                 })
                 .catch(() => {
-                    this.$message.warning(`已取消删除文章：${row.title}操作`);
+                    this.$message.warning(`已取消删除文章：${row.title}`);
                 });
         },
-        // 区分底色
         tableRowClassName({ row }) {
             if (row.published) {
                 return 'on-row';
             }
             return 'off-row';
         },
-        // 分页器
         handleSizeChange(newSize) {
             this.pageSize = newSize;
             this.getArticles();
@@ -575,30 +526,16 @@ export default {
             this.pageIndex = newPage;
             this.getArticles();
         },
-        optionHandleSizeChange(newSize) {
-            this.optionPageSize = newSize;
-            this.searchArticles();
-        },
-        optionHandlePageChange(newPage) {
-            this.optionPageIndex = newPage;
-            this.searchArticles();
-        },
         reset() {
-            this.normalPagination = true;
             this.pageSize = 20;
             this.pageIndex = 1;
-            this.articleListCount = 0;
-            this.optionPagination = false;
-            this.optionPageSize = 20;
-            this.optionPageIndex = 1;
-            this.optionArticleListCount = 0;
-            this.type = '';
-            this.tag = '';
+            this.type = null;
+            this.tag = null;
             this.getArticles();
         },
         /* 修改密码 */
         modifyPassword() {
-            Axios.put(`${baseURL}/admin/password`, {
+            Axios.put(`${baseUrl}/admin/password`, {
                 name: this.$store.state.name,
                 oldPassword: this.modifyPasswordForm.oldPassword,
                 newPassword: this.modifyPasswordForm.newPassword
@@ -620,10 +557,10 @@ export default {
                 });
         },
         /* 获取评价 */
-        async getComment(id) {
+        getComment(id) {
             this.articleId = id;
-            await Axios.get(
-                `${baseURL}/admin/comment?pageIndex=${this.commentPageIndex}&articleId=${id}`
+            Axios.get(
+                `${baseUrl}/admin/comment?pageIndex=${this.commentPageIndex}&articleId=${id}`
             )
                 .then(res => {
                     if (res.data.status !== 0) {
@@ -643,8 +580,8 @@ export default {
                 });
         },
         /* 隐藏/展示评价 */
-        async changeCommentState(row) {
-            await Axios.put(`${baseURL}/admin/comment`, {
+        changeCommentState(row) {
+            Axios.put(`${baseUrl}/admin/comment`, {
                 commentId: row._id
             })
                 .then(res => {
@@ -678,7 +615,7 @@ export default {
             })
                 .then(() => {
                     Axios.delete(
-                        `${baseURL}/admin/comment?commentId=${row._id}`
+                        `${baseUrl}/admin/comment?commentId=${row._id}`
                     )
                         .then(res => {
                             if (res.data.status !== 0) {
@@ -704,9 +641,11 @@ export default {
     watch: {
         modifyPasswordDialog(newv) {
             if (newv === false) {
-                this.modifyPasswordForm.oldPassword = ``;
-                this.modifyPasswordForm.newPassword = ``;
-                this.modifyPasswordForm.newPassword2 = ``;
+                this.$set(this, `modifyPasswordForm`, {
+                    oldPassword: null,
+                    newPassword: null,
+                    newPassword2: null
+                });
             }
         },
         commentDialog(newv) {

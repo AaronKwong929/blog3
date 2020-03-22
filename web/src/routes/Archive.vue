@@ -55,19 +55,15 @@ export default {
         };
     },
     methods: {
-        getCommonArticles() {
-            this.fullScreenLoading = true;
-            Axios.post(`${baseURL}/common/getCommonArticles`, {
+        getArticles() {
+            Axios.post(`${baseURL}/common/articles`, {
+                pageSize: 10,
                 pageIndex: this.pageIndex,
-                pageSize: 10
+                tag: null,
+                type: null
             })
                 .then(res => {
                     this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `获取文章列表失败：参数错误`
-                        );
-                    }
                     this.articleList = this.articleList.concat(
                         res.data.resultList
                     );
@@ -75,8 +71,7 @@ export default {
                     this.getArticleGroup();
                 })
                 .catch(() => {
-                    this.fullScreenLoading = false;
-                    return this.$message.error(`获取文章列表失败：服务器错误`);
+                    return this.$message.error(`获取失败，服务器错误`);
                 });
         },
         pushToArticle(id) {
@@ -125,7 +120,7 @@ export default {
         },
         async init() {
             await this.initArticleGroup();
-            await this.getCommonArticles();
+            await this.getArticles();
         }
     },
     filters: {

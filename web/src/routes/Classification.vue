@@ -35,7 +35,7 @@
             <el-button
                 type="primary"
                 size="small"
-                @click="searchArticles"
+                @click="getArticles"
                 class="tool-bar-item"
                 >查询</el-button
             >
@@ -54,7 +54,6 @@
                 <div class="article-title">
                     {{ item.title }}
                 </div>
-
                 <div class="article-attributes">
                     <div class="article-attributes-type" v-if="item.type">
                         <i class="el-icon-menu"></i>
@@ -73,22 +72,12 @@
         </el-main>
         <el-footer class="footer">
             <el-pagination
-                v-show="normalPagination"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="articleListCount"
                 :page-sizes="[10, 20, 50, 100]"
                 :page-size="10"
                 @current-change="handlePageChange"
                 @size-change="handleSizeChange"
-            ></el-pagination>
-            <el-pagination
-                v-show="optionPagination"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="optionArticleListCount"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="10"
-                @current-change="optionHandlePageChange"
-                @size-change="optionHandleSizeChange"
             ></el-pagination>
         </el-footer>
     </el-container>
@@ -102,21 +91,13 @@ import Axios from '../axios';
 export default {
     data() {
         return {
-            // 全屏遮罩
             fullScreenLoading: false,
-            // 查询项
-            type: '',
-            tag: '',
-            time: '',
-            // 分页器
-            normalPagination: true,
+            type: null,
+            tag: null,
+            time: null,
             pageSize: 10,
             pageIndex: 1,
             articleListCount: 0,
-            optionPagination: false,
-            optionPageSize: 10,
-            optionPageIndex: 1,
-            optionArticleListCount: 0,
             // 分类
             typeOptions: [
                 { value: `code`, label: `编程` },
@@ -137,93 +118,40 @@ export default {
         };
     },
     methods: {
-        // // 获取文章
-        async getCommonArticles() {
-            this.fullScreenLoading = true;
-            await Axios.post(`${baseURL}/common/getCommonArticles`, {
+        getArticles() {
+            Axios.post(`${baseURL}/common/articles`, {
+                pageSize: 10,
                 pageIndex: this.pageIndex,
-                pageSize: this.pageSize
+                tag: this.tag,
+                type: this.type
             })
                 .then(res => {
                     this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `获取文章失败：${res.data.message}`
-                        );
-                    }
-                    this.$set(this, 'articleList', res.data.resultList);
+                    this.articleList = res.data.resultList;
                     this.articleListCount = res.data.totalCount;
                 })
                 .catch(() => {
-                    this.fullScreenLoading = false;
-                    this.$message.error(`获取文章失败：服务器错误`);
-                });
-        },
-        // 查询文章
-        async searchArticles() {
-            if (!this.tag && !this.type) {
-                return this.$message.warning(`请先输入查询条件`);
-            }
-            this.fullScreenLoading = true;
-            await Axios.post(`${baseURL}/common/searchCommonArticles`, {
-                pageIndex: this.optionPageIndex,
-                pageSize: this.optionPageSize,
-                type: this.type,
-                tag: this.tag,
-                time: this.time
-            })
-                .then(res => {
-                    this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `查询文章失败：${res.data.message}`
-                        );
-                    }
-                    this.optionPagination = true;
-                    this.normalPagination = false;
-                    this.optionArticleListCount = res.data.totalCount;
-                    this.$set(this, 'articleList', res.data.resultList);
-                    if (res.data.totalCount === 0) {
-                        this.$message.warning(`搜索记录为空`);
-                    }
-                })
-                .catch(() => {
-                    this.fullScreenLoading = false;
-                    this.$message.error(`查询文章失败：服务器错误`);
+                    return this.$message.error(`获取失败，服务器错误`);
                 });
         },
         pushToArticle(id) {
             this.$router.push(`article/${id}`);
         },
-        handleSizeChange(newSize) {
-            this.pageSize = newSize;
-            this.getCommonArticles();
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.getArticles();
         },
-        handlePageChange(newPage) {
-            this.pageIndex = newPage;
-            this.getCommonArticles();
-        },
-        optionHandleSizeChange(newSize) {
-            this.optionPageSize = newSize;
-            this.searchArticles();
-        },
-        optionHandlePageChange(newPage) {
-            this.optionPageIndex = newPage;
-            this.searchArticles();
+        handlePageChange(val) {
+            this.pageIndex = val;
+            this.getArticles();
         },
         reset() {
-            this.normalPagination = true;
             this.pageSize = 20;
             this.pageIndex = 1;
-            this.articleListCount = 0;
-            this.optionPagination = false;
-            this.optionPageSize = 20;
-            this.optionPageIndex = 1;
-            this.optionArticleListCount = 0;
-            this.type = '';
-            this.time = '';
-            this.tag = '';
-            this.getCommonArticles();
+            this.type = null;
+            this.time = null;
+            this.tag = null;
+            this.getArticles();
         },
         dateFormatter(row, column) {
             return this.$dateFormat(
@@ -285,7 +213,7 @@ export default {
         }
     },
     mounted() {
-        this.getCommonArticles();
+        this.getArticles();
     },
     components: {
         SearchBar

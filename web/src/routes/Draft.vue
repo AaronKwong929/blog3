@@ -2,7 +2,11 @@
     <div style="height: 100%; width: 100%;">
         <el-container>
             <el-main>
-                <el-page-header @back="goBack" content="文章编辑" title="返回管理">
+                <el-page-header
+                    @back="goBack"
+                    content="文章编辑"
+                    title="返回管理"
+                >
                 </el-page-header>
                 <el-row class="row">
                     <el-col :span="6">
@@ -100,9 +104,9 @@ export default {
     },
     methods: {
         /* 获取文章 */
-        async initDraft() {
+        initDraft() {
             const id = this.$route.params.id;
-            await Axios.get(`${baseUrl}/admin/draft?id=${id}`)
+            Axios.get(`${baseUrl}/admin/draft?id=${id}`)
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
@@ -123,8 +127,8 @@ export default {
                 });
         },
         /* 保存文章 */
-        async saveDraft() {
-            await Axios.put(`${baseUrl}/admin/draft`, {
+        saveDraft() {
+            Axios.put(`${baseUrl}/admin/draft`, {
                 article: {
                     _id: this.id,
                     title: this.title,
@@ -136,7 +140,7 @@ export default {
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
-                            `保存失败：${res.data.message}`
+                            `保存失败`
                         );
                     }
                     this.$message.success(`已保存草稿`);
@@ -170,7 +174,7 @@ export default {
 <style lang="scss" scoped>
 /deep/.vmd-body {
     height: 65vh;
-    background: rgba($color: #00d090, $alpha: 0.3)
+    background: rgba($color: #00d090, $alpha: 0.3);
 }
 .footer-bar {
     display: flex;
