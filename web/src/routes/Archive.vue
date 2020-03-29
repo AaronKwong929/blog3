@@ -41,9 +41,9 @@
     </el-container>
 </template>
 <script>
-const baseURL = process.env.VUE_APP_API;
 import Axios from '../axios';
 import dateFormat from '../dateFormat';
+import { articleIndex } from '../api';
 export default {
     data() {
         return {
@@ -56,7 +56,7 @@ export default {
     },
     methods: {
         getArticles() {
-            Axios.post(`${baseURL}/common/articles`, {
+            Axios.post(articleIndex, {
                 pageSize: 10,
                 pageIndex: this.pageIndex,
                 tag: null,

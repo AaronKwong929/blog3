@@ -306,10 +306,19 @@
 </template>
 
 <script>
-const baseUrl = process.env.VUE_APP_API;
 import { mapMutations } from 'vuex';
 import dateFormat from '../dateFormat';
 import Axios from '../axios';
+import {
+    adminGetArticle,
+    adminNewArticle,
+    adminChangeArticleStatus,
+    adminDeleteDraft,
+    adminChangePassword,
+    adminGetComment,
+    adminChangeCommentStatus,
+    adminDeleteComment
+} from '../api';
 export default {
     data() {
         const checkPasswordSame = (rule, value, callback) => {
@@ -406,7 +415,7 @@ export default {
         /* 获取文章 */
         getArticles() {
             this.fullScreenLoading = true;
-            Axios.post(`${baseUrl}/admin/articles`, {
+            Axios.post(`${adminGetArticle}`, {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
                 published: this.published,
@@ -430,7 +439,7 @@ export default {
         },
         /* 新建文章 */
         newArticle() {
-            Axios.post(`${baseUrl}/admin/draft`)
+            Axios.post(`${adminNewArticle}`)
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
@@ -447,7 +456,7 @@ export default {
         /* 发布/撤回文章 */
         changeArticleStatus(row) {
             this.fullScreenLoading = true;
-            Axios.put(`${baseUrl}/admin/article`, {
+            Axios.put(`${adminChangeArticleStatus}`, {
                 id: row._id
             })
                 .then(res => {
@@ -483,7 +492,7 @@ export default {
             })
                 .then(() => {
                     this.fullScreenLoading = true;
-                    Axios.delete(`${baseUrl}/admin/article?id=${row._id}`)
+                    Axios.delete(`${adminDeleteDraft}${row._id}`)
                         .then(res => {
                             this.fullScreenLoading = false;
                             if (res.data.status !== 0) {
@@ -528,7 +537,7 @@ export default {
         },
         /* 修改密码 */
         modifyPassword() {
-            Axios.put(`${baseUrl}/admin/password`, {
+            Axios.put(`${adminChangePassword}`, {
                 name: this.$store.state.name,
                 oldPassword: this.modifyPasswordForm.oldPassword,
                 newPassword: this.modifyPasswordForm.newPassword
@@ -552,9 +561,7 @@ export default {
         /* 获取评价 */
         getComment(id) {
             this.articleId = id;
-            Axios.get(
-                `${baseUrl}/admin/comment?pageIndex=${this.commentPageIndex}&articleId=${id}`
-            )
+            Axios.get(adminGetComment(id, this.commentPageIndex))
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
@@ -574,7 +581,7 @@ export default {
         },
         /* 隐藏/展示评价 */
         changeCommentState(row) {
-            Axios.put(`${baseUrl}/admin/comment`, {
+            Axios.put(`${adminChangeCommentStatus}`, {
                 commentId: row._id
             })
                 .then(res => {
@@ -608,7 +615,7 @@ export default {
             })
                 .then(() => {
                     Axios.delete(
-                        `${baseUrl}/admin/comment?commentId=${row._id}`
+                        `${adminDeleteComment}${row._id}`
                     )
                         .then(res => {
                             if (res.data.status !== 0) {

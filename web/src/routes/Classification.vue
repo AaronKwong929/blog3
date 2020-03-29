@@ -84,10 +84,10 @@
 </template>
 
 <script>
-const baseURL = process.env.VUE_APP_API;
 const SearchBar = () => import('../components/SearchBar');
 import dateFormat from '../dateFormat';
 import Axios from '../axios';
+import { articleIndex } from '../api';
 export default {
     data() {
         return {
@@ -119,7 +119,7 @@ export default {
     },
     methods: {
         getArticles() {
-            Axios.post(`${baseURL}/common/articles`, {
+            Axios.post(articleIndex, {
                 pageSize: 10,
                 pageIndex: this.pageIndex,
                 tag: this.tag,

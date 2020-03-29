@@ -73,7 +73,8 @@
 <script>
 import lodash from 'lodash';
 import Axios from '../axios';
-const baseUrl = process.env.VUE_APP_API;
+import { getDraft, updateDraft } from '../api';
+
 export default {
     data() {
         return {
@@ -106,7 +107,7 @@ export default {
         /* 获取文章 */
         initDraft() {
             const id = this.$route.params.id;
-            Axios.get(`${baseUrl}/admin/draft?id=${id}`)
+            Axios.get(`${getDraft}${id}`)
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
@@ -128,7 +129,7 @@ export default {
         },
         /* 保存文章 */
         saveDraft() {
-            Axios.put(`${baseUrl}/admin/draft`, {
+            Axios.put(`${updateDraft}`, {
                 article: {
                     _id: this.id,
                     title: this.title,
@@ -139,9 +140,7 @@ export default {
             })
                 .then(res => {
                     if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `保存失败`
-                        );
+                        return this.$message.error(`保存失败`);
                     }
                     this.$message.success(`已保存草稿`);
                 })

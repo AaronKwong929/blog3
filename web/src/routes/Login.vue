@@ -30,7 +30,7 @@
 </template>
 <script>
 const coverUrl = require('../static/img/cover.jpg');
-const baseURL = process.env.VUE_APP_API;
+import { login } from '../api';
 import Axios from '../axios';
 export default {
     data() {
@@ -42,7 +42,7 @@ export default {
     },
     methods: {
         async login() {
-            await Axios.post(`${baseURL}/admin/login`, {
+            await Axios.post(`${login}`, {
                 account: this.account,
                 password: this.password
             })
@@ -50,7 +50,10 @@ export default {
                     if (res.data.status !== 0) {
                         return this.$message.error(`${res.data.message}`);
                     }
-                    this.$store.commit('LOGIN_SUCCESS', {token: res.data.adminToken, name: res.data.name});
+                    this.$store.commit('LOGIN_SUCCESS', {
+                        token: res.data.adminToken,
+                        name: res.data.name
+                    });
                 })
                 .catch(() => {
                     this.$message.error(`登陆失败：服务器错误`);

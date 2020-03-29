@@ -38,10 +38,10 @@
 </template>
 
 <script>
-const baseURL = process.env.VUE_APP_API;
 import Axios from '../axios';
 import marked from 'marked';
 import dateFormat from '../dateFormat';
+import { articleDetails } from '../api';
 export default {
     data() {
         return {
@@ -55,7 +55,7 @@ export default {
         },
         async getArticleDetails() {
             this.fullScreenLoading = true;
-            await Axios.post(`${baseURL}/common/getArticleDetails`, {
+            await Axios.post(`${articleDetails}`, {
                 id: this.$route.params.id
             })
                 .then(res => {

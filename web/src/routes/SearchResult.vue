@@ -43,9 +43,9 @@
 </template>
 
 <script>
-const baseURL = process.env.VUE_APP_API;
 import Axios from '../axios';
 import dateFormat from '../dateFormat';
+import { search } from '../api';
 export default {
     data() {
         return {
@@ -71,7 +71,7 @@ export default {
         },
         /* 获取搜素结果 */
         async getResult() {
-            await await Axios.post(`${baseURL}/common/searchKeywords`, {
+            await await Axios.post(`${search}`, {
                 type: this.type,
                 keyword: this.keyword,
                 pageSize: this.pageSize,
