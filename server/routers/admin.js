@@ -81,8 +81,12 @@ var storage = multer.diskStorage({
 var upload = multer({ storage });
 adminRouter.post('/upload', upload.single('file'), verifyToken, async ctx => {
     ctx.body = {
-        filename: `http://localhost:3000/${ctx.request.file.filename}`
-        // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
+        status: 0,
+        message: `上传成功`,
+        data: {
+            fileName: `http://localhost:3000/${ctx.request.file.filename}`
+            // filename: `http://106.53.89.236:3000/${ctx.request.file.filename}`
+        }
     };
 });
 
@@ -211,7 +215,7 @@ adminRouter.put(`/draft`, verifyToken, async ctx => {
                 'yyyy-MM-dd hh:mm:ss'
             )}`
         };
-    } catch(e)  {
+    } catch (e) {
         ctx.response.body = {
             status: -1,
             message: `保存失败`,
