@@ -43,9 +43,7 @@
 </template>
 
 <script>
-import Axios from '../axios';
-import dateFormat from '../dateFormat';
-import { search } from '../api';
+import dateFormat from '../utils/dateFormat';
 export default {
     data() {
         return {
@@ -69,12 +67,13 @@ export default {
             this.getResult();
         },
         getResult() {
-            Axios.post(`${search}`, {
-                type: this.type,
-                keyword: this.keyword,
-                pageSize: this.pageSize,
-                pageIndex: this.pageIndex
-            })
+            this.$axios
+                .postFetch(this.$api.search, {
+                    type: this.type,
+                    keyword: this.keyword,
+                    pageSize: this.pageSize,
+                    pageIndex: this.pageIndex
+                })
                 .then(res => {
                     if (res.data.status !== 0) {
                         return this.$message.error(
