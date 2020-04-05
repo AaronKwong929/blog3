@@ -59,19 +59,17 @@ export default {
         };
     },
     methods: {
-        /* 获取搜索内容给和类型 */
-        async getKeyword() {
+        getKeyword() {
             if (!this.$route.params.keyword || !this.$route.params.type) {
                 this.$message.warning(`请先输入搜索内容`);
                 return this.$router.go(-1);
             }
             this.keyword = this.$route.params.keyword;
             this.type = this.$route.params.type;
-            await this.getResult();
+            this.getResult();
         },
-        /* 获取搜素结果 */
-        async getResult() {
-            await await Axios.post(`${search}`, {
+        getResult() {
+            Axios.post(`${search}`, {
                 type: this.type,
                 keyword: this.keyword,
                 pageSize: this.pageSize,

@@ -15,7 +15,7 @@ export default {
     components: {
         Sidebar
     },
-    created() {
+    mounted() {
         if (localStorage.getItem('token')) {
             let token = localStorage.getItem('token');
             let name = localStorage.getItem('name');

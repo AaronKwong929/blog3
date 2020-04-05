@@ -3,8 +3,8 @@
         <template>
             <el-carousel :interval="5000" arrow="always">
                 <el-carousel-item
-                    v-for="item in carousalItem"
-                    :key="item.index"
+                    v-for="(item, index) in carousalItem"
+                    :key="'c' + index"
                 >
                     <h2>
                         {{ item.title
@@ -26,33 +26,27 @@
 </template>
 <script>
 const coverUrl = require('../static/img/cover.jpg');
-import dateFormat from '../dateFormat';
+import dateFormat from '../utils/dateFormat';
+
 export default {
     data() {
         return {
             activeName: '1',
             carousalItem: [
                 {
-                    index: `c1`,
                     title: `Welcome To`
                 },
                 {
-                    index: `c2`,
                     title: `Aaron's Blog.`
                 },
                 {
-                    index: `c3`,
                     title: `Make Yourselves At Home.`
                 },
                 {
-                    index: `c4`,
                     title: `No Commercial Available.`
                 }
             ],
-            date: dateFormat(
-                new Date(),
-                'yyyy 年 MM 月 dd 日 hh : mm : ss'
-            ),
+            date: dateFormat(new Date(), 'yyyy 年 MM 月 dd 日 hh : mm : ss'),
             coverUrl
         };
     },
@@ -71,9 +65,10 @@ export default {
             }
         }
     },
-    
+
     mounted() {
         this.setTimer();
+        this.init();
     },
     beforeDestroy() {
         this.destroyTimer();

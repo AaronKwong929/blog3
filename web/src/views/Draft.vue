@@ -72,9 +72,6 @@
 </template>
 <script>
 import lodash from 'lodash';
-import Axios from '../axios';
-import { getDraft, updateDraft } from '../api';
-
 export default {
     data() {
         return {
@@ -104,48 +101,42 @@ export default {
         };
     },
     methods: {
-        /* 获取文章 */
         initDraft() {
+            this.fullScreenLoading = true;
             const id = this.$route.params.id;
-            Axios.get(`${getDraft}${id}`)
+            this.$axios
+                .getFetch(`${this.$api.getDraft}${id}`)
                 .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `查询失败：${res.data.message}`
-                        );
-                    }
-                    this.title = res.data.article.title;
-                    this.type = res.data.article.type;
-                    this.tag = res.data.article.tag;
-                    this.updatedAt = res.data.article.updatedAt;
-                    this.id = res.data.article._id;
-                    this.content = res.data.article.content
-                        ? res.data.article.content
+                    this.title = res.article.title;
+                    this.type = resizeTo.article.type;
+                    this.tag = res.article.tag;
+                    this.updatedAt = res.article.updatedAt;
+                    this.id = res.article._id;
+                    this.content = res.article.content
+                        ? res.article.content
                         : `请输入内容`;
                 })
-                .catch(() => {
-                    this.$message.error(`查询失败：服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
-        /* 保存文章 */
         saveDraft() {
-            Axios.put(`${updateDraft}`, {
-                article: {
-                    _id: this.id,
-                    title: this.title,
-                    type: this.type,
-                    tag: this.tag,
-                    content: this.content
-                }
-            })
-                .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(`保存失败`);
+            this.fullScreenLoading = true;
+            this.$axios
+                .putFetch(this.$api.updateDraft, {
+                    article: {
+                        _id: this.id,
+                        title: this.title,
+                        type: this.type,
+                        tag: this.tag,
+                        content: this.content
                     }
+                })
+                .then(() => {
                     this.$message.success(`已保存草稿`);
                 })
-                .catch(() => {
-                    this.$message.error(`保存失败：服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
         /* 重置文章 */
@@ -155,13 +146,12 @@ export default {
             this.type = '';
             this.content = '请输入内容';
         },
-        /* 自动保存 */
+        /* 20秒自动保存 */
         autoSaveDraft: lodash.debounce(function() {
             this.saveDraft();
         }, 20000),
-        /* 返回上级 */
-        async goBack() {
-            await this.saveDraft();
+        goBack() {
+            this.saveDraft();
             this.$router.go(-1);
         }
     },
@@ -170,6 +160,7 @@ export default {
     }
 };
 </script>
+
 <style lang="scss" scoped>
 /deep/.vmd-body {
     height: 65vh;

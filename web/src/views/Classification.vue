@@ -7,7 +7,7 @@
         <el-header class="header">
             <el-select
                 size="small"
-                v-model="type"
+                v-model="searchForm.type"
                 clearable
                 placeholder="类型"
                 class="tool-bar-item"
@@ -21,7 +21,7 @@
             </el-select>
             <el-select
                 size="small"
-                v-model="tag"
+                v-model="searchForm.tag"
                 clearable
                 placeholder="标签"
                 class="tool-bar-item"
@@ -85,18 +85,18 @@
 
 <script>
 const SearchBar = () => import('../components/SearchBar');
-import dateFormat from '../dateFormat';
-import Axios from '../axios';
-import { articleIndex } from '../api';
+import dateFormat from '../utils/dateFormat';
 export default {
     data() {
         return {
             fullScreenLoading: false,
-            type: null,
-            tag: null,
-            time: null,
+            searchForm: {
+                type: null,
+                tag: null
+            },
             pageSize: 10,
             pageIndex: 1,
+            articleList: [],
             articleListCount: 0,
             // 分类
             typeOptions: [
@@ -112,26 +112,25 @@ export default {
                 { value: `algo`, label: `算法` },
                 { value: `vue`, label: `Vue.JS` },
                 { value: `server`, label: `服务器` }
-            ],
-            // 文章
-            articleList: []
+            ]
         };
     },
     methods: {
         getArticles() {
-            Axios.post(articleIndex, {
-                pageSize: 10,
-                pageIndex: this.pageIndex,
-                tag: this.tag,
-                type: this.type
-            })
-                .then(res => {
-                    this.fullScreenLoading = false;
-                    this.articleList = res.data.resultList;
-                    this.articleListCount = res.data.totalCount;
+            this.fullScreenLoading = true;
+            this.$axios
+                .postFetch(this.$api.articleIndex, {
+                    pageSize: 10,
+                    pageIndex: this.pageIndex,
+                    tag: this.searchForm.tag,
+                    type: this.searchForm.type
                 })
-                .catch(() => {
-                    return this.$message.error(`获取失败，服务器错误`);
+                .then(res => {
+                    this.articleList = res.resultList;
+                    this.articleListCount = res.totalCount;
+                })
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
         pushToArticle(id) {
@@ -148,9 +147,10 @@ export default {
         reset() {
             this.pageSize = 20;
             this.pageIndex = 1;
-            this.type = null;
-            this.time = null;
-            this.tag = null;
+            this.$set(this, `searchForm`, {
+                tag: null,
+                type: null
+            });
             this.getArticles();
         },
         dateFormatter(row, column) {

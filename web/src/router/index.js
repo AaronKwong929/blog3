@@ -1,60 +1,54 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-
-import store from './vuex/store';
-
-const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err);
-};
+import store from '../vuex/store';
 
 Vue.use(VueRouter);
 
 const routes = [
     { path: '/', redirect: 'home' },
-    { path: '/home', component: () => import('./routes/Home.vue') },
-    { path: '/archive', component: () => import('./routes/Archive.vue') },
+    { path: '/home', component: () => import('../views/Home.vue') },
+    { path: '/archive', component: () => import('../views/Archive.vue') },
     {
         path: '/about',
-        component: () => import('./routes/About.vue'),
+        component: () => import('../views/About.vue'),
         meta: { keepAlive: true }
     },
     {
         path: '/article/:id',
-        component: () => import('./routes/NewArticleDetails.vue')
+        component: () => import('../views/NewArticleDetails.vue')
     },
-    { path: '/login', component: () => import('./routes/Login.vue') },
+    { path: '/login', component: () => import('../views/Login.vue') },
     {
         path: '/draft/:id',
-        component: () => import('./routes/Draft.vue'),
+        component: () => import('../views/Draft.vue'),
         meta: { requireAuth: true }
     },
     { path: '*', redirect: 'error' },
     {
         path: '/update',
-        component: () => import('./routes/UpdateLog.vue'),
+        component: () => import('../views/UpdateLog.vue'),
         meta: { keepAlive: true }
     },
     {
         path: '/searchResult',
         name: 'searchResult',
-        component: () => import('./routes/SearchResult.vue')
+        component: () => import('../views/SearchResult.vue')
     },
     {
         path: '/classification',
         name: 'classification',
-        component: () => import('./routes/Classification.vue')
+        component: () => import('../views/Classification.vue')
     },
     {
         path: '/admin',
         name: 'admin',
-        component: () => import('./routes/NewAdmin.vue'),
+        component: () => import('../views/NewAdmin.vue'),
         meta: { requireAuth: true }
     },
     {
         path: '/error',
         name: 'error',
-        component: () => import('./routes/Error.vue'),
+        component: () => import('../views/Error.vue'),
         meta: { requireAuth: false }
     }
 ];
@@ -62,6 +56,11 @@ const routes = [
 const router = new VueRouter({
     routes
 });
+
+// const originalPush = router.prototype.push;
+// router.prototype.push = function push(location) {
+//     return originalPush.call(this, location).catch(err => err);
+// };
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
@@ -73,14 +72,6 @@ router.beforeEach((to, from, next) => {
         }
     } else {
         next();
-    }
-    if (to.fullPath === '/login') {
-        const token = store.state.token;
-        if (token && token !== null) {
-            next('/admin');
-        } else {
-            next();
-        }
     }
 });
 export default router;

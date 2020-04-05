@@ -5,7 +5,7 @@ let commonRouter = new Router();
 
 /** blog_next api */
 /* 整合查询和搜索的接口 */
-commonRouter.post(`/articles`, async ctx => {
+commonRouter.post(`/article`, async ctx => {
     const published = true,
         { pageSize, pageIndex, type, tag } = ctx.request.body,
         conditions = { type, tag, published },

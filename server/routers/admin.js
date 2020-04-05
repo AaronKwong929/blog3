@@ -165,6 +165,7 @@ adminRouter.post('/draft', verifyToken, async ctx => {
         let article = new Article();
         await article.save();
         ctx.response.body = {
+            id: article._id,
             status: 0,
             message: `新建成功`
         };
@@ -210,7 +211,7 @@ adminRouter.put(`/draft`, verifyToken, async ctx => {
                 'yyyy-MM-dd hh:mm:ss'
             )}`
         };
-    } catch  {
+    } catch(e)  {
         ctx.response.body = {
             status: -1,
             message: `保存失败`,

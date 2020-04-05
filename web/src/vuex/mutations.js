@@ -1,4 +1,4 @@
-import router from '../router';
+import router from '../router/index';
 const mutations = {
     LOG_OUT(state) {
         state.token = '';

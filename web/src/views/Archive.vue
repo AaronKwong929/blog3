@@ -40,10 +40,9 @@
         </el-main>
     </el-container>
 </template>
+
 <script>
-import Axios from '../axios';
-import dateFormat from '../dateFormat';
-import { articleIndex } from '../api';
+import dateFormat from '../utils/dateFormat';
 export default {
     data() {
         return {
@@ -55,23 +54,22 @@ export default {
         };
     },
     methods: {
-        getArticles() {
-            Axios.post(articleIndex, {
-                pageSize: 10,
-                pageIndex: this.pageIndex,
-                tag: null,
-                type: null
-            })
+        getArticle() {
+            this.fullScreenLoading = true;
+            this.$axios
+                .postFetch(this.$api.articleIndex, {
+                    pageSize: 10,
+                    pageIndex: this.pageIndex,
+                    tag: null,
+                    type: null
+                })
                 .then(res => {
-                    this.fullScreenLoading = false;
-                    this.articleList = this.articleList.concat(
-                        res.data.resultList
-                    );
-                    this.articleTotalCount = res.data.totalCount;
+                    this.articleList = this.articleList.concat(res.resultList);
+                    this.articleTotalCount = res.totalCount;
                     this.getArticleGroup();
                 })
-                .catch(() => {
-                    return this.$message.error(`获取失败，服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
         pushToArticle(id) {
@@ -80,7 +78,7 @@ export default {
         loadMore() {
             if (this.articleTotalCount > this.articleList.length) {
                 this.pageIndex++;
-                this.getCommonArticles();
+                this.getArticle();
             }
         },
         initArticleGroup() {
@@ -119,8 +117,8 @@ export default {
             );
         },
         async init() {
-            await this.initArticleGroup();
-            await this.getArticles();
+            this.initArticleGroup();
+            await this.getArticle();
         }
     },
     filters: {

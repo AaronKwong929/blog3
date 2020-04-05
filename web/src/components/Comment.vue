@@ -32,46 +32,45 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-            from: "",
-            content: "",
-            to: "",
+            from: '',
+            content: '',
+            to: '',
             empty: false
         };
     },
-    props: ["comments"],
+    props: ['comments'],
     methods: {
         ...mapActions({
-            Send: "SEND_COMMENT",
-            getDetails: "FIND_ARTICLE"
+            Send: 'SEND_COMMENT',
+            getDetails: 'FIND_ARTICLE'
         }),
-        async sendComment() {
+        sendComment() {
             if (!this.from || !this.content) {
                 this.empty = true;
                 return setTimeout(() => {
                     return (this.empty = false);
                 }, 3000);
             }
-            await this.Send({
+            this.Send({
                 from: this.from,
                 content: this.content,
                 to: this.to,
                 id: this.$route.params.id
             });
-            // 不设一秒不能加载出来
             setTimeout(() => {
                 this.getDetails(this.$route.params.id);
             }, 1000);
-            this.from = "";
-            this.content = "";
+            this.from = '';
+            this.content = '';
         },
         resetReply() {
-            this.to = "";
-            this.from = "";
-            this.content = "";
+            this.to = '';
+            this.from = '';
+            this.content = '';
         },
         changeTo(name) {
             this.to = name;
@@ -79,6 +78,7 @@ export default {
     }
 };
 </script>
+
 <style lang="scss" scoped>
 .comment {
     box-shadow: 0 0 0.8rem 0 #aaa;
@@ -94,7 +94,7 @@ export default {
     font-size: 0.9rem;
 }
 .comment-time::before {
-    content: " - ";
+    content: ' - ';
 }
 .comment-details {
     font-size: 1.1rem;

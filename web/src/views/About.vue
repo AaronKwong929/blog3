@@ -32,18 +32,6 @@
                 <div class="item">
                     (即将)毕业于广州大学 计算机学院
                 </div>
-                <div class="item">
-                    (截至 2019/8)半年前端编程经验
-                </div>
-                <div class="item">
-                    大三下学期开始进行前端学习
-                </div>
-                <div class="item">
-                    使用 vue 和 koa 做过小项目
-                </div>
-                <div class="item">
-                    略懂爬虫、数据分析
-                </div>
             </el-card>
             <el-card class="box-card">
                 <div slot="header">

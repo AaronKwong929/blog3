@@ -38,10 +38,8 @@
 </template>
 
 <script>
-import Axios from '../axios';
 import marked from 'marked';
-import dateFormat from '../dateFormat';
-import { articleDetails } from '../api';
+import dateFormat from '../utils/dateFormat';
 export default {
     data() {
         return {
@@ -53,23 +51,17 @@ export default {
         goBack() {
             return this.$router.go(-1);
         },
-        async getArticleDetails() {
+        getArticleDetails() {
             this.fullScreenLoading = true;
-            await Axios.post(`${articleDetails}`, {
-                id: this.$route.params.id
-            })
-                .then(res => {
-                    this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `获取文章详情失败：${res.data.data}`
-                        );
-                    }
-                    this.$set(this, 'articleDetails', res.data.article);
+            this.$axios
+                .postFetch(this.$api.articleDetails, {
+                    id: this.$route.params.id
                 })
-                .catch(() => {
+                .then(res => {
+                    this.$set(this, 'articleDetails', res.article);
+                })
+                .finally(() => {
                     this.fullScreenLoading = false;
-                    this.$message.error(`获取文章详情失败：服务器错误`);
                 });
         }
     },

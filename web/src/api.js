@@ -4,7 +4,7 @@ export const articleIndex = `${baseUrl}/common/articles`;
 
 export const articleDetails = `${baseUrl}/common/getArticleDetails`;
 
-export const search = `${baseURL}/common/searchKeywords`;
+export const search = `${baseUrl}/common/searchKeywords`;
 
 /* 管理员模块 */
 

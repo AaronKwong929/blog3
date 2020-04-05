@@ -4,6 +4,7 @@ const productionGzipExtensions = ['js', 'css', 'svg'];
 const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
+const path = require('path');
 module.exports = {
     devServer: {
         port: 8080,
@@ -73,5 +74,14 @@ module.exports = {
                 'element-ui': 'ELEMENT'
             };
         }
+    },
+    chainWebpack: config => {
+        config.resolve.alias
+            .set('@utils', path.join(__dirname, 'src/utils'))
+            .set('@components', path.join(__dirname, 'src/components'))
+            .set('@views', path.join(__dirname, 'src/views'))
+            .set('@vuex', path.join(__dirname, 'src/vuex'))
+            .set('@static', path.join(__dirname, 'src/static'))
+            .set('@api', path.join(__dirname, 'src/api'));
     }
 };

@@ -6,7 +6,7 @@
         <div class="tool-bar">
             <el-button
                 size="small"
-                @click="modifyPasswordDialog = true"
+                @click="updatePwdDialog = true"
                 class="tool-bar-item"
                 type="warning"
                 >修改密码</el-button
@@ -22,10 +22,11 @@
         <div class="tool-bar">
             <el-select
                 size="small"
-                v-model="type"
+                v-model="searchForm.type"
                 clearable
                 placeholder="类型"
                 class="tool-bar-item"
+                @change="getArticle"
             >
                 <el-option
                     v-for="(item, index) in typeOptions"
@@ -36,10 +37,11 @@
             </el-select>
             <el-select
                 size="small"
-                v-model="tag"
+                v-model="searchForm.tag"
                 clearable
                 placeholder="标签"
                 class="tool-bar-item"
+                @change="getArticle"
                 ><el-option
                     v-for="(item, index) in tagOptions"
                     :key="`tag` + index"
@@ -49,10 +51,11 @@
             ></el-select>
             <el-select
                 size="small"
-                v-model="published"
+                v-model="searchForm.published"
                 clearable
                 placeholder="状态"
                 class="tool-bar-item"
+                @change="getArticle"
                 ><el-option
                     v-for="(item, index) in publishOptions"
                     :key="`published` + index"
@@ -62,13 +65,6 @@
             </el-select>
             <el-button
                 type="primary"
-                size="small"
-                @click="getArticles"
-                class="tool-bar-item"
-                >查询</el-button
-            >
-            <el-button
-                type="success"
                 size="small"
                 @click="newArticle"
                 class="tool-bar-item"
@@ -107,7 +103,6 @@
                         prop="type"
                         label="类型"
                         min-width="10"
-                        sortable
                         align="center"
                     ></el-table-column>
                     <el-table-column
@@ -176,16 +171,16 @@
         </el-container>
         <el-dialog
             title="修改密码"
-            :visible.sync="modifyPasswordDialog"
+            :visible.sync="updatePwdDialog"
             :append-to-body="true"
             :lock-scroll="true"
             :close-on-click-modal="false"
         >
             <el-form
-                ref="modifyPasswordForm"
-                :model="modifyPasswordForm"
+                ref="updatePwdForm"
+                :model="updatePwdForm"
                 label-width="100px"
-                :rules="modifyPasswordFormRules"
+                :rules="updatePwdFormRules"
             >
                 <el-row>
                     <el-col :span="18" :push="2">
@@ -193,7 +188,7 @@
                             <el-input
                                 size="small"
                                 type="password"
-                                v-model="modifyPasswordForm.oldPassword"
+                                v-model="updatePwdForm.oldPassword"
                             >
                             </el-input>
                         </el-form-item>
@@ -205,7 +200,7 @@
                             <el-input
                                 size="small"
                                 type="password"
-                                v-model="modifyPasswordForm.newPassword"
+                                v-model="updatePwdForm.newPassword"
                             >
                             </el-input>
                         </el-form-item>
@@ -217,7 +212,7 @@
                             <el-input
                                 size="small"
                                 type="password"
-                                v-model="modifyPasswordForm.newPassword2"
+                                v-model="updatePwdForm.newPassword2"
                             >
                             </el-input>
                         </el-form-item>
@@ -225,7 +220,7 @@
                 </el-row>
             </el-form>
             <div slot="footer">
-                <el-button @click="modifyPasswordDialog = false"
+                <el-button @click="updatePwdDialog = false"
                     >取 消</el-button
                 >
                 <el-button @click="modifyPassword" type="primary"
@@ -256,7 +251,6 @@
                     prop="createdAt"
                     label="发布时间"
                     min-width="10"
-                    sortable
                     align="center"
                     :formatter="dateFormatter"
                 ></el-table-column>
@@ -307,45 +301,32 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import dateFormat from '../dateFormat';
-import Axios from '../axios';
-import {
-    adminGetArticle,
-    adminNewArticle,
-    adminChangeArticleStatus,
-    adminDeleteDraft,
-    adminChangePassword,
-    adminGetComment,
-    adminChangeCommentStatus,
-    adminDeleteComment
-} from '../api';
+import dateFormat from '../utils/dateFormat';
+
 export default {
     data() {
         const checkPasswordSame = (rule, value, callback) => {
-            if (value !== this.modifyPasswordForm.newPassword) {
+            if (value !== this.updatePwdForm.newPassword) {
                 return callback(new Error(`两次输入密码不一致`));
             }
             callback();
         };
         return {
-            // 全屏遮罩
             fullScreenLoading: false,
-            // 查询项
-            type: null,
-            tag: null,
-            published: null,
-            // 分页器
+            searchForm: {
+                type: null,
+                tag: null,
+                published: null
+            },
             pageSize: 20,
             pageIndex: 1,
             articleListCount: 0,
             articleList: [],
-            // 分类
             typeOptions: [
                 { value: `code`, label: `编程` },
                 { value: `game`, label: `游戏` },
                 { value: `life`, label: `生活` }
             ],
-            // 标签
             tagOptions: [
                 { value: `html`, label: `HTML` },
                 { value: `css`, label: `CSS` },
@@ -354,19 +335,17 @@ export default {
                 { value: `vue`, label: `Vue.JS` },
                 { value: `server`, label: `服务器` }
             ],
-            // 是否发布
             publishOptions: [
                 { value: false, label: `未发布` },
                 { value: true, label: `已发布` }
             ],
-            /* 修改密码 */
-            modifyPasswordDialog: false,
-            modifyPasswordForm: {
+            updatePwdDialog: false,
+            updatePwdForm: {
                 oldPassword: '',
                 newPassword: '',
                 newPassword2: ''
             },
-            modifyPasswordFormRules: {
+            updatePwdFormRules: {
                 oldPassword: [
                     {
                         required: true,
@@ -405,85 +384,64 @@ export default {
         ...mapMutations({
             logout: 'LOG_OUT'
         }),
-        // 格式化时间
         dateFormatter(row, column) {
             return dateFormat(
                 new Date(parseInt(row[column.property])),
                 'yyyy-MM-dd hh:mm:ss'
             );
         },
-        /* 获取文章 */
-        getArticles() {
+        getArticle() {
             this.fullScreenLoading = true;
-            Axios.post(`${adminGetArticle}`, {
-                pageIndex: this.pageIndex,
-                pageSize: this.pageSize,
-                published: this.published,
-                tag: this.tag,
-                type: this.type
-            })
-                .then(res => {
-                    this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `获取文章失败：${res.data.message}`
-                        );
-                    }
-                    this.$set(this, 'articleList', res.data.resultList);
-                    this.articleListCount = res.data.totalCount;
+            this.$axios
+                .postFetch(this.$api.adminGetArticle, {
+                    pageIndex: this.pageIndex,
+                    pageSize: this.pageSize,
+                    published: this.searchForm.published,
+                    tag: this.searchForm.tag,
+                    type: this.searchForm.type
                 })
-                .catch(() => {
+                .then(res => {
+                    this.articleList = res.resultList;
+                    this.articleListCount = res.totalCount;
+                })
+                .finally(() => {
                     this.fullScreenLoading = false;
-                    this.$message.error(`获取文章失败：服务器错误`);
                 });
         },
-        /* 新建文章 */
         newArticle() {
-            Axios.post(`${adminNewArticle}`)
+            this.fullScreenLoading = true;
+            this.$axios
+                .postFetch(this.$api.adminNewArticle)
                 .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `新建文章失败：${res.data.message}`
-                        );
-                    }
-                    this.$message.success(`新建文章成功`);
-                    this.$router.push(`/draft/${res.data.id}`);
+                    this.$router.push(
+                        `${this.$api.adminNewArticle}${res.data.id}`
+                    );
                 })
-                .catch(() => {
-                    this.$message.error(`新建文章失败：服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
-        /* 发布/撤回文章 */
         changeArticleStatus(row) {
             this.fullScreenLoading = true;
-            Axios.put(`${adminChangeArticleStatus}`, {
-                id: row._id
-            })
-                .then(res => {
-                    this.fullScreenLoading = false;
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `${
-                                row.published === true ? '撤回' : '发布'
-                            }文章失败：${res.data.message}`
-                        );
-                    }
-                    this.getArticles();
+            this.$axios
+                .putFetch(this.$api.adminChangeArticleStatus, {
+                    id: row._id
                 })
-                .catch(() => {
-                    this.fullScreenLoading = false;
-                    return this.$message.error(
-                        `${
-                            row.published === true ? '撤回' : '发布'
-                        }文章失败：服务器错误`
+                .then(() => {
+                    this.$message.success(
+                        `${row.published ? `撤回` : `发布`}文章：${
+                            row.title
+                        }成功`
                     );
+                    this.getArticle();
+                })
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
-        /* 编辑文章 */
         pushToDraft(id) {
             this.$router.push(`draft/${id}`);
         },
-        /* 删除文章 */
         deleteArticle(row) {
             this.$confirm(`将删除文章: ${row.title}, 是否继续?`, `提示`, {
                 confirmButtonText: '确定',
@@ -492,22 +450,14 @@ export default {
             })
                 .then(() => {
                     this.fullScreenLoading = true;
-                    Axios.delete(`${adminDeleteDraft}${row._id}`)
-                        .then(res => {
-                            this.fullScreenLoading = false;
-                            if (res.data.status !== 0) {
-                                return this.$message.error(
-                                    `删除失败：${res.data.message}`
-                                );
-                            }
+                    this.$axios
+                        .deleteFetch(`${this.$api.adminDeleteDraft}${row._id}`)
+                        .then(() => {
                             this.$message.success(`已删除文章: ${row.title}`);
-                            this.getArticles();
+                            this.getArticle();
                         })
-                        .catch(() => {
+                        .finally(() => {
                             this.fullScreenLoading = false;
-                            this.$message.error(
-                                `删除文章: ${row.title}失败：服务器错误`
-                            );
                         });
                 })
                 .catch(() => {
@@ -522,85 +472,71 @@ export default {
         },
         handleSizeChange(newSize) {
             this.pageSize = newSize;
-            this.getArticles();
+            this.getArticle();
         },
         handlePageChange(newPage) {
             this.pageIndex = newPage;
-            this.getArticles();
+            this.getArticle();
         },
         reset() {
             this.pageSize = 20;
             this.pageIndex = 1;
-            this.type = null;
-            this.tag = null;
-            this.getArticles();
+            this.$set(this, `searchForm`, {
+                published: null,
+                tag: null,
+                type: null
+            });
+            this.getArticle();
         },
-        /* 修改密码 */
         modifyPassword() {
-            Axios.put(`${adminChangePassword}`, {
-                name: this.$store.state.name,
-                oldPassword: this.modifyPasswordForm.oldPassword,
-                newPassword: this.modifyPasswordForm.newPassword
-            })
-                .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `修改密码失败：${res.data.message}`
-                        );
-                    }
+            this.fullScreenLoading = false;
+            this.$axios
+                .putFetch(this.$api.adminChangePassword, {
+                    name: this.$store.state.name,
+                    oldPassword: this.updatePwdForm.oldPassword,
+                    newPassword: this.updatePwdForm.newPassword
+                })
+                .then(() => {
                     this.$message.success(`修改密码成功，请重新登录`);
                     this.modifyPassworDialog = false;
-                    setTimeout(() => {
-                        this.$store.commit('LOG_OUT');
-                    }, 2000);
+                    this.$store.commit('LOG_OUT');
                 })
-                .catch(() => {
-                    this.$message.error(`修改密码失败：服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
         /* 获取评价 */
         getComment(id) {
+            this.fullScreenLoading = true;
             this.articleId = id;
-            Axios.get(adminGetComment(id, this.commentPageIndex))
+            this.$axios
+                .getFetch(this.$api.adminGetComment(id, this.commentPageIndex))
                 .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `查询评论失败：${res.data.message}`
-                        );
-                    }
                     if (res.data.totalCount === 0) {
                         return this.$message.warning(`当前文章没有评论`);
                     }
-                    this.commentList = res.data.resultList;
-                    this.commentListCount = res.data.totalCount;
+                    this.commentList = res.resultList;
+                    this.commentListCount = res.totalCount;
                     this.commentDialog = true;
                 })
-                .catch(() => {
-                    this.$message.error(`查询评论失败：服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
-        /* 隐藏/展示评价 */
         changeCommentState(row) {
-            Axios.put(`${adminChangeCommentStatus}`, {
-                commentId: row._id
-            })
-                .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(
-                            `${row.published ? `隐藏` : `展示`}失败：${
-                                res.data.message
-                            }`
-                        );
-                    }
+            this.fullScreenLoading = true;
+            this.$axios
+                .putFetch(this.$axios.adminChangeCommentStatus, {
+                    commentId: row._id
+                })
+                .then(() => {
                     this.$message.success(
                         `${row.published ? `隐藏` : `展示`}成功`
                     );
                     this.getComment(row.articleId);
                 })
-                .catch(() => {
-                    this.$message.error(
-                        `${row.published ? `隐藏` : `展示`}失败：服务器错误`
-                    );
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
         handleCommentPageChange(val) {
@@ -614,34 +550,31 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    Axios.delete(
-                        `${adminDeleteComment}${row._id}`
-                    )
-                        .then(res => {
-                            if (res.data.status !== 0) {
-                                return this.$message.error(
-                                    `删除失败：${res.data.message}`
-                                );
-                            }
+                    this.fullScreenLoading = true;
+                    this.$axios
+                        .deleteFetch(
+                            `${this.$api.adminDeleteComment}${row._id}`
+                        )
+                        .then(() => {
                             this.$message.success(`删除成功`);
                             this.getComment(this.articleId);
                         })
-                        .catch(() => {
-                            this.$message.error(`删除失败：服务器错误`);
+                        .finally(() => {
+                            this.fullScreenLoading = false;
                         });
                 })
                 .catch(() => {
-                    this.$message.info(`已取消删除评论操作`);
+                    this.$message.warning(`已取消删除评论`);
                 });
         }
     },
     mounted() {
-        this.getArticles();
+        this.getArticle();
     },
     watch: {
-        modifyPasswordDialog(newv) {
+        updatePwdDialog(newv) {
             if (newv === false) {
-                this.$set(this, `modifyPasswordForm`, {
+                this.$set(this, `updatePwdForm`, {
                     oldPassword: null,
                     newPassword: null,
                     newPassword2: null

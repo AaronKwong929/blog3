@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import store from './vuex/store';
-import router from './router';
+import router from './router/index';
 
 Axios.interceptors.request.use(
     config => {

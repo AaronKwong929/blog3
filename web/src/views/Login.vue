@@ -9,13 +9,13 @@
                 <el-input
                     size="small"
                     placeholder="账号"
-                    v-model="account"
+                    v-model="loginForm.account"
                 ></el-input>
                 <el-input
                     size="small"
                     placeholder="密码"
                     type="password"
-                    v-model="password"
+                    v-model="loginForm.password"
                     @keyup.enter="login"
                 ></el-input>
             </div>
@@ -28,49 +28,53 @@
         </div>
     </div>
 </template>
+
 <script>
 const coverUrl = require('../static/img/cover.jpg');
-import { login } from '../api';
-import Axios from '../axios';
 export default {
     data() {
         return {
-            account: '',
-            password: '',
+            fullScreenLoading: false,
+            loginForm: {
+                account: null,
+                password: null
+            },
             coverUrl
         };
     },
     methods: {
-        async login() {
-            await Axios.post(`${login}`, {
-                account: this.account,
-                password: this.password
-            })
+        login() {
+            this.fullScreenLoading = true;
+            this.$axios
+                .postFetch(this.$api.login, {
+                    account: this.loginForm.account,
+                    password: this.loginForm.password
+                })
                 .then(res => {
-                    if (res.data.status !== 0) {
-                        return this.$message.error(`${res.data.message}`);
-                    }
                     this.$store.commit('LOGIN_SUCCESS', {
-                        token: res.data.adminToken,
-                        name: res.data.name
+                        token: res.adminToken,
+                        name: res.name
                     });
                 })
-                .catch(() => {
-                    this.$message.error(`登陆失败：服务器错误`);
+                .finally(() => {
+                    this.fullScreenLoading = false;
                 });
         },
         reset() {
-            this.account = ``;
-            this.password = ``;
+            this.$set(this, `loginForm`, {
+                account: null,
+                password: null
+            })
         }
     },
     mounted() {
         if (this.$store.state.token) {
             this.$router.push('/admin');
         }
-    }
+    },
 };
 </script>
+
 <style lang="scss" scoped>
 #login {
     display: flex;
