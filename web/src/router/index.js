@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import store from '../vuex/store';
+// import store from '../vuex/store';
 
 Vue.use(VueRouter);
 
@@ -57,14 +57,10 @@ const router = new VueRouter({
     routes
 });
 
-// const originalPush = router.prototype.push;
-// router.prototype.push = function push(location) {
-//     return originalPush.call(this, location).catch(err => err);
-// };
-
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
-        const token = store.state.token;
+        // const token = store.state.token;
+        const token = localStorage.getItem(`token`);
         if (token && token !== null) {
             next();
         } else {

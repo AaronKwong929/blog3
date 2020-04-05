@@ -35,14 +35,6 @@
             ><i class="el-icon-info"></i
             ><span slot="title">关 于</span></el-menu-item
         >
-        <el-menu-item index="/login" v-if="!this.$store.state.token">
-            <i class="el-icon-user"></i>
-            <span slot="title">登 陆</span>
-        </el-menu-item>
-        <el-menu-item index="/admin" v-else>
-            <i class="el-icon-s-tools"></i>
-            <span slot="title">管 理</span>
-        </el-menu-item>
         <footer class="beian" v-show="!isCollapse">
             <el-link
                 href="http://beian.miitbeian.gov.cn"

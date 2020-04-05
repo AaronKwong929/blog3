@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import store from '../vuex/store';
 import router from '../router/index';
 
 import { Message } from 'element-ui';
@@ -9,10 +8,8 @@ const baseURL = process.env.VUE_APP_API;
 const instance = Axios.create({ baseURL, timeout: 30 * 1000 });
 
 instance.interceptors.request.use(config => {
-    if (store.state.token) {
-        const token = store.state.token;
-        config.headers.common['Authorization'] = `Bearer ${token}`;
-    }
+    const token = localStorage.getItem(`token`);
+    config.headers.common['Authorization'] = `Bearer ${token}`;
     return config;
 });
 

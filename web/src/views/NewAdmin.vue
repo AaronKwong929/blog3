@@ -6,13 +6,13 @@
         <div class="tool-bar">
             <el-button
                 size="small"
-                @click="updatePwdDialog = true"
+                @click.prevent.native="updatePwdDialog = true"
                 class="tool-bar-item"
                 type="warning"
                 >修改密码</el-button
             >
             <el-button
-                @click="logout"
+                @click.prevent.native="logout"
                 type="danger"
                 size="small"
                 class="tool-bar-item"
@@ -66,11 +66,11 @@
             <el-button
                 type="primary"
                 size="small"
-                @click="newArticle"
+                @click.prevent.native="newArticle"
                 class="tool-bar-item"
                 >新建</el-button
             >
-            <el-button size="small" @click="reset" class="tool-bar-item"
+            <el-button size="small" @click.prevent.native="reset" class="tool-bar-item"
                 >刷新</el-button
             >
         </div>
@@ -127,7 +127,7 @@
                             <el-button
                                 icon="el-icon-s-promotion"
                                 size="small"
-                                @click="changeArticleStatus(scope.row)"
+                                @click.prevent.native="changeArticleStatus(scope.row)"
                                 type="text"
                                 >{{
                                     scope.row.published ? '撤回' : '发布'
@@ -136,13 +136,13 @@
                             <el-button
                                 icon="el-icon-edit"
                                 size="small"
-                                @click="pushToDraft(scope.row._id)"
+                                @click.prevent.native="pushToDraft(scope.row._id)"
                                 type="text"
                                 :disabled="scope.row.published"
                                 >编辑</el-button
                             >
                             <el-button
-                                @click="getComment(scope.row._id)"
+                                @click.prevent.native="getComment(scope.row._id)"
                                 size="small"
                                 type="text"
                                 >评价管理</el-button
@@ -150,7 +150,7 @@
                             <el-button
                                 icon="el-icon-delete"
                                 size="small"
-                                @click="deleteArticle(scope.row)"
+                                @click.prevent.native="deleteArticle(scope.row)"
                                 type="text"
                                 :disabled="scope.row.published"
                                 >删除</el-button
@@ -220,10 +220,10 @@
                 </el-row>
             </el-form>
             <div slot="footer">
-                <el-button @click="updatePwdDialog = false"
+                <el-button @click.prevent.native="updatePwdDialog = false"
                     >取 消</el-button
                 >
-                <el-button @click="modifyPassword" type="primary"
+                <el-button @click.prevent.native="modifyPassword" type="primary"
                     >修 改</el-button
                 >
             </div>
@@ -270,14 +270,14 @@
                 <el-table-column label="操作" min-width="10" align="center">
                     <template slot-scope="scope">
                         <el-button
-                            @click="changeCommentState(scope.row)"
+                            @click.prevent.native="changeCommentState(scope.row)"
                             type="text"
                             size="small"
                         >
                             {{ scope.row.published ? `隐藏` : `展示` }}
                         </el-button>
                         <el-button
-                            @click="deleteComment(scope.row)"
+                            @click.prevent.native="deleteComment(scope.row)"
                             type="text"
                             size="small"
                             >删除</el-button
@@ -300,7 +300,6 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
 import dateFormat from '../utils/dateFormat';
 
 export default {
@@ -372,7 +371,6 @@ export default {
                     }
                 ]
             },
-            /* 评论管理 */
             commentDialog: false,
             commentList: [],
             commentPageIndex: 1,
@@ -381,9 +379,9 @@ export default {
         };
     },
     methods: {
-        ...mapMutations({
-            logout: 'LOG_OUT'
-        }),
+        logout() {
+            return this.$login.logout();
+        },
         dateFormatter(row, column) {
             return dateFormat(
                 new Date(parseInt(row[column.property])),
@@ -431,7 +429,7 @@ export default {
                     this.$message.success(
                         `${row.published ? `撤回` : `发布`}文章：${
                             row.title
-                        }成功`
+                        } 成功`
                     );
                     this.getArticle();
                 })
@@ -461,7 +459,7 @@ export default {
                         });
                 })
                 .catch(() => {
-                    this.$message.warning(`已取消删除文章：${row.title}`);
+                    this.$message.warning(`已取消删除文章`);
                 });
         },
         tableRowClassName({ row }) {
@@ -492,14 +490,14 @@ export default {
             this.fullScreenLoading = false;
             this.$axios
                 .putFetch(this.$api.adminChangePassword, {
-                    name: this.$store.state.name,
+                    name: localStorage.getItem(`name`),
                     oldPassword: this.updatePwdForm.oldPassword,
                     newPassword: this.updatePwdForm.newPassword
                 })
                 .then(() => {
                     this.$message.success(`修改密码成功，请重新登录`);
                     this.modifyPassworDialog = false;
-                    this.$store.commit('LOG_OUT');
+                    this.$login.logout();
                 })
                 .finally(() => {
                     this.fullScreenLoading = false;
@@ -592,10 +590,10 @@ export default {
 
 <style lang="scss" scoped>
 /deep/ .el-table .off-row {
-    background: oldlace;
+    background: rgb(255, 252, 247);
 }
 /deep/ .el-table .on-row {
-    background: #f0f9eb;
+    background: #effce8;
 }
 /deep/ .el-dialog__body {
     height: 70vh;

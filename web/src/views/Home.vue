@@ -18,6 +18,15 @@
         <el-card>
             <div style="text-align: center;">{{ date }}</div>
         </el-card>
+        <el-card>
+            <div style="text-align: center;">
+                <el-link
+                    type="primary"
+                    @click.prevent.native="navigateToLogin"
+                    >{{ sentence }}</el-link
+                >
+            </div>
+        </el-card>
         <img
             style="width: auto; height: 250px; margin: 0 auto; text-align: center; display: block; margin-top: 1rem;"
             :src="coverUrl"
@@ -47,7 +56,8 @@ export default {
                 }
             ],
             date: dateFormat(new Date(), 'yyyy 年 MM 月 dd 日 hh : mm : ss'),
-            coverUrl
+            coverUrl,
+            sentences: [`食得咸鱼抵得渴`, `鸡食放光虫`]
         };
     },
     methods: {
@@ -63,12 +73,19 @@ export default {
             if (this.timeId) {
                 clearInterval(this.timeId);
             }
+        },
+        navigateToLogin() {
+            this.$router.push(`/login`);
         }
     },
-
+    computed: {
+        sentence() {
+            let index = Math.floor(Math.random() * this.sentences.length);
+            return this.sentences[index];
+        }
+    },
     mounted() {
         this.setTimer();
-        this.init();
     },
     beforeDestroy() {
         this.destroyTimer();

@@ -4,7 +4,7 @@
         v-loading.fullscreen.lock="fullScreenLoading"
         element-loading-background="rgba(0, 0, 0, 0.2)"
     >
-        <el-main v-infinite-scroll="loadMore">
+        <el-main>
             <div
                 class="year-wrapper"
                 v-for="(item, index) in articleGroupList"
@@ -13,10 +13,10 @@
                 <div class="year">
                     {{ item.desc }}
                     <el-button
-                        size="small"
+                        size="text"
                         type="success"
                         @click.prevent.native="changeShowStatus(item)"
-                        style="margin-left: 10px;"
+                        style="margin-left: 10px; color: gray;"
                         >{{ item.onShow ? `收起` : `展开` }}</el-button
                     >
                 </div>
@@ -37,6 +37,16 @@
                     </div>
                 </div>
             </div>
+            <el-row>
+                <el-col style="text-align: center;">
+                    <el-link
+                        type="info"
+                        @click.prevent.native="loadMore"
+                        :disabled="loadable"
+                        >点击加载更多</el-link
+                    >
+                </el-col>
+            </el-row>
         </el-main>
     </el-container>
 </template>
@@ -49,8 +59,9 @@ export default {
             fullScreenLoading: false,
             pageIndex: 1,
             articleList: [],
-            articleTotalCount: 0,
-            articleGroupList: []
+            articleListCount: 0,
+            articleGroupList: [],
+            loadable: false
         };
     },
     methods: {
@@ -65,8 +76,12 @@ export default {
                 })
                 .then(res => {
                     this.articleList = this.articleList.concat(res.resultList);
-                    this.articleTotalCount = res.totalCount;
+                    this.articleListCount = res.totalCount;
                     this.getArticleGroup();
+                    this.loadable =
+                        this.articleList.length < this.articleListCount
+                            ? false
+                            : true;
                 })
                 .finally(() => {
                     this.fullScreenLoading = false;
@@ -76,7 +91,7 @@ export default {
             this.$router.push(`article/${id}`);
         },
         loadMore() {
-            if (this.articleTotalCount > this.articleList.length) {
+            if (this.articleListCount > this.articleList.length) {
                 this.pageIndex++;
                 this.getArticle();
             }
@@ -116,9 +131,9 @@ export default {
                 this.articleGroupList[index].onShow == true ? false : true
             );
         },
-        async init() {
+        init() {
             this.initArticleGroup();
-            await this.getArticle();
+            this.getArticle();
         }
     },
     filters: {

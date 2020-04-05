@@ -14,14 +14,6 @@ const Sidebar = () => import('./components/Sidebar');
 export default {
     components: {
         Sidebar
-    },
-    mounted() {
-        if (localStorage.getItem('token')) {
-            let token = localStorage.getItem('token');
-            let name = localStorage.getItem('name');
-            this.$store.state.token = token;
-            this.$store.state.name = name;
-        }
     }
 };
 </script>

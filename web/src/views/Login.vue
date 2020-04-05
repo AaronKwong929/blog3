@@ -51,10 +51,7 @@ export default {
                     password: this.loginForm.password
                 })
                 .then(res => {
-                    this.$store.commit('LOGIN_SUCCESS', {
-                        token: res.adminToken,
-                        name: res.name
-                    });
+                    this.$login.login(res.name, res.adminToken);
                 })
                 .finally(() => {
                     this.fullScreenLoading = false;
@@ -64,14 +61,14 @@ export default {
             this.$set(this, `loginForm`, {
                 account: null,
                 password: null
-            })
+            });
         }
     },
     mounted() {
-        if (this.$store.state.token) {
+        if (localStorage.getItem(`token`)) {
             this.$router.push('/admin');
         }
-    },
+    }
 };
 </script>
 
