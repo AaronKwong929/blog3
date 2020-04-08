@@ -47,6 +47,8 @@ instance.interceptors.response.use(
                     break;
                 case 401:
                     Message({ type: `error`, message: `登陆信息过期` });
+                    localStorage.removeItem(`token`);
+                    localStorage.removeItem(`name`);
                     router.push(`/login`);
                     break;
                 default:

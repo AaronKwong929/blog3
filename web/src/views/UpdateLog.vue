@@ -1,30 +1,28 @@
 <template>
-    <div>
-        <el-container style="height: 90vh; margin: 3rem 3rem 0 3rem">
-            <el-main>
-                <el-timeline :reverse="true">
-                    <el-timeline-item
-                        v-for="(item, index) in log"
-                        :key="index"
-                        :timestamp="item.timestamp"
-                        placement="top"
-                        color="#74b9ff"
-                        size="large"
-                    >
-                        <el-card class="card">
-                            <h4>{{ item.title }}</h4>
-                            <p
-                                v-for="(content, index) in item.contents"
-                                :key="index"
-                            >
-                                {{ index + 1 }} {{ content }}
-                            </p>
-                        </el-card>
-                    </el-timeline-item>
-                </el-timeline>
-            </el-main>
-        </el-container>
-    </div>
+    <el-container style="height: 93vh; margin: 3rem 3rem 0 3rem">
+        <el-main>
+            <el-timeline :reverse="true">
+                <el-timeline-item
+                    v-for="(item, index) in log"
+                    :key="index"
+                    :timestamp="item.timestamp"
+                    placement="top"
+                    color="#74b9ff"
+                    size="large"
+                >
+                    <el-card class="card">
+                        <h4>{{ item.title }}</h4>
+                        <p
+                            v-for="(content, index) in item.contents"
+                            :key="index"
+                        >
+                            {{ index + 1 }} {{ content }}
+                        </p>
+                    </el-card>
+                </el-timeline-item>
+            </el-timeline>
+        </el-main>
+    </el-container>
 </template>
 
 <script>
@@ -94,10 +92,7 @@ export default {
                 },
                 {
                     title: `开发版本3.9.2 上线版本1.9.2`,
-                    contents: [
-                        '样式去后台化完成',
-                        '前台展示页重写完成'
-                    ],
+                    contents: ['样式去后台化完成', '前台展示页重写完成'],
                     timestamp: '2020-02-02'
                 }
             ]

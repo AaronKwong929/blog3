@@ -26,6 +26,9 @@ Vue.prototype.$api = Api;
 import * as login from './utils/Login';
 Vue.prototype.$login = login;
 
+import dateFormat from './utils/dateFormat';
+Vue.prototype.$dateFormat = dateFormat;
+
 Vue.directive('highlight', function(el) {
     let blocks = el.querySelectorAll('pre code');
     blocks.forEach(block => {

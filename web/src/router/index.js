@@ -1,55 +1,69 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-// import store from '../vuex/store';
 
 Vue.use(VueRouter);
 
 const routes = [
     { path: '/', redirect: 'home' },
-    { path: '/home', component: () => import('../views/Home.vue') },
-    { path: '/archive', component: () => import('../views/Archive.vue') },
+    {
+        path: '/home',
+        component: () => import('../views/Home.vue'),
+        meta: { showAside: false }
+    },
+    {
+        path: '/archive',
+        component: () => import('../views/Archive.vue'),
+        meta: { showAside: true }
+    },
     {
         path: '/about',
         component: () => import('../views/About.vue'),
-        meta: { keepAlive: true }
+        meta: { keepAlive: true, showAside: true }
     },
     {
         path: '/article/:id',
-        component: () => import('../views/NewArticleDetails.vue')
+        component: () => import('../views/NewArticleDetails.vue'),
+        meta: { showAside: true }
     },
-    { path: '/login', component: () => import('../views/Login.vue') },
+    {
+        path: '/login',
+        component: () => import('../views/Login.vue'),
+        meta: { showAside: true }
+    },
     {
         path: '/draft/:id',
         component: () => import('../views/Draft.vue'),
-        meta: { requireAuth: true }
+        meta: { requireAuth: true, showAside: true }
     },
     { path: '*', redirect: 'error' },
     {
         path: '/update',
         component: () => import('../views/UpdateLog.vue'),
-        meta: { keepAlive: true }
+        meta: { keepAlive: true, showAside: true }
     },
     {
         path: '/searchResult',
         name: 'searchResult',
-        component: () => import('../views/SearchResult.vue')
+        component: () => import('../views/SearchResult.vue'),
+        meta: { showAside: true }
     },
     {
         path: '/classification',
         name: 'classification',
-        component: () => import('../views/Classification.vue')
+        component: () => import('../views/Classification.vue'),
+        meta: { showAside: true }
     },
     {
         path: '/admin',
         name: 'admin',
         component: () => import('../views/NewAdmin.vue'),
-        meta: { requireAuth: true }
+        meta: { requireAuth: true, showAside: true }
     },
     {
         path: '/error',
         name: 'error',
         component: () => import('../views/Error.vue'),
-        meta: { requireAuth: false }
+        meta: { requireAuth: false, showAside: true }
     }
 ];
 

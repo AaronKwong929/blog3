@@ -6,12 +6,7 @@
                     v-for="(item, index) in carousalItem"
                     :key="'c' + index"
                 >
-                    <h2>
-                        {{ item.title
-                        }}<span v-if="item.subTitle">
-                            - {{ item.subTitle }}</span
-                        >
-                    </h2>
+                    <h2>{{ item.title }}</h2>
                 </el-carousel-item>
             </el-carousel>
         </template>
@@ -27,26 +22,17 @@
                 >
             </div>
         </el-card>
-        <img
-            style="width: auto; height: 250px; margin: 0 auto; text-align: center; display: block; margin-top: 1rem;"
-            :src="coverUrl"
-        />
     </div>
 </template>
-<script>
-const coverUrl = require('../static/img/cover.jpg');
-import dateFormat from '../utils/dateFormat';
 
+<script>
 export default {
     data() {
         return {
             activeName: '1',
             carousalItem: [
                 {
-                    title: `Welcome To`
-                },
-                {
-                    title: `Aaron's Blog.`
+                    title: `Welcome To Aaron's Blog.`
                 },
                 {
                     title: `Make Yourselves At Home.`
@@ -55,15 +41,17 @@ export default {
                     title: `No Commercial Available.`
                 }
             ],
-            date: dateFormat(new Date(), 'yyyy 年 MM 月 dd 日 hh : mm : ss'),
-            coverUrl,
+            date: this.$dateFormat(
+                new Date(),
+                'yyyy 年 MM 月 dd 日 hh : mm : ss'
+            ),
             sentences: [`食得咸鱼抵得渴`, `鸡食放光虫`]
         };
     },
     methods: {
         setTimer() {
             this.timeId = setInterval(() => {
-                this.date = dateFormat(
+                this.date = this.$dateFormat(
                     new Date(),
                     'yyyy 年 MM 月 dd 日 hh : mm : ss'
                 );
@@ -94,12 +82,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#home {
+    width: 100%;
+    height: 100vh;
+}
+
 /deep/ .el-carousel__item:nth-child(2n) {
     background-color: #a29bfe;
 }
+
 /deep/ .el-carousel__item:nth-child(2n + 1) {
     background-color: #74b9ff;
 }
+
 h2 {
     text-align: center;
     font: {
@@ -109,15 +104,5 @@ h2 {
     line-height: 300px;
     color: #475669;
     opacity: 0.75;
-}
-.item-left {
-    flex-grow: 1;
-}
-.item-right {
-    align-self: flex-end;
-    justify-self: flex-end;
-}
-.article-col {
-    display: flex;
 }
 </style>

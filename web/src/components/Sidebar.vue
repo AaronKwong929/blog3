@@ -3,18 +3,9 @@
         router
         :default-active="$route.path"
         class="el-menu-vertical clearfix"
-        :collapse="isCollapse"
-        active-text-color="#74b9ff"
+        :collapse="true"
+        active-text-color="#00d090"
     >
-        <li class="menu-btn">
-            <el-button
-                @click="isCollapse = !isCollapse"
-                circle
-                :title="isCollapse ? '展开' : '收起'"
-                ><i class="el-icon-arrow-left" v-show="!isCollapse"></i
-                ><i class="el-icon-arrow-right" v-show="isCollapse"></i
-            ></el-button>
-        </li>
         <el-menu-item index="/home">
             <i class="el-icon-s-home"></i>
             <span slot="title">首 页</span>
@@ -35,34 +26,22 @@
             ><i class="el-icon-info"></i
             ><span slot="title">关 于</span></el-menu-item
         >
-        <footer class="beian" v-show="!isCollapse">
+        <!-- <footer class="beian" v-show="!isCollapse">
             <el-link
                 href="http://beian.miitbeian.gov.cn"
                 target="_blank"
                 class="link"
                 >粤ICP备19111987号-1</el-link
             >
-        </footer>
+        </footer> -->
     </el-menu>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            isCollapse: false
-        };
-    }
-};
-</script>
 <style lang="scss" scoped>
 .beian {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.el-link {
-    font-size: 0.4rem;
 }
 
 .el-menu-vertical {
@@ -73,10 +52,6 @@ export default {
     min-width: 150px;
 }
 
-/deep/ .menu-btn {
-    margin: 20px auto;
-    text-align: center;
-}
 /deep/ .el-submenu .el-menu-item {
     min-width: 0;
 }
