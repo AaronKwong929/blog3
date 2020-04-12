@@ -70,9 +70,9 @@ export default {
         font-size: 1.2rem;
     }
     .sentence:hover {
-        color: rgb(119, 136, 187);
+        color: #0089a7;
         transform: scale(1.1);
-        transition: all 1s;
+        transition: all 0.3s;
     }
 }
 </style>

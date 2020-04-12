@@ -7,14 +7,14 @@
             <el-aside>
                 <Sidebar></Sidebar>
             </el-aside>
-            <el-main style="padding: 0;">
+            <el-main>
                 <router-view></router-view>
             </el-main>
         </el-container>
         <div v-if="!$route.meta.isAdmin" class="common">
             <Header></Header>
             <el-container class="container">
-                <el-main style="padding: 0;">
+                <el-main>
                     <router-view></router-view>
                 </el-main>
             </el-container>

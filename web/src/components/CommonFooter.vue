@@ -36,9 +36,9 @@ footer {
     }
     a:hover {
         transform: scale(1.1);
-        transition: all 1s;
-        border-bottom: 1px solid rgb(119, 136, 187);
-        color: rgb(119, 136, 187);
+        transition: all 0.3s;
+        border-bottom: 1px solid #0089a7;
+        color: #0089a7;
     }
 }
 </style>

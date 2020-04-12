@@ -13,7 +13,7 @@ const routes = [
     {
         path: '/archive',
         component: () => import('../views/Archive.vue'),
-        meta: { isAdmin: true }
+        meta: { isAdmin: false }
     },
     {
         path: '/about',

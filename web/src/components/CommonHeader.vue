@@ -105,10 +105,28 @@ header {
             cursor: pointer;
         }
         .header-item:hover {
-            color: rgb(119, 136, 187);
+            color: #0089A7;
             transform: scale(1.1);
             transition: all 0.3s;
         }
     }
+}
+.router-link-active {
+    color: #0089A7;
+    transform: scale(1.1);
+}
+.router-link-active::before,
+.router-link-active::after {
+    position: absolute;
+}
+
+.router-link-active::before {
+    content: '\5B';
+    left: -20px;
+}
+
+.router-link-active::after {
+    content: '\5D';
+    right: -20px;
 }
 </style>
