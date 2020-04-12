@@ -8,62 +8,62 @@ const routes = [
     {
         path: '/home',
         component: () => import('../views/Home.vue'),
-        meta: { showAside: false }
+        meta: { isAdmin: false }
     },
     {
         path: '/archive',
         component: () => import('../views/Archive.vue'),
-        meta: { showAside: true }
+        meta: { isAdmin: true }
     },
     {
         path: '/about',
         component: () => import('../views/About.vue'),
-        meta: { keepAlive: true, showAside: true }
+        meta: { keepAlive: true, isAdmin: false }
     },
     {
         path: '/article/:id',
         component: () => import('../views/NewArticleDetails.vue'),
-        meta: { showAside: true }
+        meta: { isAdmin: false }
     },
     {
         path: '/login',
         component: () => import('../views/Login.vue'),
-        meta: { showAside: true }
+        meta: { isAdmin: true }
     },
     {
         path: '/draft/:id',
         component: () => import('../views/Draft.vue'),
-        meta: { requireAuth: true, showAside: true }
+        meta: { requireAuth: true, isAdmin: true }
     },
     { path: '*', redirect: 'error' },
     {
         path: '/update',
         component: () => import('../views/UpdateLog.vue'),
-        meta: { keepAlive: true, showAside: true }
+        meta: { keepAlive: true, isAdmin: false }
     },
     {
         path: '/searchResult',
         name: 'searchResult',
         component: () => import('../views/SearchResult.vue'),
-        meta: { showAside: true }
+        meta: { isAdmin: false }
     },
     {
         path: '/classification',
         name: 'classification',
         component: () => import('../views/Classification.vue'),
-        meta: { showAside: true }
+        meta: { isAdmin: false }
     },
     {
         path: '/admin',
         name: 'admin',
         component: () => import('../views/NewAdmin.vue'),
-        meta: { requireAuth: true, showAside: true }
+        meta: { requireAuth: true, isAdmin: true }
     },
     {
         path: '/error',
         name: 'error',
         component: () => import('../views/Error.vue'),
-        meta: { requireAuth: false, showAside: true }
+        meta: { requireAuth: false, isAdmin: false }
     }
 ];
 
@@ -73,7 +73,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
-        // const token = store.state.token;
         const token = localStorage.getItem(`token`);
         if (token && token !== null) {
             next();

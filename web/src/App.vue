@@ -1,30 +1,46 @@
 <template>
-    <div>
+    <div id="app">
         <el-container
             style="min-height: 100vh; max-width: 100%;"
-            v-if="$route.meta.showAside"
+            v-if="$route.meta.isAdmin"
         >
             <el-aside width="auto">
                 <Sidebar></Sidebar>
             </el-aside>
-            <el-main style="width: stretch; padding: 0;">
+            <el-main>
                 <router-view></router-view>
             </el-main>
         </el-container>
-        <el-container
-            style="min-height: 100vh; max-width: 100%;"
-            v-if="!$route.meta.showAside"
-        >
-            <router-view></router-view>
-        </el-container>
+        <div v-if="!$route.meta.isAdmin" class="common">
+            <Header></Header>
+            <el-container class="container">
+                <el-main class="main">
+                    <router-view></router-view>
+                </el-main>
+            </el-container>
+            <Footer></Footer>
+        </div>
     </div>
 </template>
 
 <script>
 const Sidebar = () => import('./components/Sidebar');
+const Header = () => import('./components/CommonHeader');
+const Footer = () => import('./components/CommonFooter');
 export default {
     components: {
-        Sidebar
+        Sidebar,
+        Header,
+        Footer
     }
 };
 </script>
+
+<style lang="scss" scoped>
+.container {
+    height: calc(100vh - 130px);
+    .main {
+        padding: 0;
+    }
+}
+</style>
