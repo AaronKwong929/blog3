@@ -23,6 +23,10 @@ export default {
         return {
             headerItems: [
                 {
+                    link: `/home`,
+                    title: `首页`
+                },
+                {
                     link: `/archive`,
                     title: `文章列表`
                 },
@@ -59,9 +63,6 @@ export default {
             if (this.timeId) {
                 clearInterval(this.timeId);
             }
-        },
-        navigateToLogin() {
-            this.$router.push(`/login`);
         }
     },
     mounted() {
@@ -83,8 +84,11 @@ header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    & > div {
-        width: 50%;
+    & > div:first-child {
+        width: 40%;
+    }
+    & > div:last-child {
+        width: 60%;
     }
     .header-left {
         padding-left: 100px;

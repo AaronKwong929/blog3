@@ -24,6 +24,9 @@ export default {
         };
     },
     methods: {
+        navigateToLogin() {
+            this.$router.push(`/login`);
+        },
         setTimer() {
             this.sentenceId = setInterval(() => {
                 this.index = Math.floor(Math.random() * this.sentences.length);
@@ -46,7 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 #home {
-    
     display: flex;
     flex-direction: column;
     justify-content: center;

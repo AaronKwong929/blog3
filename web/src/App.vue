@@ -4,17 +4,17 @@
             style="min-height: 100vh; max-width: 100%;"
             v-if="$route.meta.isAdmin"
         >
-            <el-aside width="auto">
+            <el-aside>
                 <Sidebar></Sidebar>
             </el-aside>
-            <el-main>
+            <el-main style="padding: 0;">
                 <router-view></router-view>
             </el-main>
         </el-container>
         <div v-if="!$route.meta.isAdmin" class="common">
             <Header></Header>
             <el-container class="container">
-                <el-main class="main">
+                <el-main style="padding: 0;">
                     <router-view></router-view>
                 </el-main>
             </el-container>
@@ -39,8 +39,5 @@ export default {
 <style lang="scss" scoped>
 .container {
     height: calc(100vh - 130px);
-    .main {
-        padding: 0;
-    }
 }
 </style>
