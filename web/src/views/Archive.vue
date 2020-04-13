@@ -1,9 +1,6 @@
 <template>
-    <el-container
-        style="height: 100vh;"
-        v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-background="rgba(0, 0, 0, 0.2)"
-    >
+    <el-container>
+        <Loading v-if="loading"></Loading>
         <el-main>
             <div
                 class="year-wrapper"
@@ -53,28 +50,29 @@
 
 <script>
 import dateFormat from '../utils/dateFormat';
+import Loading from '../components/Loading';
 export default {
     data() {
         return {
-            fullScreenLoading: false,
+            loading: false,
             pageIndex: 1,
             articleList: [],
             articleListCount: 0,
             articleGroupList: [],
-            loadable: false
+            loadable: false,
         };
     },
     methods: {
         getArticle() {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .postFetch(this.$api.articleIndex, {
                     pageSize: 10,
                     pageIndex: this.pageIndex,
                     tag: null,
-                    type: null
+                    type: null,
                 })
-                .then(res => {
+                .then((res) => {
                     this.articleList = this.articleList.concat(res.resultList);
                     this.articleListCount = res.totalCount;
                     this.getArticleGroup();
@@ -84,7 +82,7 @@ export default {
                             : true;
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         pushToArticle(id) {
@@ -109,13 +107,13 @@ export default {
                             : `${item}年`
                     }`,
                     articleList: [],
-                    onShow: true
+                    onShow: true,
                 });
             });
         },
         getArticleGroup() {
-            this.articleGroupList.forEach(item => {
-                item.articleList = this.articleList.filter(article => {
+            this.articleGroupList.forEach((item) => {
+                item.articleList = this.articleList.filter((article) => {
                     return (
                         new Date(parseInt(article.updatedAt)).getFullYear() ===
                         item.year
@@ -134,16 +132,22 @@ export default {
         init() {
             this.initArticleGroup();
             this.getArticle();
-        }
+            setTimeout(() => {
+                this.loading = false;
+            }, 2000);
+        },
     },
     filters: {
         dateFormatter(value) {
             return dateFormat(new Date(parseInt(value)), 'MM-dd hh:mm');
-        }
+        },
     },
     mounted() {
         this.init();
-    }
+    },
+    components: {
+        Loading,
+    },
 };
 </script>
 

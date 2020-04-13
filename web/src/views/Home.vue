@@ -63,11 +63,12 @@ export default {
         display: inline-block;
         outline: none;
         text-decoration: none;
-        color: #5b5d61;
+        color: #5d6066;
         font-size: 20px;
         cursor: pointer;
         margin-top: 10px;
         font-size: 1.2rem;
+        transition: all 0.3s;
     }
     .sentence:hover {
         color: #0089a7;

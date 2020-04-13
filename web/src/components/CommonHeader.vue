@@ -103,6 +103,7 @@ header {
         align-items: center;
         .header-item {
             cursor: pointer;
+            transition: all 0.3s;
         }
         .header-item:hover {
             color: #0089A7;

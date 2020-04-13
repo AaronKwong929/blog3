@@ -10,6 +10,7 @@ html {
         rgba($color: #70e1f5, $alpha: 0.9),
         rgba($color: #ffd194, $alpha: 0.9)
     );
+    font-family: 'Times New Roman', Times, serif;
 }
 
 /* 伪类清除浮动 */
@@ -21,21 +22,6 @@ html {
     height: 0;
     overflow: hidden;
 }
-
-/* 伪类三角形 方向：▲ */
-.triangle::after {
-    width: 0;
-    height: 0;
-    border-width: 0 5px 5px;
-    border-style: solid;
-    border-color: transparent transparent white;
-    position: relative;
-    display: block;
-    content: '';
-    margin-top: 11px;
-    margin-left: 10px;
-}
-
 li {
     list-style: none;
 }
@@ -56,12 +42,6 @@ a {
 .btn-small:hover {
     background-color: rgb(96, 126, 121);
     transition: all 0.3s;
-}
-
-input,
-select,
-textarea {
-    outline: none;
 }
 
 /* 顶部栏 */
@@ -85,7 +65,7 @@ textarea {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    box-shadow: 0 7px 8px -8px rgb(143, 140, 140);
+    box-shadow: 0 7px 8px -8px rgba(96, 124, 131, 0.836);
 }
 
 .main {
@@ -99,7 +79,7 @@ textarea {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    box-shadow: 0 -7px 8px -8px rgb(143, 140, 140);
+    box-shadow: 0 -7px 8px -8px rgba(96, 124, 131, 0.836);
 }
 
 .article-card {
@@ -109,9 +89,9 @@ textarea {
     align-items: center;
     border-radius: 15px;
     overflow: auto;
-    box-shadow: -7px 0 8px -8px rgb(143, 140, 140),
-        7px 0 8px -8px rgb(143, 140, 140), 0 7px 8px -8px rgb(143, 140, 140),
-        0 -7px 8px -8px rgb(143, 140, 140);
+    box-shadow: -7px 0 8px -8px rgba(96, 124, 131, 0.836),
+        7px 0 8px -8px rgba(96, 124, 131, 0.836), 0 7px 8px -8px rgba(96, 124, 131, 0.836),
+        0 -7px 8px -8px rgba(96, 124, 131, 0.836);
     margin: 1rem auto;
     height: 60px;
     width: 80%;
@@ -137,15 +117,15 @@ textarea {
             margin-right: 1rem;
             margin-right: 1rem;
             padding-right: 1rem;
-            box-shadow: 5px 0 5px -5px rgb(143, 140, 140);
+            box-shadow: 5px 0 5px -5px rgba(96, 124, 131, 0.836);
         }
     }
 }
 
 .article-card:hover {
-    box-shadow: -7px 0 5px -5px rgb(143, 140, 140),
-        7px 0 5px -5px rgb(143, 140, 140), 0 7px 5px -5px rgb(143, 140, 140),
-        0 -7px 5px -5px rgb(143, 140, 140);
+    box-shadow: -7px 0 5px -5px rgba(96, 124, 131, 0.836),
+        7px 0 5px -5px rgba(96, 124, 131, 0.836), 0 7px 5px -5px rgba(96, 124, 131, 0.836),
+        0 -7px 5px -5px rgba(96, 124, 131, 0.836);
     transform: scale(1.05);
     transition: 0.5s;
 }

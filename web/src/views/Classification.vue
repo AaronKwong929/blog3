@@ -1,9 +1,6 @@
 <template>
-    <el-container
-        style="height: 100vh;"
-        v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-background="rgba(0, 0, 0, 0.2)"
-    >
+    <el-container>
+        <Loading v-if="loading"></Loading>
         <el-header class="header">
             <el-select
                 size="small"
@@ -11,6 +8,7 @@
                 clearable
                 placeholder="类型"
                 class="tool-bar-item"
+                @change="changeType"
             >
                 <el-option
                     v-for="(item, index) in typeOptions"
@@ -25,6 +23,7 @@
                 clearable
                 placeholder="标签"
                 class="tool-bar-item"
+                @change="changeTag"
                 ><el-option
                     v-for="(item, index) in tagOptions"
                     :key="`tag` + index"
@@ -32,16 +31,6 @@
                     :label="item.label"
                 ></el-option
             ></el-select>
-            <el-button
-                type="primary"
-                size="small"
-                @click="getArticles"
-                class="tool-bar-item"
-                >查询</el-button
-            >
-            <el-button size="small" @click="reset" class="tool-bar-item"
-                >刷新</el-button
-            >
             <SearchBar></SearchBar>
         </el-header>
         <el-main class="main">
@@ -72,10 +61,11 @@
         </el-main>
         <el-footer class="footer">
             <el-pagination
-                layout="total, sizes, prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next"
                 :total="articleListCount"
-                :page-sizes="[10, 20, 50, 100]"
-                :page-size="10"
+                :page-sizes="[10, 20, 50]"
+                :page-size.sync="pageSize"
+                :current-page.sync="pageIndex"
                 @current-change="handlePageChange"
                 @size-change="handleSizeChange"
             ></el-pagination>
@@ -86,13 +76,14 @@
 <script>
 const SearchBar = () => import('../components/SearchBar');
 import dateFormat from '../utils/dateFormat';
+import Loading from '../components/Loading';
 export default {
     data() {
         return {
-            fullScreenLoading: false,
+            loading: false,
             searchForm: {
                 type: null,
-                tag: null
+                tag: null,
             },
             pageSize: 10,
             pageIndex: 1,
@@ -102,7 +93,7 @@ export default {
             typeOptions: [
                 { value: `code`, label: `编程` },
                 { value: `game`, label: `游戏` },
-                { value: `life`, label: `生活` }
+                { value: `life`, label: `生活` },
             ],
             // 标签
             tagOptions: [
@@ -111,27 +102,43 @@ export default {
                 { value: `js`, label: `JavaScript` },
                 { value: `algo`, label: `算法` },
                 { value: `vue`, label: `Vue.JS` },
-                { value: `server`, label: `服务器` }
-            ]
+                { value: `server`, label: `服务器` },
+            ],
         };
     },
     methods: {
         getArticles() {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .postFetch(this.$api.articleIndex, {
                     pageSize: 10,
                     pageIndex: this.pageIndex,
                     tag: this.searchForm.tag,
-                    type: this.searchForm.type
+                    type: this.searchForm.type,
                 })
-                .then(res => {
+                .then((res) => {
                     this.articleList = res.resultList;
                     this.articleListCount = res.totalCount;
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
+        },
+        changeType(type) {
+            if (type) {
+                this.$set(this.searchForm, `type`, type);
+            } else {
+                this.$set(this.searchForm, `type`, null);
+            }
+            this.getArticles();
+        },
+        changeTag(tag) {
+            if (tag) {
+                this.$set(this.searchForm, `tag`, tag);
+            } else {
+                this.$set(this.searchForm, `tag`, null);
+            }
+            this.getArticles();
         },
         pushToArticle(id) {
             this.$router.push(`article/${id}`);
@@ -149,7 +156,7 @@ export default {
             this.pageIndex = 1;
             this.$set(this, `searchForm`, {
                 tag: null,
-                type: null
+                type: null,
             });
             this.getArticles();
         },
@@ -158,7 +165,10 @@ export default {
                 new Date(parseInt(row[column.property])),
                 'yyyy-MM-dd hh:mm:ss'
             );
-        }
+        },
+        init() {
+            this.getArticles();
+        },
     },
     filters: {
         dateFormatter(value) {
@@ -210,14 +220,15 @@ export default {
                     break;
             }
             return value;
-        }
+        },
     },
     mounted() {
-        this.getArticles();
+        this.init();
     },
     components: {
-        SearchBar
-    }
+        SearchBar,
+        Loading,
+    },
 };
 </script>
 
@@ -226,10 +237,11 @@ export default {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    height: calc(100vh - 250px);
 }
 .article-card {
     flex-direction: column;
-    height: 130px;
+    height: 120px;
     width: 45%;
 }
 </style>

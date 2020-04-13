@@ -1,8 +1,15 @@
 <template>
     <div id="login">
+        <Loading v-if="loading"></Loading>
         <div class="login-section-wrapper">
             <img
-                style="width: auto; height: 200px; margin: 1rem auto; text-align: center; display: block;"
+                style="
+                    width: auto;
+                    height: 200px;
+                    margin: 1rem auto;
+                    text-align: center;
+                    display: block;
+                "
                 :src="coverUrl"
             />
             <div class="login-section-input-wrapper">
@@ -31,44 +38,48 @@
 
 <script>
 const coverUrl = require('../static/img/cover.jpg');
+import Loading from '../components/Loading';
 export default {
     data() {
         return {
-            fullScreenLoading: false,
+            loading: false,
             loginForm: {
                 account: null,
-                password: null
+                password: null,
             },
-            coverUrl
+            coverUrl,
         };
     },
     methods: {
         login() {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .postFetch(this.$api.login, {
                     account: this.loginForm.account,
-                    password: this.loginForm.password
+                    password: this.loginForm.password,
                 })
-                .then(res => {
+                .then((res) => {
                     this.$login.login(res.name, res.adminToken);
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         reset() {
             this.$set(this, `loginForm`, {
                 account: null,
-                password: null
+                password: null,
             });
-        }
+        },
     },
     mounted() {
         if (localStorage.getItem(`token`)) {
             this.$router.push('/admin');
         }
-    }
+    },
+    components: {
+        Loading,
+    },
 };
 </script>
 
