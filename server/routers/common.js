@@ -7,7 +7,7 @@ let commonRouter = new Router();
 /* 整合查询和搜索的接口 */
 commonRouter.post(`/article`, async (ctx) => {
     const published = true,
-        { pageSize, pageIndex, type, tag, keyword } = ctx.request.body,
+        { pageIndex, type, tag, keyword } = ctx.request.body,
         conditions = { type, tag, published },
         query = {};
     /* 断路运算符 */
@@ -27,8 +27,8 @@ commonRouter.post(`/article`, async (ctx) => {
         resultList = await Article.find(query)
             .select(['_id', 'updatedAt', 'title', 'type', 'tag'])
             .sort({ updatedAt: -1 })
-            .limit(pageSize)
-            .skip((pageIndex - 1) * pageSize);
+            .limit(10)
+            .skip((pageIndex - 1) * 10);
     ctx.response.body = {
         totalCount,
         resultList,

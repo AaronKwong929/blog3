@@ -74,13 +74,10 @@
         </el-main>
         <el-footer class="footer">
             <el-pagination
-                layout="total, sizes, prev, pager, next"
+                layout="total, prev, pager, next"
                 :total="articleListCount"
-                :page-sizes="[10, 20, 50]"
-                :page-size.sync="pageSize"
                 :current-page.sync="pageIndex"
                 @current-change="handlePageChange"
-                @size-change="handleSizeChange"
             ></el-pagination>
         </el-footer>
     </el-container>
@@ -156,10 +153,6 @@ export default {
         },
         pushToArticle(id) {
             this.$router.push(`article/${id}`);
-        },
-        handleSizeChange(val) {
-            this.pageSize = val;
-            this.getArticles();
         },
         handlePageChange(val) {
             this.pageIndex = val;
