@@ -31,7 +31,20 @@
                     :label="item.label"
                 ></el-option
             ></el-select>
-            <SearchBar></SearchBar>
+            <el-input
+                size="small"
+                class="tool-bar-item"
+                placeholder="搜索标题或全文关键词"
+                v-model="searchForm.keyword"
+                clearable
+                style="width: 200px;"
+            ></el-input>
+            <el-button
+                @click.prevent.native="getArticles"
+                size="small"
+                type="primary"
+                >搜索</el-button
+            >
         </el-header>
         <el-main class="main">
             <div
@@ -74,7 +87,6 @@
 </template>
 
 <script>
-const SearchBar = () => import('../components/SearchBar');
 import dateFormat from '../utils/dateFormat';
 import Loading from '../components/Loading';
 export default {
@@ -84,6 +96,7 @@ export default {
             searchForm: {
                 type: null,
                 tag: null,
+                keyword: null,
             },
             pageSize: 10,
             pageIndex: 1,
@@ -115,6 +128,7 @@ export default {
                     pageIndex: this.pageIndex,
                     tag: this.searchForm.tag,
                     type: this.searchForm.type,
+                    keyword: this.searchForm.keyword,
                 })
                 .then((res) => {
                     this.articleList = res.resultList;
@@ -226,7 +240,6 @@ export default {
         this.init();
     },
     components: {
-        SearchBar,
         Loading,
     },
 };
