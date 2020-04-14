@@ -19,7 +19,7 @@
                 >退出</el-button
             >
         </div>
-        <div class="tool-bar">
+        <div class="tool-bar" style="margin-bottom: 1rem;">
             <el-select
                 size="small"
                 v-model="searchForm.type"
@@ -70,11 +70,14 @@
                 class="tool-bar-item"
                 >新建</el-button
             >
-            <el-button size="small" @click.prevent.native="reset" class="tool-bar-item"
+            <el-button
+                size="small"
+                @click.prevent.native="reset"
+                class="tool-bar-item"
                 >刷新</el-button
             >
         </div>
-        <el-container style="height: 78vh;">
+        <el-container style="height: 75vh;">
             <el-main>
                 <el-table
                     ref="articleTable"
@@ -127,7 +130,9 @@
                             <el-button
                                 icon="el-icon-s-promotion"
                                 size="small"
-                                @click.prevent.native="changeArticleStatus(scope.row)"
+                                @click.prevent.native="
+                                    changeArticleStatus(scope.row)
+                                "
                                 type="text"
                                 >{{
                                     scope.row.published ? '撤回' : '发布'
@@ -136,13 +141,17 @@
                             <el-button
                                 icon="el-icon-edit"
                                 size="small"
-                                @click.prevent.native="pushToDraft(scope.row._id)"
+                                @click.prevent.native="
+                                    pushToDraft(scope.row._id)
+                                "
                                 type="text"
                                 :disabled="scope.row.published"
                                 >编辑</el-button
                             >
                             <el-button
-                                @click.prevent.native="getComment(scope.row._id)"
+                                @click.prevent.native="
+                                    getComment(scope.row._id)
+                                "
                                 size="small"
                                 type="text"
                                 >评价管理</el-button
@@ -158,8 +167,16 @@
                         </template>
                     </el-table-column>
                 </el-table>
+            </el-main>
+            <el-footer
+                style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
                 <el-pagination
-                    class="pagination"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="articleListCount"
                     :page-sizes="[20, 50, 100]"
@@ -167,7 +184,7 @@
                     @current-change="handlePageChange"
                     @size-change="handleSizeChange"
                 ></el-pagination>
-            </el-main>
+            </el-footer>
         </el-container>
         <el-dialog
             title="修改密码"
@@ -270,7 +287,9 @@
                 <el-table-column label="操作" min-width="10" align="center">
                     <template slot-scope="scope">
                         <el-button
-                            @click.prevent.native="changeCommentState(scope.row)"
+                            @click.prevent.native="
+                                changeCommentState(scope.row)
+                            "
                             type="text"
                             size="small"
                         >
@@ -315,7 +334,7 @@ export default {
             searchForm: {
                 type: null,
                 tag: null,
-                published: null
+                published: null,
             },
             pageSize: 20,
             pageIndex: 1,
@@ -324,7 +343,7 @@ export default {
             typeOptions: [
                 { value: `code`, label: `编程` },
                 { value: `game`, label: `游戏` },
-                { value: `life`, label: `生活` }
+                { value: `life`, label: `生活` },
             ],
             tagOptions: [
                 { value: `html`, label: `HTML` },
@@ -332,50 +351,50 @@ export default {
                 { value: `js`, label: `JavaScript` },
                 { value: `algo`, label: `算法` },
                 { value: `vue`, label: `Vue.JS` },
-                { value: `server`, label: `服务器` }
+                { value: `server`, label: `服务器` },
             ],
             publishOptions: [
                 { value: false, label: `未发布` },
-                { value: true, label: `已发布` }
+                { value: true, label: `已发布` },
             ],
             updatePwdDialog: false,
             updatePwdForm: {
                 oldPassword: '',
                 newPassword: '',
-                newPassword2: ''
+                newPassword2: '',
             },
             updatePwdFormRules: {
                 oldPassword: [
                     {
                         required: true,
                         trigger: true,
-                        message: `旧密码不能为空`
-                    }
+                        message: `旧密码不能为空`,
+                    },
                 ],
                 newPassword: [
                     {
                         required: true,
                         trigger: true,
-                        message: `新密码不能为空`
-                    }
+                        message: `新密码不能为空`,
+                    },
                 ],
                 newPassword2: [
                     {
                         required: true,
                         trigger: true,
-                        message: `新密码不能为空`
+                        message: `新密码不能为空`,
                     },
                     {
                         trigger: `change`,
-                        validator: checkPasswordSame
-                    }
-                ]
+                        validator: checkPasswordSame,
+                    },
+                ],
             },
             commentDialog: false,
             commentList: [],
             commentPageIndex: 1,
             commentListCount: 0,
-            articleId: ``
+            articleId: ``,
         };
     },
     methods: {
@@ -396,9 +415,9 @@ export default {
                     pageSize: this.pageSize,
                     published: this.searchForm.published,
                     tag: this.searchForm.tag,
-                    type: this.searchForm.type
+                    type: this.searchForm.type,
                 })
-                .then(res => {
+                .then((res) => {
                     this.articleList = res.resultList;
                     this.articleListCount = res.totalCount;
                 })
@@ -410,7 +429,7 @@ export default {
             this.fullScreenLoading = true;
             this.$axios
                 .postFetch(this.$api.adminNewArticle)
-                .then(res => {
+                .then((res) => {
                     this.$router.push(
                         `${this.$api.adminNewArticle}${res.data.id}`
                     );
@@ -423,7 +442,7 @@ export default {
             this.fullScreenLoading = true;
             this.$axios
                 .putFetch(this.$api.adminChangeArticleStatus, {
-                    id: row._id
+                    id: row._id,
                 })
                 .then(() => {
                     this.$message.success(
@@ -444,7 +463,7 @@ export default {
             this.$confirm(`将删除文章: ${row.title}, 是否继续?`, `提示`, {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning'
+                type: 'warning',
             })
                 .then(() => {
                     this.fullScreenLoading = true;
@@ -482,7 +501,7 @@ export default {
             this.$set(this, `searchForm`, {
                 published: null,
                 tag: null,
-                type: null
+                type: null,
             });
             this.getArticle();
         },
@@ -492,7 +511,7 @@ export default {
                 .putFetch(this.$api.adminChangePassword, {
                     name: localStorage.getItem(`name`),
                     oldPassword: this.updatePwdForm.oldPassword,
-                    newPassword: this.updatePwdForm.newPassword
+                    newPassword: this.updatePwdForm.newPassword,
                 })
                 .then(() => {
                     this.$message.success(`修改密码成功，请重新登录`);
@@ -509,7 +528,7 @@ export default {
             this.articleId = id;
             this.$axios
                 .getFetch(this.$api.adminGetComment(id, this.commentPageIndex))
-                .then(res => {
+                .then((res) => {
                     if (res.data.totalCount === 0) {
                         return this.$message.warning(`当前文章没有评论`);
                     }
@@ -525,7 +544,7 @@ export default {
             this.fullScreenLoading = true;
             this.$axios
                 .putFetch(this.$axios.adminChangeCommentStatus, {
-                    commentId: row._id
+                    commentId: row._id,
                 })
                 .then(() => {
                     this.$message.success(
@@ -545,7 +564,7 @@ export default {
             this.$confirm(`删除这条评论，是否继续？`, `提示`, {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning'
+                type: 'warning',
             })
                 .then(() => {
                     this.fullScreenLoading = true;
@@ -564,7 +583,7 @@ export default {
                 .catch(() => {
                     this.$message.warning(`已取消删除评论`);
                 });
-        }
+        },
     },
     mounted() {
         this.getArticle();
@@ -575,7 +594,7 @@ export default {
                 this.$set(this, `updatePwdForm`, {
                     oldPassword: null,
                     newPassword: null,
-                    newPassword2: null
+                    newPassword2: null,
                 });
             }
         },
@@ -583,8 +602,8 @@ export default {
             if (newv === false) {
                 this.commentPageIndex = 1;
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

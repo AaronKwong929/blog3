@@ -4,7 +4,7 @@
             style="min-height: 100vh; max-width: 100%;"
             v-if="$route.meta.isAdmin"
         >
-            <el-aside>
+            <el-aside style="width: 65px;">
                 <Sidebar></Sidebar>
             </el-aside>
             <el-main>

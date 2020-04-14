@@ -91,8 +91,8 @@ export default {
     align-items: center;
     height: 100vh;
     .login-section-wrapper {
-        width: 50vw;
-        height: 60vh;
+        width: 500px;
+        height: 400px;
         background-color: white;
         border-radius: 16px;
     }

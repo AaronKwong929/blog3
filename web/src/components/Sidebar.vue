@@ -38,12 +38,6 @@
 </template>
 
 <style lang="scss" scoped>
-.beian {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .el-menu-vertical {
     height: 100%;
 }
