@@ -1,8 +1,6 @@
 <template>
-    <div
-        v-loading.fullscreen.lock="fullScreenLoading"
-        element-loading-background="rgba(0, 0, 0, 0.2)"
-    >
+    <div>
+        <Loading v-if="loading"></Loading>
         <div class="tool-bar">
             <el-button
                 size="small"
@@ -180,7 +178,9 @@
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="articleListCount"
                     :page-sizes="[20, 50, 100]"
-                    :page-size="20"
+                    background
+                    :page-size.sync="pageSize"
+                    :current-page.sync="pageIndex"
                     @current-change="handlePageChange"
                     @size-change="handleSizeChange"
                 ></el-pagination>
@@ -320,7 +320,7 @@
 
 <script>
 import dateFormat from '../utils/dateFormat';
-
+import Loading from '../components/Loading';
 export default {
     data() {
         const checkPasswordSame = (rule, value, callback) => {
@@ -330,11 +330,11 @@ export default {
             callback();
         };
         return {
-            fullScreenLoading: false,
+            loading: false,
             searchForm: {
                 type: null,
                 tag: null,
-                published: null,
+                published: null
             },
             pageSize: 20,
             pageIndex: 1,
@@ -343,7 +343,7 @@ export default {
             typeOptions: [
                 { value: `code`, label: `编程` },
                 { value: `game`, label: `游戏` },
-                { value: `life`, label: `生活` },
+                { value: `life`, label: `生活` }
             ],
             tagOptions: [
                 { value: `html`, label: `HTML` },
@@ -351,50 +351,50 @@ export default {
                 { value: `js`, label: `JavaScript` },
                 { value: `algo`, label: `算法` },
                 { value: `vue`, label: `Vue.JS` },
-                { value: `server`, label: `服务器` },
+                { value: `server`, label: `服务器` }
             ],
             publishOptions: [
                 { value: false, label: `未发布` },
-                { value: true, label: `已发布` },
+                { value: true, label: `已发布` }
             ],
             updatePwdDialog: false,
             updatePwdForm: {
                 oldPassword: '',
                 newPassword: '',
-                newPassword2: '',
+                newPassword2: ''
             },
             updatePwdFormRules: {
                 oldPassword: [
                     {
                         required: true,
                         trigger: true,
-                        message: `旧密码不能为空`,
-                    },
+                        message: `旧密码不能为空`
+                    }
                 ],
                 newPassword: [
                     {
                         required: true,
                         trigger: true,
-                        message: `新密码不能为空`,
-                    },
+                        message: `新密码不能为空`
+                    }
                 ],
                 newPassword2: [
                     {
                         required: true,
                         trigger: true,
-                        message: `新密码不能为空`,
+                        message: `新密码不能为空`
                     },
                     {
                         trigger: `change`,
-                        validator: checkPasswordSame,
-                    },
-                ],
+                        validator: checkPasswordSame
+                    }
+                ]
             },
             commentDialog: false,
             commentList: [],
             commentPageIndex: 1,
             commentListCount: 0,
-            articleId: ``,
+            articleId: ``
         };
     },
     methods: {
@@ -408,41 +408,41 @@ export default {
             );
         },
         getArticle() {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .postFetch(this.$api.adminGetArticle, {
                     pageIndex: this.pageIndex,
                     pageSize: this.pageSize,
                     published: this.searchForm.published,
                     tag: this.searchForm.tag,
-                    type: this.searchForm.type,
+                    type: this.searchForm.type
                 })
-                .then((res) => {
+                .then(res => {
                     this.articleList = res.resultList;
                     this.articleListCount = res.totalCount;
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         newArticle() {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .postFetch(this.$api.adminNewArticle)
-                .then((res) => {
+                .then(res => {
                     this.$router.push(
                         `${this.$api.adminNewArticle}${res.data.id}`
                     );
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         changeArticleStatus(row) {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .putFetch(this.$api.adminChangeArticleStatus, {
-                    id: row._id,
+                    id: row._id
                 })
                 .then(() => {
                     this.$message.success(
@@ -453,7 +453,7 @@ export default {
                     this.getArticle();
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         pushToDraft(id) {
@@ -463,10 +463,10 @@ export default {
             this.$confirm(`将删除文章: ${row.title}, 是否继续?`, `提示`, {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning',
+                type: 'warning'
             })
                 .then(() => {
-                    this.fullScreenLoading = true;
+                    this.loading = true;
                     this.$axios
                         .deleteFetch(`${this.$api.adminDeleteDraft}${row._id}`)
                         .then(() => {
@@ -474,7 +474,7 @@ export default {
                             this.getArticle();
                         })
                         .finally(() => {
-                            this.fullScreenLoading = false;
+                            this.loading = false;
                         });
                 })
                 .catch(() => {
@@ -501,17 +501,17 @@ export default {
             this.$set(this, `searchForm`, {
                 published: null,
                 tag: null,
-                type: null,
+                type: null
             });
             this.getArticle();
         },
         modifyPassword() {
-            this.fullScreenLoading = false;
+            this.loading = false;
             this.$axios
                 .putFetch(this.$api.adminChangePassword, {
                     name: localStorage.getItem(`name`),
                     oldPassword: this.updatePwdForm.oldPassword,
-                    newPassword: this.updatePwdForm.newPassword,
+                    newPassword: this.updatePwdForm.newPassword
                 })
                 .then(() => {
                     this.$message.success(`修改密码成功，请重新登录`);
@@ -519,16 +519,16 @@ export default {
                     this.$login.logout();
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         /* 获取评价 */
         getComment(id) {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.articleId = id;
             this.$axios
                 .getFetch(this.$api.adminGetComment(id, this.commentPageIndex))
-                .then((res) => {
+                .then(res => {
                     if (res.data.totalCount === 0) {
                         return this.$message.warning(`当前文章没有评论`);
                     }
@@ -537,14 +537,14 @@ export default {
                     this.commentDialog = true;
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         changeCommentState(row) {
-            this.fullScreenLoading = true;
+            this.loading = true;
             this.$axios
                 .putFetch(this.$axios.adminChangeCommentStatus, {
-                    commentId: row._id,
+                    commentId: row._id
                 })
                 .then(() => {
                     this.$message.success(
@@ -553,7 +553,7 @@ export default {
                     this.getComment(row.articleId);
                 })
                 .finally(() => {
-                    this.fullScreenLoading = false;
+                    this.loading = false;
                 });
         },
         handleCommentPageChange(val) {
@@ -564,10 +564,10 @@ export default {
             this.$confirm(`删除这条评论，是否继续？`, `提示`, {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning',
+                type: 'warning'
             })
                 .then(() => {
-                    this.fullScreenLoading = true;
+                    this.loading = true;
                     this.$axios
                         .deleteFetch(
                             `${this.$api.adminDeleteComment}${row._id}`
@@ -577,16 +577,19 @@ export default {
                             this.getComment(this.articleId);
                         })
                         .finally(() => {
-                            this.fullScreenLoading = false;
+                            this.loading = false;
                         });
                 })
                 .catch(() => {
                     this.$message.warning(`已取消删除评论`);
                 });
-        },
+        }
     },
     mounted() {
         this.getArticle();
+    },
+    components: {
+        Loading
     },
     watch: {
         updatePwdDialog(newv) {
@@ -594,7 +597,7 @@ export default {
                 this.$set(this, `updatePwdForm`, {
                     oldPassword: null,
                     newPassword: null,
-                    newPassword2: null,
+                    newPassword2: null
                 });
             }
         },
@@ -602,8 +605,8 @@ export default {
             if (newv === false) {
                 this.commentPageIndex = 1;
             }
-        },
-    },
+        }
+    }
 };
 </script>
 
