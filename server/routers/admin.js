@@ -105,7 +105,6 @@ adminRouter.post(
     `/articles`,
     verifyToken,
     eventTrack(2001),
-    eventTrack(2001),
     async (ctx) => {
         const { pageSize, pageIndex, type, tag, published } = ctx.request.body,
             conditions = { type, tag, published },
