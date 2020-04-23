@@ -101,42 +101,30 @@ adminRouter.post(
 
 /* blog_next api */
 /* 整合查询和搜索的接口 */
-adminRouter.post(
-    `/articles`,
-    verifyToken,
-    eventTrack(2001),
-    async (ctx) => {
-        const { pageSize, pageIndex, type, tag, published } = ctx.request.body,
-            conditions = { type, tag, published },
-            query = {};
-        /* 断路运算符 */
-        // 如果 && 左边不为falsy，走右边的，否则走左边的
-        // 如果 || 左边不为falsy，走左边的，否则走右边的
-        // 获取conditions里面的所有key值组成的数组
-        Reflect.ownKeys(conditions).map((item) => {
-            conditions[item] && (query[item] = conditions[item]);
-        });
-        const totalCount = await Article.countDocuments(query),
-            resultList = await Article.find(query)
-                .select([
-                    '_id',
-                    'updatedAt',
-                    'title',
-                    'type',
-                    'tag',
-                    'published',
-                ])
-                .sort({ updatedAt: -1 })
-                .limit(pageSize)
-                .skip((pageIndex - 1) * pageSize);
-        ctx.response.body = {
-            totalCount,
-            resultList,
-            status: 0,
-            message: `查询成功`,
-        };
-    }
-);
+adminRouter.post(`/articles`, verifyToken, eventTrack(2001), async (ctx) => {
+    const { pageSize, pageIndex, type, tag, published } = ctx.request.body,
+        conditions = { type, tag, published },
+        query = {};
+    /* 断路运算符 */
+    // 如果 && 左边不为falsy，走右边的，否则走左边的
+    // 如果 || 左边不为falsy，走左边的，否则走右边的
+    // 获取conditions里面的所有key值组成的数组
+    Reflect.ownKeys(conditions).map((item) => {
+        conditions[item] && (query[item] = conditions[item]);
+    });
+    const totalCount = await Article.countDocuments(query),
+        resultList = await Article.find(query)
+            .select(['_id', 'updatedAt', 'title', 'type', 'tag', 'published'])
+            .sort({ updatedAt: -1 })
+            .limit(pageSize)
+            .skip((pageIndex - 1) * pageSize);
+    ctx.response.body = {
+        totalCount,
+        resultList,
+        status: 0,
+        message: `查询成功`,
+    };
+});
 
 /* 删除文章 */
 adminRouter.delete('/article', verifyToken, eventTrack(2002), async (ctx) => {
@@ -315,7 +303,7 @@ adminRouter.get(`/comment`, verifyToken, eventTrack(3001), async (ctx) => {
     }
 });
 
-adminRouter.post(`/eventTrack`, verifyToken, eventTrack(4001), async (ctx) => {
+adminRouter.post(`/eventTrack`, verifyToken, eventTrack(9999), async (ctx) => {
     const { pageIndex } = ctx.request.body;
     try {
         const totalCount = await Event.countDocuments(),
@@ -338,4 +326,14 @@ adminRouter.post(`/eventTrack`, verifyToken, eventTrack(4001), async (ctx) => {
     }
 });
 
+/* 获取最近动态 */
+adminRouter.get('/status', verifyToken, eventTrack(4001), async (ctx) => {
+    const { pageIndex } = ctx.request.query;
+});
+
+/* 新建最近动态 */
+adminRouter.post('/status', verifyToken, eventTrack(4002), async (ctx) => {});
+
+/* 删除最近动态 */
+adminRouter.delete('/status', verifyToken, eventTrack(4003), async (ctx) => {});
 module.exports = adminRouter;
