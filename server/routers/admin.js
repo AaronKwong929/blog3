@@ -12,6 +12,8 @@ let adminRouter = new Router();
 const eventTrack = require('../middlewares/EventTracking');
 const Event = require('../models/EventTrack');
 
+const Status = require('../models/Status');
+
 /* 添加管理员账号 */
 adminRouter.post('/add', eventTrack(1000), async (ctx) => {
     const { name, password } = ctx.request.body;
@@ -307,7 +309,7 @@ adminRouter.post(`/eventTrack`, verifyToken, eventTrack(9999), async (ctx) => {
     const { pageIndex } = ctx.request.body;
     try {
         const totalCount = await Event.countDocuments(),
-            resultList = await Article.find()
+            resultList = await Event.find()
                 .select(['eventCode', 'createdAt'])
                 .sort({ createdAt: -1 })
                 .limit(10)
@@ -328,12 +330,60 @@ adminRouter.post(`/eventTrack`, verifyToken, eventTrack(9999), async (ctx) => {
 
 /* 获取最近动态 */
 adminRouter.get('/status', verifyToken, eventTrack(4001), async (ctx) => {
-    const { pageIndex } = ctx.request.query;
+    const { pageIndex = 1 } = ctx.request.query;
+    try {
+        const totalCount = await Status.countDocuments();
+        const resultList = await Status.find()
+            .sort({ updatedAt: -1 })
+            .limit(10)
+            .skip((pageIndex - 1) * 10);
+        ctx.response.body = {
+            totalCount,
+            resultList,
+            status: 0,
+            message: `查询成功`,
+        };
+    } catch {
+        ctx.response.body = {
+            message: `查询失败`,
+            status: -1,
+        };
+    }
 });
 
 /* 新建最近动态 */
-adminRouter.post('/status', verifyToken, eventTrack(4002), async (ctx) => {});
+adminRouter.post('/status', verifyToken, eventTrack(4002), async (ctx) => {
+    const { content } = ctx.request.body,
+        status = new Status({ content });
+    try {
+        await status.save();
+        ctx.response.body = {
+            message: `新建成功`,
+            status: 0,
+        };
+    } catch {
+        ctx.response.body = {
+            message: `新建失败`,
+            status: -1,
+        };
+    }
+});
 
 /* 删除最近动态 */
-adminRouter.delete('/status', verifyToken, eventTrack(4003), async (ctx) => {});
+adminRouter.delete('/status', verifyToken, eventTrack(4003), async (ctx) => {
+    const { id } = ctx.request.query;
+    try {
+        await Status.findByIdAndDelete(id);
+        ctx.response.body = {
+            status: 0,
+            message: `删除成功`,
+        };
+    } catch {
+        ctx.response.body = {
+            status: -1,
+            message: `删除失败`,
+        };
+    }
+});
+
 module.exports = adminRouter;
