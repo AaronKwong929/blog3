@@ -112,4 +112,26 @@ commonRouter.post(`/comment`, async (ctx) => {
     }
 });
 
+commonRouter.get('/status', async (ctx) => {
+    const { pageIndex = 1 } = ctx.request.query;
+    try {
+        const totalCount = await Status.countDocuments();
+        const resultList = await Status.find()
+            .sort({ updatedAt: -1 })
+            .limit(10)
+            .skip((pageIndex - 1) * 10);
+        ctx.response.body = {
+            totalCount,
+            resultList,
+            status: 0,
+            message: `查询成功`,
+        };
+    } catch {
+        ctx.response.body = {
+            message: `查询失败`,
+            status: -1,
+        };
+    }
+});
+
 module.exports = commonRouter;
