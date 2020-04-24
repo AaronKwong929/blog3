@@ -13,4 +13,9 @@ const StatusSchema = new mongoose.Schema(
     }
 );
 
+StatusSchema.pre('save', async function (next) {
+    this.createdAt = new Date().getTime();
+    next();
+});
+
 module.exports = mongoose.model(`Status`, StatusSchema);
