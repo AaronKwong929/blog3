@@ -4,6 +4,20 @@
         <div class="tool-bar">
             <el-button
                 size="small"
+                @click.prevent.native="openStatusDialog"
+                class="tool-bar-item"
+                type="success"
+                >最近状态</el-button
+            >
+            <el-button
+                size="small"
+                @click.prevent.native="openEventTrackDialog"
+                class="tool-bar-item"
+                type="primary"
+                >埋点日志</el-button
+            >
+            <el-button
+                size="small"
                 @click.prevent.native="updatePwdDialog = true"
                 class="tool-bar-item"
                 type="warning"
@@ -92,7 +106,7 @@
                         label="发布日期"
                         min-width="20"
                         align="center"
-                        :formatter="dateFormatter"
+                        :formatter="dateFormat"
                     ></el-table-column>
                     <el-table-column
                         prop="title"
@@ -181,8 +195,8 @@
                     background
                     :page-size.sync="pageSize"
                     :current-page.sync="pageIndex"
-                    @current-change="handlePageChange"
-                    @size-change="handleSizeChange"
+                    @current-change="val => handlePageIndexChange(val, 1)"
+                    @size-change="val => handlePageSizeChange(val, 1)"
                 ></el-pagination>
             </el-footer>
         </el-container>
@@ -269,7 +283,7 @@
                     label="发布时间"
                     min-width="10"
                     align="center"
-                    :formatter="dateFormatter"
+                    :formatter="dateFormat"
                 ></el-table-column>
                 <el-table-column
                     prop="user"
@@ -288,7 +302,7 @@
                     <template slot-scope="scope">
                         <el-button
                             @click.prevent.native="
-                                changeCommentState(scope.row)
+                                changeCommentStatus(scope.row)
                             "
                             type="text"
                             size="small"
@@ -304,16 +318,153 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-row style="text-align: right; margin: 1rem 0;">
+            <el-row>
                 <el-pagination
-                    class="comment-pagination"
-                    layout="total, prev, pager, next, jumper"
                     :total="commentListCount"
-                    :page-sizes="[10, 20, 50]"
-                    :page-size="10"
-                    @current-change="handleCommentPageChange"
+                    :current-page.sync="commentPageIndex"
+                    @current-change="val => handlePageIndexChange(val, 2)"
                 ></el-pagination>
             </el-row>
+        </el-dialog>
+        <el-dialog
+            title="埋点日志"
+            :visible.sync="eventTrackDialog"
+            :append-to-body="true"
+            :lock-scroll="true"
+            :close-on-click-modal="false"
+        >
+            <el-container>
+                <el-main>
+                    <el-table
+                        ref="eventTrackList"
+                        :data="eventTrackList"
+                        border
+                        tooltip-effect="dark"
+                        style="width: 99%;"
+                    >
+                        <el-table-column
+                            align="center"
+                            prop="createdAt"
+                            label="操作时间"
+                            :formatter="dateFormat"
+                        ></el-table-column>
+                        <el-table-column
+                            align="center"
+                            prop="eventCode"
+                            label="事件"
+                        >
+                            <template slot-scope="scope">
+                                {{ eventCodeList[scope.row.eventCode] }}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-main>
+                <el-footer>
+                    <el-pagination
+                        layout="total, prev, pager, next, jumper"
+                        :total="eventTrackListCount"
+                        :current-page.sync="eventTrackPageIndex"
+                        @current-change="val => handlePageIndexChange(val, 3)"
+                    ></el-pagination>
+                </el-footer>
+            </el-container>
+        </el-dialog>
+        <el-dialog
+            title="最近状态"
+            :visible.sync="statusDialog"
+            :append-to-body="true"
+            :lock-scroll="true"
+            :close-on-click-modal="false"
+        >
+            <el-container>
+                <el-main>
+                    <el-header>
+                        <div class="tool-bar">
+                            <el-button
+                                class="tool-bar-item"
+                                @click.prevent.native="addStatusDialog = true"
+                                size="small"
+                                type="primary"
+                                >新建</el-button
+                            >
+                        </div>
+                    </el-header>
+                    <el-table
+                        ref="statusList"
+                        :data="statusList"
+                        border
+                        tooltip-effect="dark"
+                        style="width: 99%;"
+                    >
+                        <el-table-column
+                            align="center"
+                            prop="createdAt"
+                            label="操作时间"
+                            :formatter="dateFormat"
+                        ></el-table-column>
+                        <el-table-column
+                            align="center"
+                            prop="content"
+                            label="状态内容"
+                        ></el-table-column>
+                        <el-table-column align="center" label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                    size="small"
+                                    @click.prevent.native="
+                                        deleteStatus(scope.row)
+                                    "
+                                    type="text"
+                                    >删除</el-button
+                                >
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-main>
+                <el-footer>
+                    <el-pagination
+                        layout="total, prev, pager, next, jumper"
+                        :total="statusListCount"
+                        :current-page.sync="statusPageIndex"
+                        @current-change="val => handlePageIndexChange(val, 4)"
+                    ></el-pagination>
+                </el-footer>
+            </el-container>
+        </el-dialog>
+        <el-dialog
+            title="新增状态"
+            :visible.sync="addStatusDialog"
+            :append-to-body="true"
+            :lock-scroll="true"
+            :close-on-click-modal="false"
+        >
+            <el-form
+                ref="statusForm"
+                :model="statusForm"
+                label-width="100px"
+                :rules="statusFormRules"
+            >
+                <el-form-item label="内容" prop="content">
+                    <el-input
+                        size="small"
+                        v-model="statusForm.content"
+                        clearable
+                    ></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button
+                    size="small"
+                    @click.prevent.native="addStatusDialog = false"
+                    >取消</el-button
+                >
+                <el-button
+                    size="small"
+                    @click.prevent.native="addStatus"
+                    type="primary"
+                    >确认</el-button
+                >
+            </div>
         </el-dialog>
     </div>
 </template>
@@ -394,18 +545,45 @@ export default {
             commentList: [],
             commentPageIndex: 1,
             commentListCount: 0,
-            articleId: ``
+            articleId: ``,
+            eventTrackDialog: false,
+            eventTrackList: [],
+            eventTrackListCount: 0,
+            eventTrackPageIndex: 1,
+            eventCodeList: {
+                1000: `注册`,
+                1001: `登陆`,
+                1002: `更改密码`,
+                2001: `获取文章列表`,
+                2002: `删除文章`,
+                2003: `更改文章状态`,
+                2004: `新建文章`,
+                2005: `编辑文章`,
+                2006: `保存文章`,
+                3001: `获取评论列表`,
+                3002: `删除评论`,
+                3003: `更改评论状态`,
+                4001: `获取动态`,
+                4002: `新增动态`,
+                4003: `删除动态`,
+                9999: `查看埋点日志`
+            },
+            statusDialog: false,
+            statusList: [],
+            statusListCount: 0,
+            statusForm: {
+                content: null
+            },
+            statusFormRules: {
+                content: [{ required: true, trigger: 'blur' }]
+            },
+            statusPageIndex: 1,
+            addStatusDialog: false
         };
     },
     methods: {
         logout() {
             return this.$login.logout();
-        },
-        dateFormatter(row, column) {
-            return dateFormat(
-                new Date(parseInt(row[column.property])),
-                'yyyy-MM-dd hh:mm:ss'
-            );
         },
         getArticle() {
             this.loading = true;
@@ -481,55 +659,14 @@ export default {
                     this.$message.warning(`已取消删除文章`);
                 });
         },
-        tableRowClassName({ row }) {
-            if (row.published) {
-                return 'on-row';
-            }
-            return 'off-row';
-        },
-        handleSizeChange(newSize) {
-            this.pageSize = newSize;
-            this.getArticle();
-        },
-        handlePageChange(newPage) {
-            this.pageIndex = newPage;
-            this.getArticle();
-        },
-        reset() {
-            this.pageSize = 20;
-            this.pageIndex = 1;
-            this.$set(this, `searchForm`, {
-                published: null,
-                tag: null,
-                type: null
-            });
-            this.getArticle();
-        },
-        modifyPassword() {
-            this.loading = false;
-            this.$axios
-                .putFetch(this.$api.adminChangePassword, {
-                    name: localStorage.getItem(`name`),
-                    oldPassword: this.updatePwdForm.oldPassword,
-                    newPassword: this.updatePwdForm.newPassword
-                })
-                .then(() => {
-                    this.$message.success(`修改密码成功，请重新登录`);
-                    this.modifyPassworDialog = false;
-                    this.$login.logout();
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        },
-        /* 获取评价 */
+        /* 评论模块 */
         getComment(id) {
             this.loading = true;
             this.articleId = id;
             this.$axios
                 .getFetch(this.$api.adminGetComment(id, this.commentPageIndex))
                 .then(res => {
-                    if (res.data.totalCount === 0) {
+                    if (res.totalCount === 0) {
                         return this.$message.warning(`当前文章没有评论`);
                     }
                     this.commentList = res.resultList;
@@ -540,7 +677,7 @@ export default {
                     this.loading = false;
                 });
         },
-        changeCommentState(row) {
+        changeCommentStatus(row) {
             this.loading = true;
             this.$axios
                 .putFetch(this.$axios.adminChangeCommentStatus, {
@@ -555,10 +692,6 @@ export default {
                 .finally(() => {
                     this.loading = false;
                 });
-        },
-        handleCommentPageChange(val) {
-            this.commentPageIndex = val;
-            this.getComment(this.articleId);
         },
         deleteComment(row) {
             this.$confirm(`删除这条评论，是否继续？`, `提示`, {
@@ -583,7 +716,150 @@ export default {
                 .catch(() => {
                     this.$message.warning(`已取消删除评论`);
                 });
-        }
+        },
+        /* 埋点日志模块 */
+        openEventTrackDialog() {
+            this.getEventTrack();
+            this.eventTrackDialog = true;
+        },
+        getEventTrack() {
+            this.$axios
+                .postFetch(this.$api.adminGetEventTrack, {
+                    pageIndex: this.eventTrackPageIndex
+                })
+                .then(res => {
+                    this.eventTrackListCount = res.totalCount;
+                    this.eventTrackList = res.resultList;
+                });
+        },
+        /* 最近状态模块 */
+        openStatusDialog() {
+            this.getStauts();
+            this.statusDialog = true;
+        },
+        getStauts() {
+            this.loading = true;
+            this.$axios
+                .getFetch(
+                    `${this.$api.adminStatus}?pageIndex=${this.statusPageIndex}`
+                )
+                .then(res => {
+                    this.statusListCount = res.totalCount;
+                    this.statusList = res.resultList;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        addStatus() {
+            this.loading = true;
+            this.$axios
+                .postFetch(this.$api.adminStatus, {
+                    content: this.statusForm.content
+                })
+                .then(() => {
+                    this.$message.success(`新建状态成功`);
+                    this.getStauts();
+                })
+                .finally(() => {
+                    this.addStatusDialog = false;
+                });
+        },
+        deleteStatus(row) {
+            this.$confirm(`将删除状态: ${row.content}, 是否继续?`, `提示`, {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    this.loading = true;
+                    this.$axios
+                        .deleteFetch(`${this.$api.adminStatus}?id=${row._id}`)
+                        .then(() => {
+                            this.$message.success(`已删除状态: ${row.content}`);
+                            this.getStauts();
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
+                })
+                .catch(() => {
+                    this.$message.warning(`已取消删除`);
+                });
+        },
+        dateFormat(row, column) {
+            return dateFormat(
+                new Date(parseInt(row[column.property])),
+                'yyyy-MM-dd hh:mm:ss'
+            );
+        },
+        tableRowClassName({ row }) {
+            if (row.published) {
+                return 'on-row';
+            }
+            return 'off-row';
+        },
+        handlePageSizeChange(val, num) {
+            switch (num) {
+                case 1:
+                    this.pageSize = val;
+                    this.getArticle();
+                    break;
+                default:
+                    break;
+            }
+        },
+        handlePageIndexChange(val, num) {
+            switch (num) {
+                case 1:
+                    this.pageIndex = val;
+                    this.getArticle();
+                    break;
+                case 2:
+                    this.commentPageIndex = val;
+                    this.getComment(this.articleId);
+                    break;
+                case 3:
+                    this.eventTrackPageIndex = val;
+                    this.getEventTrack();
+                    break;
+                case 4:
+                    this.statusPageIndex = val;
+                    this.getStauts();
+                    break;
+                default:
+                    break;
+            }
+        },
+        reset() {
+            this.pageSize = 20;
+            this.pageIndex = 1;
+            this.$set(this, `searchForm`, {
+                published: null,
+                tag: null,
+                type: null
+            });
+            this.getArticle();
+        },
+        /* 修改密码模块 */
+        modifyPassword() {
+            this.loading = false;
+            this.$axios
+                .putFetch(this.$api.adminChangePassword, {
+                    name: localStorage.getItem(`name`),
+                    oldPassword: this.updatePwdForm.oldPassword,
+                    newPassword: this.updatePwdForm.newPassword
+                })
+                .then(() => {
+                    this.$message.success(`修改密码成功，请重新登录`);
+                    this.modifyPassworDialog = false;
+                    this.$login.logout();
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        
     },
     mounted() {
         this.getArticle();
@@ -605,6 +881,11 @@ export default {
             if (newv === false) {
                 this.commentPageIndex = 1;
             }
+        },
+        addStatusDialog(newv) {
+            if (newv === false) {
+                this.$set(this.statusForm, `content`, null);
+            }
         }
     }
 };
@@ -616,8 +897,5 @@ export default {
 }
 /deep/ .el-table .on-row {
     background: #effce8;
-}
-/deep/ .el-dialog__body {
-    height: 70vh;
 }
 </style>

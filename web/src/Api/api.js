@@ -30,3 +30,7 @@ export const adminGetComment = (id, index) => {
 export const adminChangeCommentStatus = `/admin/comment`;
 
 export const adminDeleteComment = `/admin/comment?commentId=`;
+
+export const adminGetEventTrack = `/admin/eventTrack`;
+
+export const adminStatus = `/admin/status`;
