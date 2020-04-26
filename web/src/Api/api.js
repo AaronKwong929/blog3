@@ -34,3 +34,5 @@ export const adminDeleteComment = `/admin/comment?commentId=`;
 export const adminGetEventTrack = `/admin/eventTrack`;
 
 export const adminStatus = `/admin/status`;
+
+export const commonStatus = `/common/status`

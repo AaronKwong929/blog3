@@ -112,7 +112,8 @@ adminRouter.post(`/articles`, verifyToken, eventTrack(2001), async (ctx) => {
     // 如果 || 左边不为falsy，走左边的，否则走右边的
     // 获取conditions里面的所有key值组成的数组
     Reflect.ownKeys(conditions).map((item) => {
-        conditions[item] && (query[item] = conditions[item]);
+        (conditions[item] || typeof conditions[item] === 'number') &&
+            (query[item] = conditions[item]);
     });
     const totalCount = await Article.countDocuments(query),
         resultList = await Article.find(query)

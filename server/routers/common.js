@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const Article = require('../models/Articles');
 const Comment = require(`../models/Comment`);
+const Status = require('../models/Status');
 let commonRouter = new Router();
 
 /** blog_next api */
@@ -113,23 +114,21 @@ commonRouter.post(`/comment`, async (ctx) => {
 });
 
 commonRouter.get('/status', async (ctx) => {
-    const { pageIndex = 1 } = ctx.request.query;
     try {
-        const totalCount = await Status.countDocuments();
         const resultList = await Status.find()
             .sort({ updatedAt: -1 })
-            .limit(10)
-            .skip((pageIndex - 1) * 10);
+            .limit(4);
         ctx.response.body = {
-            totalCount,
             resultList,
             status: 0,
             message: `查询成功`,
         };
-    } catch {
+    } catch(e) {
+        console.log(e);
         ctx.response.body = {
             message: `查询失败`,
             status: -1,
+            error: e
         };
     }
 });

@@ -359,7 +359,12 @@
                         </el-table-column>
                     </el-table>
                 </el-main>
-                <el-footer>
+                <el-footer style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                ">
                     <el-pagination
                         layout="total, prev, pager, next, jumper"
                         :total="eventTrackListCount"
@@ -421,7 +426,12 @@
                         </el-table-column>
                     </el-table>
                 </el-main>
-                <el-footer>
+                <el-footer style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                ">
                     <el-pagination
                         layout="total, prev, pager, next, jumper"
                         :total="statusListCount"
@@ -505,8 +515,8 @@ export default {
                 { value: `server`, label: `服务器` }
             ],
             publishOptions: [
-                { value: false, label: `未发布` },
-                { value: true, label: `已发布` }
+                { value: 0, label: `未发布` },
+                { value: 1, label: `已发布` }
             ],
             updatePwdDialog: false,
             updatePwdForm: {
