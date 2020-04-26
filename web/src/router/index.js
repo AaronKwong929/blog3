@@ -22,7 +22,7 @@ const routes = [
     },
     {
         path: '/article/:id',
-        component: () => import('../views/NewArticleDetails.vue'),
+        component: () => import('../views/ArticleDetails.vue'),
         meta: { isAdmin: false }
     },
     {
@@ -42,12 +42,6 @@ const routes = [
         meta: { keepAlive: true, isAdmin: false }
     },
     {
-        path: '/searchResult',
-        name: 'searchResult',
-        component: () => import('../views/SearchResult.vue'),
-        meta: { isAdmin: false }
-    },
-    {
         path: '/classification',
         name: 'classification',
         component: () => import('../views/Classification.vue'),
@@ -56,7 +50,7 @@ const routes = [
     {
         path: '/admin',
         name: 'admin',
-        component: () => import('../views/NewAdmin.vue'),
+        component: () => import('../views/Admin.vue'),
         meta: { requireAuth: true, isAdmin: true }
     },
     {
