@@ -27,6 +27,7 @@ adminRouter.post('/add', eventTrack(1000), async (ctx) => {
 
 /* 管理员登陆 */
 adminRouter.post('/login', eventTrack(1001), async (ctx) => {
+    // @time // 要在类里面使用，迁移成装饰器路由即可
     const { account: name, password } = ctx.request.body;
     try {
         const admin = await Admin.findOne({ name });
