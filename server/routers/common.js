@@ -71,8 +71,6 @@ commonRouter.get('/comment', async (ctx) => {
             published: true,
             articleId,
         };
-    console.log(articleId);
-    console.log(pageIndex);
     try {
         const totalCount = await Comment.countDocuments(query);
         const resultList = await Comment.find(query)
