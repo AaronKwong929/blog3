@@ -86,7 +86,7 @@ commonRouter.get('/comment', async (ctx) => {
     } catch {
         ctx.response.body = {
             status: -1,
-            message: `不存在该篇文章`,
+            message: `查询评论失败`,
         };
     }
 });
