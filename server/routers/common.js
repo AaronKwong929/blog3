@@ -64,19 +64,22 @@ commonRouter.post(`/getArticleDetails`, async (ctx) => {
 
 /* 获取文章可见评论 */
 commonRouter.get('/comment', async (ctx) => {
-    const articleId = ctx.request.query.id;
-    const pageSize = 5;
-    const query = {
-        published: true,
-        articleId,
-    };
+    // const articleId = ctx.request.query.id;
+    const { id: articleId, pageIndex } = ctx.request.query,
+        pageSize = 5,
+        query = {
+            published: true,
+            articleId,
+        };
+    console.log(articleId);
+    console.log(pageIndex);
     try {
         const totalCount = await Comment.countDocuments(query);
         const resultList = await Comment.find(query)
             .select(['user', 'updatedAt', 'content'])
             .sort({ updatedAt: -1 })
             .limit(pageSize)
-            .skip((pageSize - 1) * pageSize);
+            .skip((pageIndex - 1) * pageSize);
         ctx.response.body = {
             totalCount,
             status: 0,
@@ -115,20 +118,18 @@ commonRouter.post(`/comment`, async (ctx) => {
 
 commonRouter.get('/status', async (ctx) => {
     try {
-        const resultList = await Status.find()
-            .sort({ updatedAt: -1 })
-            .limit(4);
+        const resultList = await Status.find().sort({ updatedAt: -1 }).limit(4);
         ctx.response.body = {
             resultList,
             status: 0,
             message: `查询成功`,
         };
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         ctx.response.body = {
             message: `查询失败`,
             status: -1,
-            error: e
+            error: e,
         };
     }
 });

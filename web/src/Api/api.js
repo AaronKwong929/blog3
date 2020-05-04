@@ -3,6 +3,10 @@ export const articleIndex = `/common/article`;
 
 export const articleDetails = `/common/getArticleDetails`;
 
+export const getComment = `/common/comment`;
+
+export const sendComment = `/common/comment`
+
 export const search = `/common/searchKeywords`;
 
 /* 管理员模块 */

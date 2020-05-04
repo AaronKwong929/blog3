@@ -22,6 +22,14 @@
                             {{ type }}
                         </div>
                         <div class="header-tag">{{ tag }}</div>
+                        <div class="header-comment">
+                            <el-button
+                                size="small"
+                                type="primary"
+                                @click.prevent.native="getComments"
+                                >查看评论</el-button
+                            >
+                        </div>
                     </div>
                 </div>
                 <div class="article-content-wrapper">
@@ -34,6 +42,82 @@
                 </div>
             </el-main>
         </el-container>
+        <el-dialog
+            title="文章评论"
+            :visible.sync="commentDialog"
+            :append-to-body="true"
+            :lock-scroll="true"
+            :close-on-click-modal="false"
+            width="70%"
+        >
+            <div class="pagination">
+                <el-button
+                    size="small"
+                    type="primary"
+                    @click.prevent.native="pageChange(1)"
+                    >上一页</el-button
+                >
+                <el-button
+                    size="small"
+                    type="primary"
+                    @click.prevent.native="pageChange(2)"
+                    >下一页</el-button
+                >
+            </div>
+            <div class="comment-wrapper">
+                <el-card
+                    shadow="always"
+                    v-for="(item, index) in commentList"
+                    :key="'cl' + index"
+                    style="margin: 10px 0;"
+                >
+                    <div slot="header" class="comment-item-header">
+                        <div>{{ item.user }}</div>
+                        <div>{{ item.updatedAt | dateFormat }}</div>
+                    </div>
+                    <div>
+                        {{ item.content }}
+                    </div>
+                </el-card>
+            </div>
+            <div class="comment-footer">
+                <el-form
+                    :model="commentForm"
+                    :rules="commentFormRules"
+                    size="small"
+                    ref="commentForm"
+                >
+                    <el-row :gutter="20">
+                        <el-col :span="14">
+                            <el-form-item prop="content">
+                                <el-input
+                                    v-model="commentForm.content"
+                                    clearable
+                                    placeholder="输入评论"
+                                ></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item prop="user">
+                                <el-input
+                                    v-model="commentForm.user"
+                                    clearable
+                                    placeholder="评论人"
+                                ></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-button
+                                size="small"
+                                type="primary"
+                                @click.prevent.native="sendComment"
+                                >发送</el-button
+                            >
+                        </el-col>
+                    </el-row>
+                </el-form>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -44,7 +128,31 @@ export default {
     data() {
         return {
             fullScreenLoading: false,
-            articleDetails: {}
+            articleDetails: {},
+            commentDialog: false,
+            commentList: [],
+            commentListCount: 0,
+            commentPageIndex: 1,
+            commentForm: {
+                user: null,
+                content: null,
+            },
+            commentFormRules: {
+                user: [
+                    {
+                        required: true,
+                        trigger: 'blur',
+                        message: '评论内容不可为空',
+                    },
+                ],
+                content: [
+                    {
+                        required: true,
+                        trigger: 'blur',
+                        message: '评论人不可为空',
+                    },
+                ],
+            },
         };
     },
     methods: {
@@ -55,15 +163,75 @@ export default {
             this.fullScreenLoading = true;
             this.$axios
                 .postFetch(this.$api.articleDetails, {
-                    id: this.$route.params.id
+                    id: this.$route.params.id,
                 })
-                .then(res => {
+                .then((res) => {
                     this.$set(this, 'articleDetails', res.article);
                 })
                 .finally(() => {
                     this.fullScreenLoading = false;
                 });
-        }
+        },
+        getComments() {
+            this.fullScreenLoading = true;
+            this.$axios
+                .getFetch(this.$api.getComment, {
+                    id: this.articleDetails._id,
+                    pageIndex: this.commentPageIndex,
+                })
+                .then((res) => {
+                    this.commentList = res.resultList;
+                    this.commentListCount = res.totalCount;
+                    this.commentDialog = true;
+                })
+                .finally(() => {
+                    this.fullScreenLoading = false;
+                });
+        },
+        pageChange(num) {
+            switch (num) {
+                case 1:
+                    if (this.commentPageIndex > 1) {
+                        this.commentPageIndex--;
+                        this.getComments();
+                    }
+                    break;
+                case 2:
+                    this.commentPageIndex++;
+                    this.getComments();
+                    break;
+                default:
+                    break;
+            }
+        },
+        sendComment() {
+            this.$refs['commentForm'].validate((valid) => {
+                if (valid) {
+                    this.fullScreenLoading = true;
+                    this.$axios
+                        .postFetch(this.$api.sendComment, {
+                            articleId: this.articleDetails._id,
+                            content: this.commentForm.content,
+                            user: this.commentForm.user,
+                        })
+                        .then(() => {
+                            this.$message.success(`发送评论成功`);
+                            this.getComments();
+                        })
+                        .finally(() => {
+                            this.fullScreenLoading = false;
+                            this.$refs['commentForm'].resetFields();
+                        });
+                } else {
+                    this.$message.warning(`请输入完整评论内容`);
+                }
+            });
+        },
+    },
+    filters: {
+        dateFormat(value) {
+            return dateFormat(new Date(parseInt(value)), 'yyyy-MM-dd hh:mm');
+        },
     },
     computed: {
         updatedAt() {
@@ -106,11 +274,11 @@ export default {
         },
         compiledMarkdown: function() {
             return marked(this.articleDetails.content);
-        }
+        },
     },
     mounted() {
         this.getArticleDetails();
-    }
+    },
 };
 </script>
 
@@ -173,5 +341,27 @@ export default {
     .article-content {
         padding: 48px;
     }
+}
+.pagination {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.comment-footer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.comment-item-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 </style>
