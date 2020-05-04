@@ -80,7 +80,7 @@ export default {
             type: ``,
             tag: ``,
             published: ``,
-            updatedAt: ``,
+            // updatedAt: ``,
             id: ``,
             content: '',
             // 分类
@@ -108,9 +108,9 @@ export default {
                 .getFetch(`${this.$api.getDraft}${id}`)
                 .then(res => {
                     this.title = res.article.title;
-                    this.type = resizeTo.article.type;
+                    this.type = res.article.type;
                     this.tag = res.article.tag;
-                    this.updatedAt = res.article.updatedAt;
+                    // this.updatedAt = res.article.updatedAt;
                     this.id = res.article._id;
                     this.content = res.article.content
                         ? res.article.content
