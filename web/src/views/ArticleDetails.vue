@@ -42,6 +42,20 @@
                 </div>
             </el-main>
         </el-container>
+        <div id="error" v-else>
+            <div class="title">404</div>
+            <div class="details">
+                ╮( •́ω•̀ )╭ 这篇文章暂时不可以观看~
+            </div>
+            <div class="button1">
+                <el-button
+                    size="small"
+                    type="primary"
+                    @click.prevent.native="goBack"
+                    >返回上级</el-button
+                >
+            </div>
+        </div>
         <el-dialog
             title="文章评论"
             :visible.sync="commentDialog"
@@ -363,5 +377,31 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+#error {
+    padding-top: 180px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+    color: rgb(96, 126, 121);
+    user-select: none;
+    .title {
+        font-family: 'Georgia';
+        font-weight: 600;
+        font-size: 10rem;
+        width: 30rem;
+        margin: 0 auto;
+    }
+    .details {
+        font-size: 2rem;
+        font-weight: 400;
+        box-shadow: 0 0.5rem 0.5rem -0.5rem #aaa;
+        margin: 0 auto;
+        padding-top: 3rem;
+    }
+    .button1 {
+        margin-top: 20px;
+    }
 }
 </style>

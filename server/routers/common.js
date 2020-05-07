@@ -49,6 +49,12 @@ commonRouter.post(`/getArticleDetails`, async (ctx) => {
     }
     try {
         const article = await Article.findById(id);
+        if (!article.published) {
+            return ctx.response.body = {
+                status: -1,
+                message: `该文章暂时不可见`
+            }
+        }
         ctx.response.body = {
             status: 0,
             message: `查询成功`,
