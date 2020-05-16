@@ -619,7 +619,7 @@ export default {
                 .postFetch(this.$api.adminNewArticle)
                 .then(res => {
                     this.$router.push(
-                        `${this.$api.adminNewArticle}${res.data.id}`
+                        this.$router.push(`/draft/${res.id}`)
                     );
                 })
                 .finally(() => {
